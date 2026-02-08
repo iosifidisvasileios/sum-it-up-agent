@@ -41,7 +41,7 @@
 ## 🚀 Core Capabilities
 
 ### 🎵 **Audio Processing**
-- **Multi-Format Support**: MP3, WAV, M4A, FLAC, and more
+- **Multi-Format Support**: MP3, MP4, WAV, M4A, FLAC, and more
 - **Speaker Diarization**: Automatic speaker identification and separation
 - **High-Quality Transcription**: State-of-the-art Whisper models with GPU acceleration
 - **Format Conversion**: Intelligent audio format optimization
