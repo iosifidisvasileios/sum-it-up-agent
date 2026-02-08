@@ -1,6 +1,6 @@
 # mcp_summarizer_server.py
 from __future__ import annotations
-
+import dotenv
 import os
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -17,7 +17,7 @@ from src.summarizer import (
     LLMProvider,
     SummarizationConfig,
 )
-
+dotenv.load_dotenv()
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -241,18 +241,16 @@ class SummarizerMCP:
     # run
     # -----------------------------
     def run(self) -> None:
-        transport = os.getenv("MCP_TRANSPORT", "http").strip().lower()
+        transport = os.getenv("MCP_TRANSPORT_SUMMARIZER").strip().lower()
         if transport == "http":
-            host = os.getenv("MCP_HOST", "127.0.0.1")
-            port = int(os.getenv("MCP_PORT", "9002"))
-            path = os.getenv("MCP_PATH", "/mcp_summariz")
-            self.mcp.run(transport="http", host=host, port=port, path=path)
+            host = os.getenv("MCP_HOST_SUMMARIZER")
+            port = int(os.getenv("MCP_PORT_SUMMARIZER"))
+            path = os.getenv("MCP_PATH_SUMMARIZER")
+            self.mcp.run(transport=transport, host=host, port=port, path=path)
         else:
             self.mcp.run()
 
 
 if __name__ == "__main__":
-    server = SummarizerMCP(
-        allowed_root=os.getenv("SUMMARIZER_ALLOWED_ROOT"),
-    )
+    server = SummarizerMCP()
     server.run()

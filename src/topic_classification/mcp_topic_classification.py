@@ -6,11 +6,12 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
 from typing import Any, List, Tuple
+import dotenv
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-# Your existing library (do not modify it)
+dotenv.load_dotenv()
 from src.topic_classification import (
     TopicClassificationUseCase,
     TopicClassifierFactory,
@@ -251,18 +252,16 @@ class TopicClassifierMCP:
           MCP_HOST, MCP_PORT, MCP_PATH for http
           TOPIC_ALLOWED_ROOT (optional) for filesystem sandboxing
         """
-        transport = os.getenv("MCP_TRANSPORT", "http").strip().lower()
+        transport = os.getenv("MCP_TRANSPORT_TOPIC_CLASSIFIER").strip().lower()
         if transport == "http":
-            host = os.getenv("MCP_HOST", "127.0.0.1")
-            port = int(os.getenv("MCP_PORT", "9001"))
-            path = os.getenv("MCP_PATH", "/mcp_topic_cl")
-            self.mcp.run(transport="http", host=host, port=port, path=path)
+            host = os.getenv("MCP_HOST_TOPIC_CLASSIFIER")
+            port = int(os.getenv("MCP_PORT_TOPIC_CLASSIFIER"))
+            path = os.getenv("MCP_PATH_TOPIC_CLASSIFIER")
+            self.mcp.run(transport=transport, host=host, port=port, path=path)
         else:
             self.mcp.run()
 
 
 if __name__ == "__main__":
-    server = TopicClassifierMCP(
-        allowed_root=os.getenv("TOPIC_ALLOWED_ROOT"),
-    )
+    server = TopicClassifierMCP()
     server.run()

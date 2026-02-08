@@ -6,6 +6,7 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
 from typing import Any, List, Optional, Tuple
+import dotenv
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
@@ -13,6 +14,7 @@ from fastmcp.server.lifespan import lifespan
 # Your library (as used in your example script)
 from src.audio_processor import AudioProcessingUseCase, ProcessorType, AudioProcessorFactory
 
+dotenv.load_dotenv()
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -275,19 +277,18 @@ class AudioProcessorMCP:
         MCP_TRANSPORT=stdio (default) or http
         MCP_HOST, MCP_PORT, MCP_PATH (for http)
         """
-        transport = os.getenv("MCP_TRANSPORT", "http").strip().lower()
+        os.environ["HUGGINGFACE_TOKEN"] = os.getenv("HUGGINGFACE_TOKEN")
+
+        transport = os.getenv("MCP_TRANSPORT_AUDIO_PROCESSOR").strip().lower()
         if transport == "http":
-            host = os.getenv("MCP_HOST", "127.0.0.1")
-            port = int(os.getenv("MCP_PORT", "9000"))
-            path = os.getenv("MCP_PATH", "/mcp_audio_processor")
+            host = os.getenv("MCP_HOST_AUDIO_PROCESSOR")
+            port = int(os.getenv("MCP_PORT_AUDIO_PROCESSOR"))
+            path = os.getenv("MCP_PATH_AUDIO_PROCESSOR")
             self.mcp.run(transport="http", host=host, port=port, path=path)
         else:
             self.mcp.run()
 
 
 if __name__ == "__main__":
-    # os.environ["HUGGINGFACE_TOKEN"] = ""
-    server = AudioProcessorMCP(
-        allowed_root=os.getenv("AUDIO_ALLOWED_ROOT"),  # optional safety
-    )
+    server = AudioProcessorMCP()
     server.run()
