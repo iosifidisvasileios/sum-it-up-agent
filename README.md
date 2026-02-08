@@ -3,6 +3,7 @@
 > 🚀 **Next-generation AI Agent architecture powered by Model Context Protocol (MCP) for intelligent meeting processing and analysis**
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![Poetry](https://img.shields.io/badge/Poetry-2.2.1+-60A5FA.svg)](https://python-poetry.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.9+-red.svg)](https://pytorch.org)
 [![FastMCP](https://img.shields.io/badge/FastMCP-3.0+-green.svg)](https://fastmcp.com)
 [![License](https://img.shields.io/badge/License-Dual%20License-yellow.svg)](LICENSE)
@@ -68,7 +69,8 @@
 ## 🛠️ Technology Stack
 
 ### 🎯 **Core Technologies**
-- **🐍 Python 3.10+**: Modern Python with type hints and async support
+- **🐍 Python 3.11+**: Modern Python with type hints and async support
+- **📦 Poetry 2.2.1**: Dependency management and packaging
 - **🔥 PyTorch 2.0+**: GPU-accelerated deep learning
 - **🤗 Transformers**: State-of-the-art transformer models
 - **🎤 PyAnnote.audio**: Advanced speaker diarization
@@ -100,9 +102,9 @@ cd sum-it-up-agent
 # Install dependencies
 poetry install
 
-# Set up environment variables
+# Set up environment variables (copy .env.example to .env and configure)
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys and MCP server settings
 ```
 
 ### 🎯 Basic Usage
@@ -138,6 +140,7 @@ with summary_use_case.summarizer:
 python src/audio_processor/mcp_server_audio.py
 python src/topic_classification/mcp_topic_classification.py  
 python src/summarizer/mcp_summarizer.py
+python src/communicator/mcp_communicator.py
 
 # Use with Agentic AI Agent
 from fastmcp import Client
@@ -223,6 +226,7 @@ src/
 - **🎵 Audio Processor**: `src/audio_processor/mcp_server_audio.py`
 - **🧠 Topic Classification**: `src/topic_classification/mcp_topic_classification.py`
 - **📝 Summarizer**: `src/summarizer/mcp_summarizer.py`
+- **📧 Communicator**: `src/communicator/mcp_communicator.py`
 
 ### 🧪 **Examples & Tutorials**
 - **📚 Basic Usage**: `examples/audio_processing_examples.py`
