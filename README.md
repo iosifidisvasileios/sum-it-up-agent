@@ -27,7 +27,7 @@
 ├── 🎵 Audio Processor MCP Server
 ├── 🧠 Topic Classification MCP Server  
 ├── 📝 Summarizer MCP Server
-└── 📋 Templates MCP Server
+└── 📋 Email MCP Server
 ```
 
 ### 🎯 Why MCP Changes Everything
