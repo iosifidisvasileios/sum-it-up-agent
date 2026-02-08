@@ -2,8 +2,8 @@
 
 > 🚀 **Next-generation AI Agent architecture powered by Model Context Protocol (MCP) for intelligent meeting processing and analysis**
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.9+-red.svg)](https://pytorch.org)
 [![FastMCP](https://img.shields.io/badge/FastMCP-3.0+-green.svg)](https://fastmcp.com)
 [![License](https://img.shields.io/badge/License-Dual%20License-yellow.svg)](LICENSE)
 
