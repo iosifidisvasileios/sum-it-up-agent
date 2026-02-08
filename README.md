@@ -27,7 +27,7 @@
 ├── 🎵 Audio Processor MCP Server
 ├── 🧠 Topic Classification MCP Server  
 ├── 📝 Summarizer MCP Server
-└── 📋 Email MCP Server
+└── 📧 Communicator MCP Server
 ```
 
 ### 🎯 Why MCP Changes Everything
@@ -110,7 +110,7 @@ cp .env.example .env
 ### 🎯 Basic Usage
 
 ```python
-from src.audio_processor import AudioProcessingUseCase, ProcessorType
+from sum_it_up_agent.audio_processor import AudioProcessingUseCase, ProcessorType
 from sum_it_up_agent.topic_classification import TopicClassificationUseCase, ClassifierType
 from sum_it_up_agent.summarizer import SummarizationUseCase, SummarizerType
 
@@ -215,10 +215,12 @@ Unlike simple pipeline orchestrators, Sum-It-Up Agent:
 
 ```
 src/
-├── audio_processor/          # Audio processing with diarization
-├── topic_classification/      # Zero-shot topic classification  
-├── summarizer/              # LLM-powered summarization
-├── templates/              # Structured prompt templates
+├── sum_it_up_agent/         # Main package
+│   ├── audio_processor/     # Audio processing with diarization
+│   ├── topic_classification/ # Zero-shot topic classification  
+│   ├── summarizer/          # LLM-powered summarization
+│   ├── templates/          # Structured prompt templates
+│   └── communicator/       # Email/MCP communication
 └── examples/               # Usage examples and tutorials
 ```
 
