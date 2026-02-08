@@ -12,7 +12,7 @@ from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
 # Your library (as used in your example script)
-from src.audio_processor import AudioProcessingUseCase, ProcessorType, AudioProcessorFactory
+from sum_it_up_agent.audio_processor import AudioProcessingUseCase, ProcessorType, AudioProcessorFactory
 
 dotenv.load_dotenv()
 

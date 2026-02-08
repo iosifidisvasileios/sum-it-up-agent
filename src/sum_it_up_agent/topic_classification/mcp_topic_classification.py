@@ -12,7 +12,7 @@ from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
 dotenv.load_dotenv()
-from src.topic_classification import (
+from sum_it_up_agent.topic_classification import (
     TopicClassificationUseCase,
     TopicClassifierFactory,
     ClassifierType,

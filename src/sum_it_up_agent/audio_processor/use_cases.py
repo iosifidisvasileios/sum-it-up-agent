@@ -4,8 +4,8 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import json
 
-from src.audio_processor import  IAudioProcessor, TranscriptionSegment
-from src.audio_processor import ProcessorType, AudioProcessorFactory
+from sum_it_up_agent.audio_processor import  IAudioProcessor, TranscriptionSegment
+from sum_it_up_agent.audio_processor import ProcessorType, AudioProcessorFactory
 
 
 class AudioProcessingUseCase:

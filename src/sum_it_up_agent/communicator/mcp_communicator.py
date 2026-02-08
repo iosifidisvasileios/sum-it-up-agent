@@ -16,9 +16,8 @@ import dotenv
 dotenv.load_dotenv()
 
 # Adjust imports to your project layout if needed
-from src.communicator.factory import CommunicatorFactory, CommunicatorConfig
-from src.communicator.models import ChannelType, CommunicationRequest
-from src.communicator.email_communicator import EmailCommunicator
+from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
+from sum_it_up_agent.communicator.models import ChannelType, CommunicationRequest
 
 
 def _jsonable(x: Any) -> Any:

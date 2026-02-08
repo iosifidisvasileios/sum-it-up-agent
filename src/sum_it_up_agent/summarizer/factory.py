@@ -1,9 +1,9 @@
 import logging
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional
 from enum import Enum
 import os
 
-from src.summarizer import ISummarizer, SummarizationConfig, LLMProvider
+from sum_it_up_agent.summarizer import ISummarizer, SummarizationConfig, LLMProvider
 
 
 class SummarizerType(Enum):

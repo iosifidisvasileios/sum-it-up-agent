@@ -5,8 +5,8 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 import csv
 
-from src.topic_classification import ITopicClassifier, ClassificationResult, ClassifierType
-from src.topic_classification import TopicClassifierFactory
+from sum_it_up_agent.topic_classification import ITopicClassifier, ClassificationResult, ClassifierType
+from sum_it_up_agent.topic_classification import TopicClassifierFactory
 
 
 class TopicClassificationUseCase:

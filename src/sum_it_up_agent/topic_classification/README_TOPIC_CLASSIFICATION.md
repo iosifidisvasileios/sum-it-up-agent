@@ -24,7 +24,7 @@ The library follows clean architecture principles with:
 ## Quick Start
 
 ```python
-from src.topic_classification import TopicClassificationUseCase, ClassifierType
+from sum_it_up_agent.topic_classification import TopicClassificationUseCase, ClassifierType
 
 # Create use case with standard preset
 use_case = TopicClassificationUseCase.create_with_preset(
@@ -34,7 +34,7 @@ use_case = TopicClassificationUseCase.create_with_preset(
 # Classify a conversation file
 with use_case.classifier:
     result = use_case.classify_single_file("conversation.json")
-    
+
     print(f"Topic: {result.predicted_topic}")
     print(f"Confidence: {result.confidence:.3f}")
 ```
@@ -49,7 +49,7 @@ with use_case.classifier:
 ## Custom Configuration
 
 ```python
-from src.topic_classification import TopicClassificationConfig, DeviceType
+from sum_it_up_agent.topic_classification import TopicClassificationConfig, DeviceType
 
 config = TopicClassificationConfig(
     device=DeviceType.CUDA,

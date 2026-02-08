@@ -111,26 +111,26 @@ cp .env.example .env
 
 ```python
 from src.audio_processor import AudioProcessingUseCase, ProcessorType
-from src.topic_classification import TopicClassificationUseCase, ClassifierType
-from src.summarizer import SummarizationUseCase, SummarizerType
+from sum_it_up_agent.topic_classification import TopicClassificationUseCase, ClassifierType
+from sum_it_up_agent.summarizer import SummarizationUseCase, SummarizerType
 
 # Process audio file
 audio_use_case = AudioProcessingUseCase.create_with_preset(ProcessorType.HIGH_QUALITY)
 with audio_use_case.processor:
-    segments = audio_use_case.process_audio_file("meeting.mp3", output_format="json")
+  segments = audio_use_case.process_audio_file("meeting.mp3", output_format="json")
 
 # Classify meeting type
 topic_use_case = TopicClassificationUseCase.create_with_preset(ClassifierType.STANDARD)
 with topic_use_case.classifier:
-    result = topic_use_case.classify_single_file("meeting_transcription.json")
+  result = topic_use_case.classify_single_file("meeting_transcription.json")
 
 # Generate intelligent summary
 summary_use_case = SummarizationUseCase.create_with_preset(SummarizerType.OPENAI_STANDARD)
 with summary_use_case.summarizer:
-    summary = summary_use_case.summarize_transcription_file(
-        "meeting_transcription.json", 
-        meeting_type=result.predicted_topic
-    )
+  summary = summary_use_case.summarize_transcription_file(
+    "meeting_transcription.json",
+    meeting_type=result.predicted_topic
+  )
 ```
 
 ### 🤖 MCP Server Usage

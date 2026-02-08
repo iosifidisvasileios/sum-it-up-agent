@@ -11,11 +11,10 @@ from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
 # Your existing library (do not modify it)
-from src.summarizer import (
+from sum_it_up_agent.summarizer import (
     SummarizationUseCase,
     SummarizerType,
     LLMProvider,
-    SummarizationConfig,
 )
 dotenv.load_dotenv()
 
@@ -176,7 +175,7 @@ class SummarizerMCP:
         def supported_meeting_types(_: Context) -> List[str]:
             # Avoid constructing a summarizer (may require API keys); read from templates.
             try:
-                from src.templates.prompts import PromptTemplateFactory  # type: ignore
+                from sum_it_up_agent.templates.prompts import PromptTemplateFactory  # type: ignore
                 return list(PromptTemplateFactory.available())
             except Exception:
                 return []

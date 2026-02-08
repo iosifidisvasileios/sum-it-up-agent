@@ -3,9 +3,8 @@ import logging
 import time
 import uuid
 from datetime import datetime
-from typing import List, Dict, Any, Optional
-import asyncio
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List, Dict, Any
+from concurrent.futures import ThreadPoolExecutor
 
 # LLM Provider imports
 try:
@@ -32,8 +31,7 @@ from .interfaces import (
     SummarizationResult,
     SummarizationConfig,
     SummarizationStatus,
-    LLMProvider,
-    TranscriptionSegment
+    LLMProvider
 )
 
 
@@ -175,7 +173,7 @@ class Summarizer(ISummarizer):
     def get_supported_meeting_types(self) -> List[str]:
         """Get list of supported meeting types."""
         try:
-            from src.templates.prompts import PromptTemplateFactory
+            from sum_it_up_agent.templates.prompts import PromptTemplateFactory
             return PromptTemplateFactory.available()
         except ImportError:
             self.logger.warning("Templates package not available")
@@ -212,7 +210,7 @@ class Summarizer(ISummarizer):
     def _get_prompt_template(self, meeting_type: str):
         """Get prompt template for meeting type."""
         try:
-            from src.templates.prompts import PromptTemplateFactory
+            from sum_it_up_agent.templates.prompts import PromptTemplateFactory
             return PromptTemplateFactory.create(meeting_type)
         except ImportError:
             self.logger.error("Templates package not available")

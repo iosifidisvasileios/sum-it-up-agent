@@ -9,7 +9,6 @@ from .interfaces import (
     ISummarizer,
     SummarizationRequest,
     SummarizationResult,
-    SummarizationStatus,
     TranscriptionSegment,
 )
 from .factory import SummarizerFactory, SummarizerType

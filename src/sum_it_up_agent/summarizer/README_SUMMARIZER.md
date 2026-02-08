@@ -23,7 +23,7 @@ The library follows clean architecture principles with:
 ## Quick Start
 
 ```python
-from src.summarizer import SummarizationUseCase, SummarizerType
+from sum_it_up_agent.summarizer import SummarizationUseCase, SummarizerType
 
 # Create use case with OpenAI
 use_case = SummarizationUseCase.create_with_preset(
@@ -38,7 +38,7 @@ with use_case.summarizer:
         meeting_type="planning / coordination meeting",
         output_dir="./summaries"
     )
-    
+
     if result.is_successful():
         print(f"Summary: {result.summary_data['executive_summary']}")
 ```

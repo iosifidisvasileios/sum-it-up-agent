@@ -10,7 +10,7 @@ from pyannote.audio.pipelines.utils.hook import ProgressHook
 from pyannote.core import Segment
 from faster_whisper import WhisperModel
 
-from src.audio_processor import IAudioProcessor, AudioProcessingConfig, TranscriptionSegment, DeviceType
+from sum_it_up_agent.audio_processor import IAudioProcessor, AudioProcessingConfig, TranscriptionSegment, DeviceType
 
 
 class AudioProcessor(IAudioProcessor):
