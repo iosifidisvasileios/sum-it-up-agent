@@ -3,5 +3,6 @@
 
 # Data directory (ignore all contents)
 data/
-examples/
+examples/output
+examples/ollama_summaries
 /poetry.lock
