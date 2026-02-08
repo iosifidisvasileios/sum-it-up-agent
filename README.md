@@ -248,6 +248,41 @@ src/
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
+## CI/CD
+
+This repo uses **GitHub Actions** for a lightweight but robust CI/CD pipeline.
+
+### CI (Pull Requests + main)
+
+Workflow: `.github/workflows/ci.yml`
+
+- **Validates packaging** with `poetry check`
+- **Builds artifacts** with `poetry build`
+- **Runs a syntax sanity check** via `python -m compileall -q src`
+
+Note: the CI is intentionally kept lightweight and does **not** install the full ML dependency stack.
+
+### CD (Release + Publish)
+
+Workflow: `.github/workflows/release.yml`
+
+Trigger a release by pushing a version tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+This workflow:
+
+- Builds `sdist` + `wheel`
+- Creates a **GitHub Release** and uploads the artifacts
+- Publishes to **PyPI** using **trusted publishing** (OIDC)
+
+#### PyPI configuration (one-time)
+
+To enable trusted publishing, configure your PyPI project to trust this GitHub repo/workflow (no API token required). In GitHub, the publish job runs in an environment named `pypi`.
+
 ### 🎯 **Important: Dual-Licensing Model**
 This project uses a dual-license model to keep development sustainable while remaining free for non-commercial use. All contributors must accept our [Contributor License Agreement (CLA)](CLA.md) to maintain this model.
 
