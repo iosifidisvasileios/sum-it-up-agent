@@ -4,3 +4,4 @@
 # Data directory (ignore all contents)
 data/
 examples/
+/poetry.lock
