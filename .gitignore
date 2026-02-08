@@ -1,0 +1,6 @@
+# Environment variables
+.env
+
+# Data directory (ignore all contents)
+data/
+examples/
