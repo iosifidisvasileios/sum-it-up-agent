@@ -42,7 +42,7 @@ def example_basic_usage():
     )
     
     # Process audio file
-    audio_path = "/home/vios/Downloads/Product_Marketing.mp3"
+    audio_path = "/home/vios/Downloads/buffet_speech.mp4"
     
     try:
         segments = use_case.process_audio_file(
