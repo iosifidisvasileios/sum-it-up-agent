@@ -131,6 +131,92 @@ async def process_meeting():
 asyncio.run(process_meeting())
 ```
 
+## Sum-It-Up App Usage
+
+The **Sum-It-Up App** is a simple singleton application that boots MCP servers and provides an interactive interface for audio processing.
+
+### Interactive Mode (Recommended)
+
+```bash
+# Method 1: Run directly
+python run_app.py
+
+# Method 2: Run as module
+python -m src.sum_it_up_agent
+
+# Method 3: From project root
+python -m src.sum_it_up_agent.app
+```
+
+### Command Line Mode
+
+```bash
+# Process a single file
+python -m src.sum_it_up_agent.app /path/to/audio.mp4 "summarize this meeting and email it to user@example.com"
+```
+
+### App Features
+
+- **Automatic Server Booting**: Starts all MCP servers (audio processor, topic classifier, summarizer, communicator)
+- **Interactive Mode**: Type commands interactively
+- **Health Checks**: Waits for servers to be ready before processing
+- **Graceful Shutdown**: Properly stops all servers on exit
+- **Singleton Pattern**: Ensures only one instance runs at a time
+- **Environment Security**: Each server gets only the environment variables it needs
+
+### Interactive Mode Commands
+
+1. **Audio File Path**: Enter the full path to your audio/video file
+2. **User Prompt**: Describe what you want to do, for example:
+   - "summarize this meeting"
+   - "transcribe and classify the topics"
+   - "summarize and email to john@example.com"
+   - "extract key points and create a summary"
+
+### Server Endpoints
+
+The app boots these MCP servers automatically (configured via .env file):
+
+- **Audio Processor**: `http://127.0.0.1:9001/audio_proc`
+- **Topic Classifier**: `http://127.0.0.1:9002/classifier`  
+- **Summarizer**: `http://127.0.0.1:9000/summarizer`
+- **Communicator**: `http://127.0.0.1:9003/communicate`
+
+### Example Interactive Session
+
+```
+🚀 Starting Sum-It-Up Agent...
+==================================================
+📡 Booting MCP servers...
+✅ All servers ready!
+🔗 Initializing clients...
+✅ Ready to process!
+==================================================
+🎯 Sum-It-Up Agent - Interactive Mode
+Type 'quit' or 'exit' to stop
+==================================================
+
+📁 Enter audio file path: /home/user/meeting.mp4
+💬 What would you like to do with this audio? summarize this meeting and email it to user@example.com
+
+⚡ Processing /home/user/meeting.mp4...
+📝 Request: summarize this meeting and email it to user@example.com
+------------------------------
+✅ Processing completed successfully!
+📄 Transcription: /tmp/meeting_transcription.json
+📋 Summary: /tmp/meeting_summary.json
+📧 Communication sent:
+  ✅ email
+⏱️  Total time: 45.23s
+==================================================
+```
+
+### Stopping the App
+
+- Type `quit` or `exit` in interactive mode
+- Press `Ctrl+C` to interrupt
+- The app will automatically shutdown all servers gracefully
+
 ### Component Usage
 
 ```python

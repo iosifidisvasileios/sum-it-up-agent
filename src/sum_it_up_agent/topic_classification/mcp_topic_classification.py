@@ -1,17 +1,17 @@
 # mcp_topic_classifier_server.py
 from __future__ import annotations
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import os
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
 from typing import Any, List, Tuple
-import dotenv
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-dotenv.load_dotenv()
 from sum_it_up_agent.topic_classification import (
     TopicClassificationUseCase,
     TopicClassifierFactory,

@@ -11,10 +11,6 @@ from typing import Any, Tuple, List
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-import dotenv
-
-dotenv.load_dotenv()
-
 # Adjust imports to your project layout if needed
 from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
 from sum_it_up_agent.communicator.models import ChannelType, CommunicationRequest

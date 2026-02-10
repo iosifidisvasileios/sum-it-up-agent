@@ -1,20 +1,19 @@
 # mcp_audio_server.py
 from __future__ import annotations
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import os
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from threading import Lock
+from threading import Lock, Thread
 from typing import Any, List, Optional, Tuple
-import dotenv
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
 # Your library (as used in your example script)
 from sum_it_up_agent.audio_processor import AudioProcessingUseCase, ProcessorType, AudioProcessorFactory
-
-dotenv.load_dotenv()
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -155,6 +154,40 @@ class AudioProcessorMCP:
                 pass
         self._cache.clear()
 
+    def _cleanup_use_case(self, use_case: AudioProcessingUseCase) -> None:
+        """Clean up a specific use_case and remove it from cache."""
+        # Find and remove the use_case from cache
+        keys_to_remove = []
+        for key, (cached_uc, _lk) in self._cache.items():
+            if cached_uc is use_case:
+                keys_to_remove.append(key)
+        
+        for key in keys_to_remove:
+            uc, _lk = self._cache.pop(key)
+            try:
+                uc.processor.cleanup()
+            except Exception:
+                pass
+
+    def _cleanup_use_case_async(self, use_case: AudioProcessingUseCase) -> None:
+        """Clean up a specific use_case asynchronously in background thread."""
+        def cleanup_worker():
+            # Find and remove the use_case from cache
+            keys_to_remove = []
+            for key, (cached_uc, _lk) in self._cache.items():
+                if cached_uc is use_case:
+                    keys_to_remove.append(key)
+            
+            for key in keys_to_remove:
+                uc, _lk = self._cache.pop(key)
+                try:
+                    uc.processor.cleanup()
+                except Exception:
+                    pass
+        
+        # Run cleanup in background thread
+        Thread(target=cleanup_worker, daemon=True).start()
+
     # -----------------------------
     # MCP registration
     # -----------------------------
@@ -224,8 +257,8 @@ class AudioProcessorMCP:
             if save_to_file:
                 resp["saved_path"] = _predict_output_path(ap, output_format, output_dir)
 
-            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
-            server._cleanup_all()
+            # Clean up only the current session asynchronously (non-blocking)
+            server._cleanup_use_case_async(use_case)
             return resp
 
         @self.mcp.tool

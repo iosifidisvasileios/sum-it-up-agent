@@ -1,6 +1,5 @@
 # mcp_summarizer_server.py
 from __future__ import annotations
-import dotenv
 import os
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -16,7 +15,6 @@ from sum_it_up_agent.summarizer import (
     SummarizerType,
     LLMProvider,
 )
-dotenv.load_dotenv()
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
