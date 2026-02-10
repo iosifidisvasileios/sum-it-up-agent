@@ -20,9 +20,9 @@ from .interfaces import (
 class TopicClassifier(ITopicClassifier):
     """Production-grade zero-shot topic classifier for conversations."""
     
-    def __init__(self, config: TopicClassificationConfig):
+    def __init__(self, config: TopicClassificationConfig, logger: Optional[logging.Logger] = None):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
         self._pipelines = {}
         self._device = torch.device(config.device.value)
         

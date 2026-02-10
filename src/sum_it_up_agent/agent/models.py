@@ -54,7 +54,7 @@ class AgentConfig:
     """Configuration for the audio processing agent."""
     # File system settings
     allowed_audio_formats: List[str] = field(default_factory=lambda: [
-        ".wav", ".mp3", ".m4a", ".flac", ".ogg", ".aac", ".wma"
+        ".wav", ".mp3", ".m4a", ".flac", ".ogg", ".aac", ".wma", ".mp4"
     ])
     max_file_size_mb: int = 1_024
     prompt_limit: int = 256

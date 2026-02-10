@@ -18,6 +18,7 @@ dotenv.load_dotenv()
 
 from sum_it_up_agent.agent.orchestrator import AudioProcessingAgent
 from sum_it_up_agent.agent.models import AgentConfig
+from sum_it_up_agent.observability.logger import configure_logging
 
 
 class SumItUpApp:
@@ -34,6 +35,7 @@ class SumItUpApp:
     
     def __init__(self):
         if self._agent is None:
+            configure_logging()
             self._agent = AudioProcessingAgent()
     
     async def boot_mcp_servers(self, wait_for_ready: bool = True, timeout: int = 120):
@@ -156,7 +158,7 @@ class SumItUpApp:
         """Wait for all servers to be ready."""
         print("⏳ Waiting for servers to be ready...")
         print("⏱️  Giving servers 5 seconds to initialize...")
-        await asyncio.sleep(15)  # Give servers more time to start
+        await asyncio.sleep(5)  # Give servers more time to start
         start_time = time.time()
         
         while time.time() - start_time < timeout:

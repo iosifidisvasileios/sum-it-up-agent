@@ -11,9 +11,14 @@ from typing import Any, Tuple, List
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
+from sum_it_up_agent.observability.logger import configure_logging, get_logger
+
 # Adjust imports to your project layout if needed
 from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
 from sum_it_up_agent.communicator.models import ChannelType, CommunicationRequest
+
+configure_logging()
+logger = get_logger("sum_it_up_agent.communicator.mcp")
 
 
 def _jsonable(x: Any) -> Any:
@@ -138,6 +143,7 @@ class CommunicatorMCP:
 
         comm = CommunicatorFactory.create(
             CommunicatorConfig(channel=channel, settings=st),
+            logger=logger,
         )
         lock = Lock()
         self._cache[key] = (comm, lock)

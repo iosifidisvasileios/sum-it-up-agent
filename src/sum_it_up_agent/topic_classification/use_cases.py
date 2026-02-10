@@ -12,9 +12,13 @@ from sum_it_up_agent.topic_classification import TopicClassifierFactory
 class TopicClassificationUseCase:
     """Use case class for topic classification business logic."""
     
-    def __init__(self, classifier: Optional[ITopicClassifier] = None):
+    def __init__(
+        self,
+        classifier: Optional[ITopicClassifier] = None,
+        logger: Optional[logging.Logger] = None,
+    ):
         self.classifier = classifier
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
     
     def classify_single_file(self, file_path: str) -> ClassificationResult:
         """Classify a single conversation file."""
@@ -279,17 +283,19 @@ class TopicClassificationUseCase:
     def create_with_preset(
         cls,
         classifier_type: ClassifierType = ClassifierType.STANDARD,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> 'TopicClassificationUseCase':
         """Create use case with preset classifier."""
         classifier = TopicClassifierFactory.create_classifier(
             classifier_type=classifier_type,
-            config_overrides=config_overrides
+            config_overrides=config_overrides,
+            logger=logger,
         )
-        return cls(classifier)
+        return cls(classifier, logger=logger)
     
     @classmethod
-    def create_with_custom_classifier(cls, config) -> 'TopicClassificationUseCase':
+    def create_with_custom_classifier(cls, config, logger: Optional[logging.Logger] = None) -> 'TopicClassificationUseCase':
         """Create use case with custom classifier."""
-        classifier = TopicClassifierFactory.create_custom_classifier(config)
-        return cls(classifier)
+        classifier = TopicClassifierFactory.create_custom_classifier(config, logger=logger)
+        return cls(classifier, logger=logger)

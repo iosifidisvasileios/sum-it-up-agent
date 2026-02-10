@@ -11,9 +11,9 @@ from sum_it_up_agent.audio_processor import ProcessorType, AudioProcessorFactory
 class AudioProcessingUseCase:
     """Use case class for audio processing business logic."""
     
-    def __init__(self, processor: Optional[IAudioProcessor] = None):
+    def __init__(self, processor: Optional[IAudioProcessor] = None, logger: Optional[logging.Logger] = None):
         self.processor = processor
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
     
     def process_audio_file(
         self,
@@ -210,18 +210,20 @@ class AudioProcessingUseCase:
         cls,
         processor_type: ProcessorType = ProcessorType.STANDARD,
         huggingface_token: Optional[str] = None,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> 'AudioProcessingUseCase':
         """Create use case with preset processor."""
         processor = AudioProcessorFactory.create_processor(
             processor_type=processor_type,
             huggingface_token=huggingface_token,
-            config_overrides=config_overrides
+            config_overrides=config_overrides,
+            logger=logger,
         )
-        return cls(processor)
+        return cls(processor, logger=logger)
     
     @classmethod
-    def create_with_custom_processor(cls, config) -> 'AudioProcessingUseCase':
+    def create_with_custom_processor(cls, config, logger: Optional[logging.Logger] = None) -> 'AudioProcessingUseCase':
         """Create use case with custom processor."""
-        processor = AudioProcessorFactory.create_custom_processor(config)
-        return cls(processor)
+        processor = AudioProcessorFactory.create_custom_processor(config, logger=logger)
+        return cls(processor, logger=logger)

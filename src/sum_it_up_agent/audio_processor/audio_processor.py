@@ -16,9 +16,9 @@ from sum_it_up_agent.audio_processor import IAudioProcessor, AudioProcessingConf
 class AudioProcessor(IAudioProcessor):
     """Production-grade audio processor with speaker diarization and transcription."""
     
-    def __init__(self, config: AudioProcessingConfig):
+    def __init__(self, config: AudioProcessingConfig, logger: Optional[logging.Logger] = None):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
         self._pipeline = None
         self._whisper_model = None
         self._device = torch.device(config.device.value)

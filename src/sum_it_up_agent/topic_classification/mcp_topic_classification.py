@@ -12,6 +12,8 @@ from typing import Any, List, Tuple
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
+from sum_it_up_agent.observability.logger import configure_logging, get_logger
+
 from sum_it_up_agent.topic_classification import (
     TopicClassificationUseCase,
     TopicClassifierFactory,
@@ -19,6 +21,9 @@ from sum_it_up_agent.topic_classification import (
     DeviceType,
     EnsembleMethod,
 )
+
+configure_logging()
+logger = get_logger("sum_it_up_agent.topic_classification.mcp")
 
 
 # -----------------------------
@@ -166,6 +171,7 @@ class TopicClassifierMCP:
         use_case = TopicClassificationUseCase.create_with_preset(
             classifier_type=preset,
             config_overrides=ov or None,
+            logger=logger,
         )
         lock = Lock()
         self._cache[key] = (use_case, lock)

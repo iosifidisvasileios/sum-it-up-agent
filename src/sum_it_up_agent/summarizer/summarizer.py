@@ -3,7 +3,7 @@ import logging
 import time
 import uuid
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor
 
 # LLM Provider imports
@@ -38,9 +38,9 @@ from .interfaces import (
 class Summarizer(ISummarizer):
     """Production-grade meeting summarizer using LLMs and prompt templates."""
     
-    def __init__(self, config: SummarizationConfig):
+    def __init__(self, config: SummarizationConfig, logger: Optional[logging.Logger] = None):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
         self._client = None
         self._executor = ThreadPoolExecutor(max_workers=config.concurrent_requests)
         

@@ -230,7 +230,7 @@ class AudioProcessingAgent:
             if response and hasattr(response, 'structured_content') and response.structured_content:
                 if "saved_path" in response.structured_content:
                     result.transcription_file = response.structured_content["saved_path"]
-                    self.logger.info(f"Transcription saved to: {result.transcription_file}")
+                    # self.logger.info(f"Transcription saved to: {result.transcription_file}")
 
             self.logger.info("Audio processing completed successfully")
             return True
@@ -317,7 +317,6 @@ class AudioProcessingAgent:
             step.status = "completed"
             step.completed_at = time.time()
 
-            self.logger.info(response)
             if response and hasattr(response, 'structured_content') and response.structured_content:
                 output_path = None
                 # Check if output_path is directly in structured_content

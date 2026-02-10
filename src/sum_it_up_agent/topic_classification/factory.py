@@ -55,10 +55,11 @@ class TopicClassifierFactory:
     def create_classifier(
         cls,
         classifier_type: ClassifierType = ClassifierType.STANDARD,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> ITopicClassifier:
         """Create a topic classifier with preset or custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         # Get base configuration
         config = cls._PRESET_CONFIGS[classifier_type]
@@ -84,15 +85,19 @@ class TopicClassifierFactory:
         final_config = TopicClassificationConfig(**config_dict)
         
         logger.info(f"Creating {classifier_type.value} topic classifier")
-        return TopicClassifier(final_config)
+        return TopicClassifier(final_config, logger=logger)
     
     @classmethod
-    def create_custom_classifier(cls, config: TopicClassificationConfig) -> ITopicClassifier:
+    def create_custom_classifier(
+        cls,
+        config: TopicClassificationConfig,
+        logger: Optional[logging.Logger] = None,
+    ) -> ITopicClassifier:
         """Create a topic classifier with custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         logger.info("Creating custom topic classifier")
-        return TopicClassifier(config)
+        return TopicClassifier(config, logger=logger)
     
     @classmethod
     def get_available_presets(cls) -> Dict[str, ClassifierType]:

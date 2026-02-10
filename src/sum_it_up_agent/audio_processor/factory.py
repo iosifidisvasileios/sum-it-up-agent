@@ -44,10 +44,11 @@ class AudioProcessorFactory:
         cls,
         processor_type: ProcessorType = ProcessorType.STANDARD,
         huggingface_token: Optional[str] = None,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> IAudioProcessor:
         """Create an audio processor with preset or custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         # Get base configuration
         config = cls._PRESET_CONFIGS[processor_type]
@@ -76,18 +77,18 @@ class AudioProcessorFactory:
             raise ValueError("HuggingFace token is required for diarization")
         
         logger.info(f"Creating {processor_type.value} audio processor")
-        return AudioProcessor(final_config)
+        return AudioProcessor(final_config, logger=logger)
     
     @classmethod
-    def create_custom_processor(cls, config: AudioProcessingConfig) -> IAudioProcessor:
+    def create_custom_processor(cls, config: AudioProcessingConfig, logger: Optional[logging.Logger] = None) -> IAudioProcessor:
         """Create an audio processor with custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         if not config.huggingface_token:
             raise ValueError("HuggingFace token is required for diarization")
         
         logger.info("Creating custom audio processor")
-        return AudioProcessor(config)
+        return AudioProcessor(config, logger=logger)
     
     @classmethod
     def get_available_presets(cls) -> Dict[str, ProcessorType]:

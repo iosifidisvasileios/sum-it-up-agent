@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import logging
 from typing import Any, Dict, Optional
 
 from .models import ChannelType
@@ -17,7 +18,7 @@ class CommunicatorConfig:
 
 class CommunicatorFactory:
     @staticmethod
-    def create(config: CommunicatorConfig) -> ICommunicator:
+    def create(config: CommunicatorConfig, logger: Optional[logging.Logger] = None) -> ICommunicator:
         settings = config.settings or {}
 
         if config.channel == ChannelType.EMAIL:
@@ -26,6 +27,7 @@ class CommunicatorFactory:
                 smtp_port=settings.get("smtp_port"),
                 sender_email=settings.get("sender_email"),
                 sender_password=settings.get("sender_password"),
+                logger=logger,
             )
 
         raise ValueError(f"Unsupported channel: {config.channel}")

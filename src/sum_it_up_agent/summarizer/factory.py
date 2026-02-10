@@ -103,10 +103,11 @@ class SummarizerFactory:
         cls,
         summarizer_type: SummarizerType = SummarizerType.OPENAI_STANDARD,
         config_overrides: Optional[Dict[str, Any]] = None,
-        api_key: Optional[str] = None
+        api_key: Optional[str] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> ISummarizer:
         """Create a summarizer with preset or custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         # Get base configuration
         config = cls._PRESET_CONFIGS[summarizer_type]
@@ -143,24 +144,24 @@ class SummarizerFactory:
         final_config = SummarizationConfig(**config_dict)
         
         logger.info(f"Creating {summarizer_type.value} summarizer")
-        return cls._create_summarizer_from_config(final_config)
+        return cls._create_summarizer_from_config(final_config, logger=logger)
     
     @classmethod
-    def create_custom_summarizer(cls, config: SummarizationConfig) -> ISummarizer:
+    def create_custom_summarizer(cls, config: SummarizationConfig, logger: Optional[logging.Logger] = None) -> ISummarizer:
         """Create a summarizer with custom configuration."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         # Set API key from environment if not provided
         if not config.api_key:
             config.api_key = cls._get_api_key_from_env(config.llm_provider)
         
         logger.info("Creating custom summarizer")
-        return cls._create_summarizer_from_config(config)
+        return cls._create_summarizer_from_config(config, logger=logger)
     
     @classmethod
-    def create_from_environment(cls) -> ISummarizer:
+    def create_from_environment(cls, logger: Optional[logging.Logger] = None) -> ISummarizer:
         """Create summarizer from environment variables."""
-        logger = logging.getLogger(__name__)
+        logger = logger or logging.getLogger(__name__)
         
         # Get provider from environment
         provider_str = os.getenv("SUMMARIZER_PROVIDER", "openai").lower()
@@ -195,7 +196,7 @@ class SummarizerFactory:
         )
         
         logger.info(f"Creating summarizer from environment: {provider.value}")
-        return cls._create_summarizer_from_config(config)
+        return cls._create_summarizer_from_config(config, logger=logger)
     
     @classmethod
     def get_available_presets(cls) -> Dict[str, SummarizerType]:
@@ -266,10 +267,13 @@ class SummarizerFactory:
             return cls.create_summarizer(SummarizerType.OPENAI_FAST)
     
     @staticmethod
-    def _create_summarizer_from_config(config: SummarizationConfig) -> ISummarizer:
+    def _create_summarizer_from_config(
+        config: SummarizationConfig,
+        logger: Optional[logging.Logger] = None,
+    ) -> ISummarizer:
         """Create summarizer instance from configuration."""
         from .summarizer import Summarizer
-        return Summarizer(config)
+        return Summarizer(config, logger=logger)
     
     @staticmethod
     def _get_api_key_from_env(provider: LLMProvider) -> Optional[str]:

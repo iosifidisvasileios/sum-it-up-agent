@@ -14,7 +14,6 @@ import markdown
 from .interfaces import ICommunicator
 from .models import CommunicationRequest
 
-logger = logging.getLogger(__name__)
 import dotenv
 
 dotenv.load_dotenv()
@@ -37,7 +36,9 @@ class EmailCommunicator(ICommunicator):
         smtp_port: Optional[int] = None,
         sender_email: Optional[str] = None,
         sender_password: Optional[str] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> None:
+        self.logger = logger or logging.getLogger(__name__)
         self.smtp_server = smtp_server or os.getenv("SMTP_SERVER")
         self.smtp_port = int(smtp_port or os.getenv("SMTP_PORT"))
         self.sender_email = sender_email or os.getenv("SENDER_EMAIL_ACCOUNT")
@@ -62,7 +63,7 @@ class EmailCommunicator(ICommunicator):
             with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port) as server:
                 server.login(self.sender_email, self.sender_password)
                 server.sendmail(self.sender_email, request.recipient, msg.as_string())
-            logger.info("Email sent to %s", request.recipient)
+            self.logger.info("Email sent to %s", request.recipient)
             return {
                 "channel": "email",
                 "recipient": request.recipient,
@@ -71,7 +72,7 @@ class EmailCommunicator(ICommunicator):
                 "status": "sent",
             }
         except Exception as e:
-            logger.error("Failed to send email: %s", e)
+            self.logger.error("Failed to send email: %s", e)
             raise
 
     def cleanup(self) -> None:

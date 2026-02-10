@@ -9,12 +9,17 @@ from typing import Any, List, Tuple
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
+from sum_it_up_agent.observability.logger import configure_logging, get_logger
+
 # Your existing library (do not modify it)
 from sum_it_up_agent.summarizer import (
     SummarizationUseCase,
     SummarizerType,
     LLMProvider,
 )
+
+configure_logging()
+logger = get_logger("sum_it_up_agent.summarizer.mcp")
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -148,6 +153,7 @@ class SummarizerMCP:
             summarizer_type=preset,
             api_key=api_key,
             config_overrides=ov or None,
+            logger=logger,
         )
         lock = Lock()
         self._cache[key] = (use_case, lock)

@@ -17,9 +17,9 @@ from .factory import SummarizerFactory, SummarizerType
 class SummarizationUseCase:
     """Use case class for meeting summarization business logic."""
     
-    def __init__(self, summarizer: Optional[ISummarizer] = None):
+    def __init__(self, summarizer: Optional[ISummarizer] = None, logger: Optional[logging.Logger] = None):
         self.summarizer = summarizer
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
     
     def summarize_transcription_file(
         self,
@@ -356,24 +356,26 @@ class SummarizationUseCase:
         cls,
         summarizer_type: SummarizerType = SummarizerType.OPENAI_STANDARD,
         api_key: Optional[str] = None,
-        config_overrides: Optional[Dict[str, Any]] = None
+        config_overrides: Optional[Dict[str, Any]] = None,
+        logger: Optional[logging.Logger] = None,
     ) -> 'SummarizationUseCase':
         """Create use case with preset summarizer."""
         summarizer = SummarizerFactory.create_summarizer(
             summarizer_type=summarizer_type,
             api_key=api_key,
-            config_overrides=config_overrides
+            config_overrides=config_overrides,
+            logger=logger,
         )
-        return cls(summarizer)
+        return cls(summarizer, logger=logger)
     
     @classmethod
-    def create_from_environment(cls) -> 'SummarizationUseCase':
+    def create_from_environment(cls, logger: Optional[logging.Logger] = None) -> 'SummarizationUseCase':
         """Create use case from environment variables."""
-        summarizer = SummarizerFactory.create_from_environment()
-        return cls(summarizer)
+        summarizer = SummarizerFactory.create_from_environment(logger=logger)
+        return cls(summarizer, logger=logger)
     
     @classmethod
-    def create_with_custom_summarizer(cls, config) -> 'SummarizationUseCase':
+    def create_with_custom_summarizer(cls, config, logger: Optional[logging.Logger] = None) -> 'SummarizationUseCase':
         """Create use case with custom summarizer."""
-        summarizer = SummarizerFactory.create_custom_summarizer(config)
-        return cls(summarizer)
+        summarizer = SummarizerFactory.create_custom_summarizer(config, logger=logger)
+        return cls(summarizer, logger=logger)
