@@ -1,6 +1,6 @@
 # Topic Classification
 
-A production-grade zero-shot topic classification library for conversations using transformer models.
+A production-grade zero-shot topic classification library for conversations using transformer models, designed for integration with the Sum-It-Up Agent ecosystem.
 
 ## Features
 
@@ -11,6 +11,7 @@ A production-grade zero-shot topic classification library for conversations usin
 - **Multiple Output Formats**: JSON, CSV, TXT export options
 - **Performance Optimization**: Device-specific optimizations
 - **Production Ready**: Error handling, logging, resource management
+- **MCP Integration**: Model Context Protocol server for distributed processing
 
 ## Architecture
 
@@ -37,6 +38,22 @@ with use_case.classifier:
 
     print(f"Topic: {result.predicted_topic}")
     print(f"Confidence: {result.confidence:.3f}")
+```
+
+### MCP Server Usage
+
+```bash
+# Start the MCP server
+python -m sum_it_up_agent.topic_classification.mcp_topic_classification
+
+# Use with fastmcp client
+from fastmcp import Client
+
+async with Client("stdio://topic-classifier") as client:
+    result = await client.call_tool("classify_topic", {
+        "file_path": "conversation.json",
+        "preset": "standard"
+    })
 ```
 
 ## Configuration Presets

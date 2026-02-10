@@ -1,6 +1,6 @@
 # Meeting Summarizer
 
-A production-grade meeting summarization library using LLMs and structured prompt templates.
+A production-grade meeting summarization library using LLMs and structured prompt templates, designed for integration with the Sum-It-Up Agent ecosystem.
 
 ## Features
 
@@ -10,6 +10,7 @@ A production-grade meeting summarization library using LLMs and structured promp
 - **Cost Estimation**: Estimate token usage and costs before processing
 - **Multiple Output Formats**: JSON, CSV, TXT export options
 - **Flexible Configuration**: Preset and custom configuration options
+- **MCP Integration**: Model Context Protocol server for distributed processing
 
 ## Architecture
 
@@ -41,6 +42,23 @@ with use_case.summarizer:
 
     if result.is_successful():
         print(f"Summary: {result.summary_data['executive_summary']}")
+```
+
+### MCP Server Usage
+
+```bash
+# Start the MCP server
+python -m sum_it_up_agent.summarizer.mcp_summarizer
+
+# Use with fastmcp client
+from fastmcp import Client
+
+async with Client("stdio://summarizer") as client:
+    result = await client.call_tool("summarize_transcription", {
+        "file_path": "meeting_transcript.json",
+        "meeting_type": "planning meeting",
+        "preset": "openai_standard"
+    })
 ```
 
 ## Configuration Presets

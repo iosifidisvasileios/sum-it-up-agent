@@ -1,6 +1,6 @@
 # Audio Processor
 
-A production-grade audio processing library with speaker diarization and transcription capabilities.
+A production-grade audio processing library with speaker diarization and transcription capabilities, designed for integration with the Sum-It-Up Agent ecosystem.
 
 ## Features
 
@@ -10,6 +10,7 @@ A production-grade audio processing library with speaker diarization and transcr
 - **Factory Pattern**: Easy instantiation with preset configurations
 - **Use Case Pattern**: Clean separation of business logic
 - **Production Ready**: Error handling, logging, resource management
+- **MCP Integration**: Model Context Protocol server for distributed processing
 
 ## Architecture
 
@@ -24,7 +25,7 @@ The library follows clean architecture principles with:
 
 ```python
 import os
-from src.audio_processor import AudioProcessingUseCase, ProcessorType
+from sum_it_up_agent.audio_processor import AudioProcessingUseCase, ProcessorType
 
 # Set your HuggingFace token
 os.environ["HUGGINGFACE_TOKEN"] = "your_token_here"
@@ -48,6 +49,23 @@ with use_case.processor:
     print(f"Processed {summary['total_segments']} segments")
 ```
 
+### MCP Server Usage
+
+```bash
+# Start the MCP server
+python -m sum_it_up_agent.audio_processor.mcp_server_audio
+
+# Use with fastmcp client
+from fastmcp import Client
+
+async with Client("stdio://audio-processor") as client:
+    result = await client.call_tool("process_audio_file", {
+        "audio_path": "meeting.mp3",
+        "preset": "high_quality",
+        "output_format": "json"
+    })
+```
+
 ## Configuration Presets
 
 - **STANDARD**: Balanced quality and speed (base model)
@@ -57,7 +75,7 @@ with use_case.processor:
 ## Custom Configuration
 
 ```python
-from src.audio_processor import AudioProcessingConfig, DeviceType
+from sum_it_up_agent.audio_processor import AudioProcessingConfig, DeviceType
 
 config = AudioProcessingConfig(
     device=DeviceType.CUDA,
@@ -79,7 +97,7 @@ use_case = AudioProcessingUseCase.create_with_custom_processor(config)
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.11+
 - CUDA-capable GPU (recommended)
 - HuggingFace token for diarization
 
@@ -88,6 +106,15 @@ use_case = AudioProcessingUseCase.create_with_custom_processor(config)
 ```bash
 poetry install
 ```
+
+## Integration with Sum-It-Up Agent
+
+This audio processor is designed to work seamlessly with the Sum-It-Up Agent:
+
+- **MCP Server**: Run as independent service for distributed processing
+- **Agent Integration**: Automatically called by the main agent for audio processing
+- **Error Handling**: Graceful degradation when diarization fails
+- **Format Support**: Outputs in agent-compatible JSON format
 
 ## Examples
 

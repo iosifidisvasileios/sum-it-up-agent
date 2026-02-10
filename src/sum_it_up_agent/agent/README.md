@@ -1,15 +1,16 @@
 # Sum-It-Up Agent
 
-The main AI agent that orchestrates the entire audio processing pipeline using MCP servers.
+The main AI agent that orchestrates the entire audio processing pipeline using MCP servers and LLM-based prompt parsing.
 
 ## Overview
 
 The `AudioProcessingAgent` is the central component that:
-- Parses user prompts to extract intents and requirements
-- Validates input audio files
-- Orchestrates the processing pipeline using MCP servers
-- Handles communication channels (email, Slack, etc.)
-- Provides comprehensive error handling and logging
+- Uses advanced LLM-based parsing to understand natural language user requests
+- Extracts structured intents, communication channels, and processing requirements
+- Validates input audio files and orchestrates the processing pipeline using MCP servers
+- Handles multiple communication channels (email, Slack, Discord, Telegram, Jira)
+- Provides comprehensive error handling and logging with graceful degradation
+- Adapts processing strategy based on user intent and content characteristics
 
 ## Quick Start
 
@@ -26,18 +27,30 @@ python -m sum_it_up_agent.agent.main meeting.wav \
   --summarizer-preset openai_detailed \
   --verbose \
   --output-json results.json
+
+# Advanced natural language requests
+python -m sum_it_up_agent.agent.main client_call.mp3 \
+  "Transcribe this client meeting, create an executive summary with key decisions and action items, \
+  send to john@company.com with subject 'Client Meeting - Q4 Planning' and also post \
+  action items to our Jira board"
 ```
 
 ### Programmatic Usage
 
 ```python
 import asyncio
-from sum_it_up_agent import AudioProcessingAgent, AgentConfig
+from sum_it_up_agent.agent import AudioProcessingAgent, AgentConfig
 
 async def process_audio():
-    config = AgentConfig(max_file_size_mb=200)
+    # Configure with your preferred LLM provider
+    config = AgentConfig(
+        llm_provider="openai",  # or "anthropic", "ollama"
+        llm_model="gpt-4-turbo",
+        max_file_size_mb=200
+    )
     
     async with AudioProcessingAgent(config) as agent:
+        # Natural language request - the agent will parse and understand
         result = await agent.process_request(
             "meeting.mp3",
             "Please summarize and send action points to john@example.com"
@@ -45,6 +58,7 @@ async def process_audio():
         
         if result.success:
             print(f"Success! Summary saved to: {result.summary_file}")
+            print(f"Communication results: {result.communication_results}")
         else:
             print(f"Failed: {result.error_message}")
 
@@ -53,9 +67,9 @@ asyncio.run(process_audio())
 
 ## Features
 
-### LLM-Based Prompt Parsing
+### Advanced LLM-Based Prompt Parsing
 
-The agent uses a sophisticated LLM-based approach for intent detection, making it truly agentic. Instead of rigid regex patterns, it leverages configurable language models to understand natural language requests with high accuracy.
+The agent uses a sophisticated LLM-based approach for intent detection, making it truly intelligent. Instead of rigid regex patterns, it leverages configurable language models to understand natural language requests with contextual awareness.
 
 **Supported LLM Providers:**
 - **OpenAI**: GPT-3.5-turbo, GPT-4, GPT-4-turbo
@@ -69,30 +83,41 @@ The agent uses a sophisticated LLM-based approach for intent detection, making i
 4. **Fallback Protection**: If LLM fails, basic keyword analysis ensures core functionality
 
 **What the LLM detects:**
-- **Communication channels**: email, slack, discord, telegram
+- **Communication channels**: email, slack, discord, telegram, jira
 - **Summary types**: action_items, decisions, key_points, detailed, bullet_points, executive, standard
 - **Meeting types**: business, team, project, client, interview, training, conference, general
 - **Recipients**: email addresses and names from context
-- **Subject lines**: explicit or inferred
+- **Subject lines**: explicit or inferred from content
 - **Processing preferences**: transcription-only, urgency, language
 - **Custom requirements**: focus areas, inclusions, exclusions
 - **Custom instructions**: any remaining contextual information
 
 **Advantages over regex:**
-- **Natural language understanding**: Handles variations and context
-- **Ambiguity resolution**: Can interpret unclear requests
+- **Natural language understanding**: Handles variations, context, and complex requests
+- **Ambiguity resolution**: Can interpret unclear requests and make intelligent inferences
 - **Scalability**: Easy to add new intent types without code changes
 - **Context awareness**: Understands relationships between different parts of the prompt
 - **Robustness**: Handles typos, grammatical errors, and varied phrasing
 - **Provider flexibility**: Choose the best LLM for your needs and budget
 
-### Pipeline Steps
+### Multi-Channel Communication
+
+The agent supports multiple communication channels with intelligent parsing:
+- **Email**: SMTP with attachment support, multiple recipients
+- **Slack**: Webhook integration for channel posting
+- **Discord**: Bot integration for server channels
+- **Telegram**: Bot API for individual and group messages
+- **Jira**: REST API integration for issue creation and updates
+
+### Intelligent Pipeline Orchestration
 
 1. **File Validation**: Checks file existence, format, and size
-2. **Audio Processing**: Transcribes audio using the audio processor MCP
-3. **Topic Classification**: Classifies conversation topics (optional)
-4. **Summarization**: Generates summary using the summarizer MCP
-5. **Communication**: Sends results via specified channels
+2. **Intent Parsing**: LLM-based extraction of user requirements
+3. **Audio Processing**: Transcribes audio using the audio processor MCP
+4. **Topic Classification**: Classifies conversation topics (optional)
+5. **Summarization**: Generates summary using the summarizer MCP
+6. **Communication**: Sends results via specified channels
+7. **Error Recovery**: Graceful handling of failures with detailed reporting
 
 ### Error Handling
 
@@ -170,6 +195,8 @@ HUGGINGFACE_TOKEN=your_token_here
 MCP_TRANSPORT_AUDIO_PROCESSOR=stdio
 
 # Summarizer
+OPENAI_API_KEY=your_openai_key_here  # Reused for summarization
+ANTHROPIC_API_KEY=your_anthropic_key_here  # Reused for summarization
 MCP_TRANSPORT_SUMMARIZER=stdio
 
 # Communicator
@@ -178,6 +205,9 @@ SENDER_EMAIL_PASSWORD=your_app_password
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=465
 MCP_TRANSPORT_COMMUNICATOR=stdio
+
+# Optional: Custom endpoints
+OLLAMA_BASE_URL=http://localhost:11434  # For local Ollama
 ```
 
 ## Example Prompts
@@ -192,11 +222,14 @@ MCP_TRANSPORT_COMMUNICATOR=stdio
 - "Transcribe this client call, create a detailed summary with key points and decisions, and send to the team email list"
 - "Just transcribe this interview without summarizing, save as JSON"
 - "Process this training session and create bullet points of main topics, send via email with high priority"
+- "Extract action items from this meeting and add them to our Jira board under the 'Project X' project"
+- "Create an executive summary of this board meeting, focus on financial decisions, and email to the CFO and CEO"
 
 The LLM-based parser can understand nuanced requests like:
 - "Give me the highlights from this business meeting, focus on financial decisions, and email them to the CFO"
 - "I need a quick executive summary of this project update, skip the details, just send action items to the team"
 - "This is an urgent client call - extract any commitments made and send them immediately via email"
+- "Post the key decisions from this retrospective to our Slack channel and create Jira tickets for action items"
 
 ## Output
 
@@ -265,15 +298,21 @@ The agent handles various error scenarios gracefully:
 ### Adding New Communication Channels
 
 1. Add channel to `CommunicationChannel` enum in `models.py`
-2. Add patterns to `COMMUNICATION_PATTERNS` in `prompt_parser.py`
+2. Update the LLM prompt template in `prompt_parser.py` to recognize the new channel
 3. Implement handler in `_handle_communication()` in `orchestrator.py`
+4. Add MCP server integration if needed
 
 ### Adding New Summary Types
 
 1. Add type to `SummaryType` enum in `models.py`
-2. Add patterns to `SUMMARY_TYPE_PATTERNS` in `prompt_parser.py`
+2. Update the LLM prompt template to detect new summary types
 3. Update summarizer MCP to handle new types
+4. Add corresponding templates in the templates module
 
 ### Custom Prompt Patterns
 
-Extend the regex patterns in `prompt_parser.py` to handle new types of user requests or specialized terminology for your organization.
+The LLM-based approach makes customization much easier:
+- Update the system prompt in `prompt_parser.py` to handle new types of user requests
+- Add new examples to the prompt template to improve recognition
+- Modify the structured output schema to include new fields
+- No need to maintain complex regex patterns
