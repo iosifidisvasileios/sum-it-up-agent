@@ -91,7 +91,8 @@ class SummarizationResult:
     model_name: Optional[str] = None
     token_usage: Optional[Dict[str, int]] = None
     created_at: Optional[str] = None
-    
+    output_path: Optional[str] = None
+
     def is_successful(self) -> bool:
         """Check if summarization was successful."""
         return self.status == SummarizationStatus.COMPLETED and self.summary_data is not None
@@ -115,7 +116,8 @@ class SummarizationResult:
             "llm_provider": self.llm_provider.value if self.llm_provider else None,
             "model_name": self.model_name,
             "token_usage": self.token_usage,
-            "created_at": self.created_at
+            "created_at": self.created_at,
+            "output_path": self.output_path
         }
         
         with open(output_path, 'w', encoding='utf-8') as f:

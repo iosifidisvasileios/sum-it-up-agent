@@ -320,9 +320,17 @@ class AudioProcessingAgent:
 
             self.logger.info(response)
             if response and hasattr(response, 'structured_content') and response.structured_content:
+                output_path = None
+                # Check if output_path is directly in structured_content
                 if "output_path" in response.structured_content:
-                    result.summary_file = response.structured_content["output_path"]
-                    self.logger.info(f"output_path: {result.summary_file}")
+                    output_path = response.structured_content["output_path"]
+                # Check if output_path is in result field
+                elif "result" in response.structured_content and "output_path" in response.structured_content["result"]:
+                    output_path = response.structured_content["result"]["output_path"]
+
+                if output_path:
+                    result.summary_file = output_path
+                    self.logger.info(f"Summary file path: {result.summary_file}")
 
             self.logger.info("Summarization completed successfully")
             return True

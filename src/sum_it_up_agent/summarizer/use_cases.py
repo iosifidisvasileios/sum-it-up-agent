@@ -50,8 +50,9 @@ class SummarizationUseCase:
             
             # Save result if output directory specified
             if output_dir and result.is_successful():
-                self._save_result(result, output_dir)
-            
+                output_path = self._save_result(result, output_dir)
+                result.output_path = output_path
+
             self.logger.info(f"Summarization completed: {result.status.value}")
             return result
             
@@ -226,7 +227,7 @@ class SummarizationUseCase:
             self.logger.warning(f"Failed to extract metadata: {e}")
             return {"file_name": Path(file_path).name}
     
-    def _save_result(self, result: SummarizationResult, output_dir: str) -> None:
+    def _save_result(self, result: SummarizationResult, output_dir: str) -> str:
         """Save summarization result to file."""
         try:
             output_dir_path = Path(output_dir)
@@ -236,6 +237,7 @@ class SummarizationUseCase:
             output_file = output_dir_path / f"{file_name}_summary.json"
             
             result.save_to_file(str(output_file))
+            return str(output_file)
             
         except Exception as e:
             self.logger.error(f"Failed to save result: {e}")
