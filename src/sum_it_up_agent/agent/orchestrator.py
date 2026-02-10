@@ -129,7 +129,6 @@ class AudioProcessingAgent:
                 if not await self._generate_summary(result):
                     return result
 
-            return 0
             # Step 4: Communication
             if user_intent.communication_channels:
                 await self._handle_communication(result)
@@ -390,22 +389,28 @@ class AudioProcessingAgent:
         """Send summary via email."""
         if not result.user_intent.recipients:
             raise ValueError("No recipients specified for email")
-        
-        subject = result.user_intent.subject or self.config.default_email_subject
-        
-        response = await self.communicator_client.call_tool(
-            "send_summary_email",
-            {
-                "recipient": result.user_intent.recipients[0],  # TODO: Support multiple recipients
-                "subject": subject,
-                "summary_json_path": result.summary_file
-            }
-        )
+
+        # TODO: ADD SUBSJECT GENERATOR MCP SERVER (IF EMAIL)
+        subject = result.user_intent.meeting_type or self.config.default_email_subject
+
+        for recipient in result.user_intent.recipients:
+            if "@" not  in recipient:
+                self.logger.info(f"Invalid recipient: {recipient}")
+                continue
+
+            async with self.communicator_client as client:
+                await client.call_tool(
+                    "send_summary_email",
+                    {
+                        "recipient": recipient,
+                        "subject": subject,
+                        "summary_json_path": result.summary_file
+                    }
+                )
         
         return {
             "channel": "email",
             "success": True,
-            "result": response.content
         }
     
     async def cleanup(self):
