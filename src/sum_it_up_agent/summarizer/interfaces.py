@@ -43,6 +43,7 @@ class SummarizationRequest:
     meeting_type: str
     segments: List[TranscriptionSegment]
     metadata: Optional[Dict[str, Any]] = None
+    user_preferences: Optional[List[str]] = None
     
     def get_transcript_text(self) -> str:
         """Build transcript text from segments."""
@@ -50,7 +51,13 @@ class SummarizationRequest:
         for segment in self.segments:
             lines.append(f"[{segment.start_time:.2f}-{segment.end_time:.2f}] {segment.speaker}: {segment.text}")
         return "\n".join(lines)
-    
+
+    def get_user_preferences(self) -> str:
+        """Get user preferences."""
+        if not self.user_preferences:
+            return ""
+        return "### SPECIAL USER INSTRUCTIONS, PAY EXTRA ATTENTION TO THESE INSTRUCTIONS!\n\nUSER:" + "\n- ".join(self.user_preferences)
+
     def get_time_range(self) -> Dict[str, float]:
         """Get time range of the transcription."""
         if not self.segments:

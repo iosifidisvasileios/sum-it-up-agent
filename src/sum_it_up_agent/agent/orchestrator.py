@@ -21,6 +21,7 @@ from .models import (
     UserIntent
 )
 from .prompt_parser import PromptParser
+from .logger import get_agent_logger
 
 
 class AudioProcessingAgent:
@@ -33,9 +34,10 @@ class AudioProcessingAgent:
         self.prompt_parser = PromptParser(
             provider=self.config.llm_provider,
             model=self.config.llm_model,
-            base_url=self.config.llm_base_url
+            base_url=self.config.llm_base_url,
+            prompt_limit= self.config.prompt_limit
         )
-        self.logger = self._setup_logging()
+        self.logger = get_agent_logger("orchestrator")
         
         # MCP client sessions
         self.audio_processor_client: Optional[Client] = None
@@ -45,20 +47,6 @@ class AudioProcessingAgent:
         
         self._temp_files: List[str] = []
 
-    @staticmethod
-    def _setup_logging() -> logging.Logger:
-        """Setup logging configuration."""
-        logger = logging.getLogger(__name__)
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-            logger.setLevel(logging.INFO)
-        return logger
-    
     async def initialize(self):
         """Initialize MCP client connections."""
         try:
@@ -102,7 +90,7 @@ class AudioProcessingAgent:
         try:
             # Parse user intent
             self.logger.info("Parsing user prompt...")
-            user_intent = self.prompt_parser.parse_prompt(user_prompt)
+            user_intent = await self.prompt_parser.parse_prompt(user_prompt)
             self.logger.info(f"Parsed intent: {user_intent}")
             
             # Validate input file
@@ -126,20 +114,22 @@ class AudioProcessingAgent:
                 summarization=PipelineStep("summarization", "pending"),
                 communication=PipelineStep("communication", "pending")
             )
-            
+
             # Step 1: Audio Processing
+            self.logger.info(result)
             if not await self._process_audio(result):
                 return result
-            
+
             # Step 2: Topic Classification (optional)
             if user_intent.wants_summary:
                 await self._classify_topics(result)
-            
+
             # Step 3: Summarization
             if user_intent.wants_summary:
                 if not await self._generate_summary(result):
                     return result
-            
+
+            return 0
             # Step 4: Communication
             if user_intent.communication_channels:
                 await self._handle_communication(result)
@@ -220,27 +210,29 @@ class AudioProcessingAgent:
         
         try:
             self.logger.info("Starting audio processing...")
-            
+
             # Call audio processor MCP
             async with self.audio_processor_client as client:
                 response = await client.call_tool(
                     "process_audio_file",
                     {
                         "audio_path": result.input_file,
-                        "preset": result.user_intent.audio_preset,
-                        "output_format": result.user_intent.output_format,
+                        "preset": self.config.preset_audio,
+                        "output_format": self.config.output_format,
+                        "output_dir": self.config.output_dir,
                         "save_to_file": True
                     }
                 )
-            
+
             step.result = response
             step.status = "completed"
             step.completed_at = time.time()
-            
             # Store transcription file path
-            if response and "saved_path" in response:
-                result.transcription_file = response["saved_path"]
-            
+            if response and hasattr(response, 'structured_content') and response.structured_content:
+                if "saved_path" in response.structured_content:
+                    result.transcription_file = response.structured_content["saved_path"]
+                    self.logger.info(f"Transcription saved to: {result.transcription_file}")
+
             self.logger.info("Audio processing completed successfully")
             return True
             
@@ -270,14 +262,19 @@ class AudioProcessingAgent:
                     "classify_conversation_json",
                     {
                         "file_path": result.transcription_file,
-                        "preset": "standard"
+                        "preset": self.config.preset_topic_classifier,
+                        "export_dir": self.config.output_dir
                     }
                 )
-            
+
+            if response and hasattr(response, 'structured_content') and response.structured_content:
+                if "predicted_topic" in response.structured_content:
+                    result.user_intent.meeting_type = response.structured_content["predicted_topic"]
+                    self.logger.info(f"Predicted topic: {result.user_intent.meeting_type}")
+
             step.result = response
             step.status = "completed"
             step.completed_at = time.time()
-            
             self.logger.info("Topic classification completed")
             
         except Exception as e:
@@ -301,29 +298,32 @@ class AudioProcessingAgent:
                 return False
             
             self.logger.info("Starting summarization...")
-            
+
+            user_preferences = ["I want the output to be " + i.value for i in result.user_intent.summary_types]
+            user_preferences.extend(result.user_intent.custom_instructions)
             # Determine meeting type
-            meeting_type = result.user_intent.meeting_type or self.config.default_meeting_type
-            
             async with self.summarizer_client as client:
                 response = await client.call_tool(
                     "summarize",
                     {
                         "file_path": result.transcription_file,
-                        "meeting_type": meeting_type,
-                        "preset": result.user_intent.summarizer_preset,
-                        "output_dir": os.path.dirname(result.transcription_file)
+                        "meeting_type": result.user_intent.meeting_type,
+                        "preset": self.config.preset_summarizer,
+                        "user_preferences": user_preferences,
+                        "output_dir": self.config.output_dir
                     }
                 )
-            
+
             step.result = response
             step.status = "completed"
             step.completed_at = time.time()
-            
-            # Store summary file path
-            if response and "result" in response and "output_path" in response["result"]:
-                result.summary_file = response["result"]["output_path"]
-            
+
+            self.logger.info(response)
+            if response and hasattr(response, 'structured_content') and response.structured_content:
+                if "output_path" in response.structured_content:
+                    result.summary_file = response.structured_content["output_path"]
+                    self.logger.info(f"output_path: {result.summary_file}")
+
             self.logger.info("Summarization completed successfully")
             return True
             

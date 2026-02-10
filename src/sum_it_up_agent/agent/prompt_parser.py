@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
 
 from .models import UserIntent, CommunicationChannel, SummaryType
+from .logger import get_agent_logger
 
 
 class LLMProvider(ABC):
@@ -23,9 +24,10 @@ class LLMProvider(ABC):
 class OllamaProvider(LLMProvider):
     """Ollama local LLM provider."""
     
-    def __init__(self, model: str = "llama3.1", base_url: str = "http://localhost:11434"):
+    def __init__(self, model: str = "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF", base_url: str = "http://localhost:11434"):
         self.model = model
         self.base_url = base_url
+        self.logger = get_agent_logger("ollama_provider")
         # Ollama doesn't require API key for local use
     
     async def extract_intent(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
@@ -35,12 +37,15 @@ class OllamaProvider(LLMProvider):
         except ImportError:
             raise ImportError("requests package required. Install with: pip install requests")
         
+        self.logger.info(f"Extracting intent using Ollama model: {self.model}")
+        
         response = requests.post(
             f"{self.base_url}/api/generate",
             json={
                 "model": self.model,
                 "prompt": f"{system_prompt}\n\nExtract intent from this prompt: {prompt}",
                 "stream": False,
+                "keep_alive": 0,   # <-- unload immediately after response
                 "options": {
                     "temperature": 0.1,
                     "num_predict": 1000
@@ -49,9 +54,11 @@ class OllamaProvider(LLMProvider):
         )
         
         if response.status_code != 200:
+            self.logger.error(f"Ollama request failed with status {response.status_code}: {response.text}")
             raise RuntimeError(f"Ollama request failed: {response.text}")
         
         content = response.json()["response"].strip()
+        self.logger.debug(f"Ollama response: {content}")
         
         # Extract JSON from response
         if "```json" in content:
@@ -61,7 +68,11 @@ class OllamaProvider(LLMProvider):
         else:
             json_content = content
         
-        return json.loads(json_content)
+        try:
+            return json.loads(json_content)
+        except json.JSONDecodeError as e:
+            self.logger.error(f"Failed to parse JSON from Ollama response: {e}")
+            raise
 
 
 class PromptParser:
@@ -71,7 +82,8 @@ class PromptParser:
         self, 
         provider: str = "ollama",
         model: Optional[str] = "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL",
-        base_url: Optional[str] = "http://localhost:11434"
+        base_url: Optional[str] = "http://localhost:11434",
+        prompt_limit: int = 256
     ):
         """
         Initialize the LLM-based prompt parser.
@@ -82,6 +94,8 @@ class PromptParser:
             base_url: Base URL for Ollama or custom endpoints
         """
         self.provider = self._create_provider(provider, model, base_url)
+        self.prompt_limit = prompt_limit
+        self.logger = get_agent_logger("prompt_parser")
 
     @staticmethod
     def _create_provider(
@@ -99,7 +113,7 @@ class PromptParser:
         else:
             raise ValueError(f"Unsupported provider: {provider}. Use 'openai', 'anthropic', or 'ollama'")
     
-    def parse_prompt(self, prompt: str) -> UserIntent:
+    async def parse_prompt(self, prompt: str) -> UserIntent:
         """
         Parse user prompt and extract intent using configured LLM.
         
@@ -109,13 +123,16 @@ class PromptParser:
         Returns:
             UserIntent object with extracted requirements
         """
+        if len(prompt) > self.prompt_limit:
+            self.logger.warning(f"Prompt longer than {self.prompt_limit} chars, skipping")
+            return self._create_fallback_intent(prompt)
+
         try:
-            import asyncio
-            intent_json = asyncio.run(self._extract_intent_with_llm(prompt))
+            intent_json = await self._extract_intent_with_llm(prompt)
             return self._json_to_intent(intent_json)
         except Exception as e:
-            print(e)
-            return self._create_fallback_intent(prompt, str(e))
+            self.logger.error(f"Failed to parse prompt: {e}")
+            return self._create_fallback_intent(prompt)
     
     async def _extract_intent_with_llm(self, prompt: str) -> dict:
         """
@@ -153,8 +170,9 @@ Default wants_summary to true unless user explicitly says "transcription only" o
 Default wants_transcription to False unless user explicitly says "transcription" or "transcribe" or "no summary"."""
 
         return await self.provider.extract_intent(prompt, system_prompt)
-    
-    def _json_to_intent(self, intent_data: dict) -> UserIntent:
+
+    @staticmethod
+    def _json_to_intent(intent_data: dict) -> UserIntent:
         """
         Convert LLM JSON response to UserIntent object.
         
@@ -204,8 +222,9 @@ Default wants_transcription to False unless user explicitly says "transcription"
         intent.custom_instructions = intent_data.get("custom_instructions", [])
         
         return intent
-    
-    def _create_fallback_intent(self, prompt: str, error: str) -> UserIntent:
+
+    @staticmethod
+    def _create_fallback_intent(prompt: str) -> UserIntent:
         """
         Create a basic fallback intent when LLM fails.
         

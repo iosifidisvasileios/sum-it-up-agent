@@ -224,6 +224,8 @@ class AudioProcessorMCP:
             if save_to_file:
                 resp["saved_path"] = _predict_output_path(ap, output_format, output_dir)
 
+            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
+            server._cleanup_all()
             return resp
 
         @self.mcp.tool

@@ -184,7 +184,8 @@ class SummarizerMCP:
         def summarize(
             file_path: str,
             meeting_type: str,
-            preset: str = "openai_standard",
+            preset: str = "ollama_local",
+            user_preferences: list = None,
             config_overrides: dict[str, Any] = None,
             api_key: str = None,
             output_dir: str = None,   # if provided, saves *_summary.json via your UseCase
@@ -214,14 +215,18 @@ class SummarizerMCP:
                     result = use_case.summarize_transcription_file(
                         file_path=fp,
                         meeting_type=meeting_type,
+                        user_preferences=user_preferences,
                         output_dir=out_dir,
                     )
             else:
                 result = use_case.summarize_transcription_file(
                     file_path=fp,
                     meeting_type=meeting_type,
+                    user_preferences=user_preferences,
                     output_dir=out_dir,
                 )
+            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
+            server._cleanup_all()
 
             return {
                 "file_path": fp,

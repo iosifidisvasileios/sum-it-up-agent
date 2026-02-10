@@ -121,12 +121,13 @@ class Summarizer(ISummarizer):
             template = self._get_prompt_template(request.meeting_type)
             if not template:
                 raise ValueError(f"Unsupported meeting type: {request.meeting_type}")
-            
+
             # Build transcript text
             transcript_text = request.get_transcript_text()
-            
+            user_preferences_text = request.get_user_preferences()
+
             # Generate prompt
-            prompt = template.render(transcript_text)
+            prompt = template.render(transcript_text + user_preferences_text)
             
             # Call LLM
             summary_data = self._call_llm(prompt)
@@ -359,6 +360,7 @@ class Summarizer(ISummarizer):
             "model": self._client["model"],
             "prompt": prompt,
             "stream": False,
+            "keep_alive": 0,  # <-- unload immediately after response
             "options": {
                 "temperature": self.config.temperature,
                 "num_predict": self.config.max_tokens or 8000

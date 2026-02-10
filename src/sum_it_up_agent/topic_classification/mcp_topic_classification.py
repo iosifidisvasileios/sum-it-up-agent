@@ -190,12 +190,12 @@ class TopicClassifierMCP:
         @self.mcp.tool
         def classify_conversation_json(
             file_path: str,
-            preset: str = "standard",
+            preset: str = "high_accuracy",
             config_overrides: dict[str, Any] = None,
-            export: bool = False,
+            export: bool = True,
             export_format: str = "json",            # json|csv|txt
             export_dir: str = None,
-            include_analysis: bool = False,
+            include_analysis: bool = True,
             ctx: Context = None,
         ) -> dict[str, Any]:
             """
@@ -222,6 +222,7 @@ class TopicClassifierMCP:
                 "file_path": fp,
                 "preset": preset_enum.value,
                 "result": _jsonable(result),
+                "predicted_topic": result.predicted_topic
             }
 
             if export:
@@ -232,7 +233,8 @@ class TopicClassifierMCP:
                     format_type=export_format,
                     include_analysis=include_analysis,
                 )
-                resp["export_path"] = out_path
+            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
+            server._cleanup_all()
 
             return resp
 

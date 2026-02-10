@@ -25,6 +25,7 @@ class SummarizationUseCase:
         self,
         file_path: str,
         meeting_type: str,
+        user_preferences: list = None,
         output_dir: Optional[str] = None
     ) -> SummarizationResult:
         """Summarize a transcription file."""
@@ -40,7 +41,8 @@ class SummarizationUseCase:
                 file_path=file_path,
                 meeting_type=meeting_type,
                 segments=segments,
-                metadata=metadata
+                metadata=metadata,
+                user_preferences=user_preferences
             )
             
             # Summarize

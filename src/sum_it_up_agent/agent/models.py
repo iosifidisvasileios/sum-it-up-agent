@@ -45,12 +45,7 @@ class UserIntent:
     # Summary customization
     summary_types: List[SummaryType] = field(default_factory=list)
 
-    # Processing preferences
-    audio_preset: str = "high_quality"
-    summarizer_preset: str = "ollama_local"
-    output_format: str = "json"
-    meeting_type: Optional[str] = None
-
+    meeting_type: str = "team status sync / standup"
     custom_instructions: List = None
 
 
@@ -62,20 +57,22 @@ class AgentConfig:
         ".wav", ".mp3", ".m4a", ".flac", ".ogg", ".aac", ".wma"
     ])
     max_file_size_mb: int = 1_024
+    prompt_limit: int = 256
     temp_dir: Optional[str] = None
     
     # MCP server settings
-    audio_processor_mcp_url: str = os.getenv("MCP_HOST_AUDIO_PROCESSOR") + ":" + os.getenv("MCP_PORT_AUDIO_PROCESSOR") + os.getenv("MCP_PATH_AUDIO_PROCESSOR")
-    topic_classifier_mcp_url: str = os.getenv("MCP_HOST_TOPIC_CLASSIFIER") + ":" + os.getenv("MCP_PORT_TOPIC_CLASSIFIER") + os.getenv("MCP_PATH_TOPIC_CLASSIFIER")
-    summarizer_mcp_url: str = os.getenv("MCP_HOST_SUMMARIZER") + ":" + os.getenv("MCP_PORT_SUMMARIZER") + os.getenv("MCP_PATH_SUMMARIZER")
-    communicator_mcp_url: str = os.getenv("MCP_HOST_COMMUNICATOR") + ":" + os.getenv("MCP_PORT_COMMUNICATOR") + os.getenv("MCP_PATH_COMMUNICATOR")
+    audio_processor_mcp_url: str = f"http://{os.getenv('MCP_HOST_AUDIO_PROCESSOR')}:{os.getenv('MCP_PORT_AUDIO_PROCESSOR')}{os.getenv('MCP_PATH_AUDIO_PROCESSOR')}"
+    topic_classifier_mcp_url: str = f"http://{os.getenv('MCP_HOST_TOPIC_CLASSIFIER')}:{os.getenv('MCP_PORT_TOPIC_CLASSIFIER')}{os.getenv('MCP_PATH_TOPIC_CLASSIFIER')}"
+    summarizer_mcp_url: str = f"http://{os.getenv('MCP_HOST_SUMMARIZER')}:{os.getenv('MCP_PORT_SUMMARIZER')}{os.getenv('MCP_PATH_SUMMARIZER')}"
+    communicator_mcp_url: str = f"http://{os.getenv('MCP_HOST_COMMUNICATOR')}:{os.getenv('MCP_PORT_COMMUNICATOR')}{os.getenv('MCP_PATH_COMMUNICATOR')}"
     
     # Processing settings
-    default_audio_preset: str = "high_quality"
-    default_topic_classifier_preset: str = "high_accuracy"
-    default_summarizer_preset: str = "ollama_local"
-    default_meeting_type: str = "team status sync / standup"
-    
+    preset_audio: str = "high_quality"
+    preset_topic_classifier: str = "high_accuracy"
+    preset_summarizer: str = "ollama_local"
+    output_format: str = "json"
+    output_dir: str = "/home/vios/PycharmProjects/sum-it-up-agent/examples/ollama_summaries/"
+
     # Communication settings
     default_email_subject: str = "team status sync / standup"
     max_recipients: int = 50
