@@ -23,18 +23,31 @@
 ## MCP-Based Architecture
 
 ```
-Agentic AI Agent
-├── Audio Processor MCP Server
-├── Topic Classification MCP Server  
-├── Summarizer MCP Server
-└── Communicator MCP Server
+Sum-It-Up App (Singleton)
+├── Audio Processing Agent (Orchestrator)
+│   ├── Audio Processor MCP Server (Port 9001)
+│   ├── Topic Classification MCP Server (Port 9002)
+│   ├── Summarizer MCP Server (Port 9000)
+│   └── Communicator MCP Server (Port 9003)
+└── Interactive Interface & Server Management
 ```
 
-### Why MCP Changes Everything
+### Why This Architecture is Revolutionary
 
-- **True Modularity**: Each component is an independent server that can be developed, tested, and deployed separately
-- **Unlimited Extensibility**: Add new capabilities by creating new MCP servers without touching existing code
-- **Universal Interoperability**: Standardized protocol works across languages, platforms, and cloud providers
+- **Singleton Management**: The app manages all MCP servers and the agent as a single unit
+- **Environment Isolation**: Each server gets only the environment variables it needs
+- **Independent Lifecycle**: Servers persist even when agent instances are destroyed
+- **Clean Separation**: App handles infrastructure, agent handles processing pipeline
+- **Graceful Scaling**: Start/stop all servers together with proper health checks
+- **Agent Orchestration**: The agent still orchestrates the entire processing pipeline
+
+### Key Benefits
+
+- **True Modularity**: Each component is an independent server with clean boundaries
+- **Unlimited Extensibility**: Add new MCP servers without touching existing code
+- **Universal Interoperability**: Standardized protocol works across all platforms
+- **Independent Scaling**: Scale individual components based on their specific needs
+- **Production Ready**: Proper error handling, health checks, and graceful shutdown
 - **Independent Scaling**: Scale individual components based on their specific resource needs
 - **Isolated Testing**: Test each component in complete isolation with mocking and stubbing
 
@@ -108,7 +121,39 @@ cp .env.example .env
 # Edit .env with your API keys and MCP server settings
 ```
 
-### Basic Agent Usage
+### Quick Start with Sum-It-Up App
+
+The easiest way to get started is using the **Sum-It-Up App**, which automatically boots all MCP servers and provides an interactive interface:
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/sum-it-up-agent.git
+cd sum-it-up-agent
+
+# Install dependencies
+poetry install
+
+# Set up environment variables (copy .env.example to .env and configure)
+cp .env.example .env
+# Edit .env with your API keys and MCP server settings
+
+# Run the interactive app
+python -m src.sum_it_up_agent
+```
+
+### What the App Does
+
+The **Sum-It-Up App** is a **singleton application** that:
+
+1. **Boots MCP Servers**: Automatically starts all 4 MCP servers with clean environment isolation
+2. **Health Checks**: Waits for servers to be ready before processing
+3. **Interactive Interface**: Type commands naturally to process audio
+4. **Graceful Shutdown**: Properly stops all servers on exit
+5. **Environment Security**: Each server gets only the environment variables it needs
+
+### Advanced Usage
+
+For programmatic access, you can still use the agent directly:
 
 ```python
 import asyncio
@@ -245,17 +290,36 @@ with summary_use_case.summarizer:
 
 ### MCP Server Usage
 
-```bash
-# Start MCP servers (in separate terminals)
-python src/audio_processor/mcp_server_audio.py
-python src/topic_classification/mcp_topic_classification.py  
-python src/summarizer/mcp_summarizer.py
-python src/communicator/mcp_communicator.py
+**Recommended: Use the Sum-It-Up App**
 
-# Use with Agentic AI Agent
+The app automatically boots and manages all MCP servers for you:
+
+```bash
+# Run the app - it handles everything!
+python -m src.sum_it_up_agent
+```
+
+**Manual MCP Server Usage (Advanced)**
+
+If you need to run servers manually for development:
+
+```bash
+# Start MCP servers individually (in separate terminals)
+python -m src.sum_it_up_agent.audio_processor.mcp_server_audio
+python -m src.sum_it_up_agent.topic_classification.mcp_topic_classification  
+python -m src.sum_it_up_agent.summarizer.mcp_summarizer
+python -m src.sum_it_up_agent.communicator.mcp_communicator
+```
+
+**Direct MCP Client Usage**
+
+For direct MCP server communication:
+
+```python
 from fastmcp import Client
 
-async with Client("http://localhost:9000/mcp_audio_processor") as client:
+# Connect to individual MCP servers
+async with Client("http://127.0.0.1:9001/audio_proc") as client:
     result = await client.call_tool("process_audio_file", {
         "audio_path": "meeting.mp3",
         "preset": "high_quality",
