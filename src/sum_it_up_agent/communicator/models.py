@@ -11,6 +11,7 @@ class ChannelType(str, Enum):
     SLACK = "slack"
     TEAMS = "teams"
     JIRA  = "jira"
+    PDF   = "pdf"
 
 
 @dataclass(frozen=True)

@@ -16,6 +16,7 @@ class CommunicationChannel(Enum):
     SLACK = "slack"
     DISCORD = "discord"
     TELEGRAM = "telegram"
+    PDF = "pdf"
     JIRA = "jira"
 
 

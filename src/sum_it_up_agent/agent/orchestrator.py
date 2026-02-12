@@ -370,6 +370,9 @@ class AudioProcessingAgent:
                     if channel == CommunicationChannel.EMAIL:
                         email_result = await self._send_email(result, correlation_id=correlation_id)
                         communication_results.append(email_result)
+                    elif channel == CommunicationChannel.PDF:
+                        pdf_result = await self._export_pdf(result, correlation_id=correlation_id)
+                        communication_results.append(pdf_result)
                     # Add other channels as they're implemented
                     
                 except Exception as e:
@@ -421,6 +424,29 @@ class AudioProcessingAgent:
             "channel": "email",
             "success": True,
         }
+    
+    async def _export_pdf(self, result: PipelineResult, *, correlation_id: str) -> Dict[str, Any]:
+        """Export summary as PDF."""
+        if not result.summary_file:
+            raise ValueError("No summary file available for PDF export")
+
+        subject = result.user_intent.meeting_type or self.config.default_email_subject
+
+        async with self.communicator_client as client:
+            response = await client.call_tool(
+                "export_summary_pdf",
+                {
+                    "subject": subject,
+                    "summary_json_path": result.summary_file,
+                    "uuid": correlation_id,
+                }
+            )
+            # response contains output_path; return it
+            return {
+                "channel": "pdf",
+                "output_path": response.structured_content.get("output_path"),
+                "success": True,
+            }
     
     async def cleanup(self):
         """Cleanup resources and temporary files."""

@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional
 from .models import ChannelType
 from .interfaces import ICommunicator
 from .email_communicator import EmailCommunicator
+from .pdf_exporter import PDFExporter
 
 
 @dataclass(frozen=True)
@@ -29,5 +30,8 @@ class CommunicatorFactory:
                 sender_password=settings.get("sender_password"),
                 logger=logger,
             )
+
+        if config.channel == ChannelType.PDF:
+            return PDFExporter(logger=logger)
 
         raise ValueError(f"Unsupported channel: {config.channel}")

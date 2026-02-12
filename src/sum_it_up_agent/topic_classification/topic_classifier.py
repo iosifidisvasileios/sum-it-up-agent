@@ -12,8 +12,7 @@ from .interfaces import (
     TopicClassificationConfig,
     ClassificationResult,
     ConversationFormat,
-    EnsembleMethod,
-    DeviceType
+    EnsembleMethod
 )
 
 

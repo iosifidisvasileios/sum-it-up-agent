@@ -21,6 +21,7 @@ from sum_it_up_agent.observability.logger import (
 # Adjust imports to your project layout if needed
 from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
 from sum_it_up_agent.communicator.models import ChannelType, CommunicationRequest
+from sum_it_up_agent.communicator.pdf_exporter import PDFExporter
 
 configure_logging()
 logger = get_logger("sum_it_up_agent.communicator.mcp")
@@ -58,6 +59,7 @@ class CommunicatorMCP:
 
     Tools:
       - send_summary_email: send summary JSON (markdown) to recipient as HTML email.
+      - export_summary_pdf: export summary JSON (markdown) as a PDF file.
       - render_email_html: render summary markdown to HTML (no sending).
       - cleanup: cleanup cached communicators.
 
@@ -66,6 +68,9 @@ class CommunicatorMCP:
       - SENDER_EMAIL_PASSWORD (required unless passed via settings)
       - SMTP_SERVER (optional; defaults to smtp.gmail.com)
       - SMTP_PORT (optional; defaults to 465)
+
+    PDF export:
+      - Requires WeasyPrint. Install with: pip install weasyprint
     """
 
     def __init__(
@@ -215,6 +220,52 @@ class CommunicatorMCP:
 
                 logger.info(
                     "tool_result send_summary_email",
+                )
+
+                return _jsonable(result)
+
+        @self.mcp.tool
+        def export_summary_pdf(
+            subject: str,
+            summary_json_path: str,
+            settings: dict[str, Any] = None,
+            uuid: str = None,
+            ctx: Context = None,
+        ) -> dict[str, Any]:
+            """
+            Export the summary JSON (summary_data.response markdown) as a PDF.
+            Returns the absolute path to the generated PDF.
+
+            settings (optional, pdf):
+              - No settings required for PDF export.
+            """
+            server: CommunicatorMCP = ctx.lifespan_context["server"]
+
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                logger.info(
+                    "tool_call export_summary_pdf subject=%s summary_json_path=%s",
+                    subject,
+                    summary_json_path,
+                )
+
+                comm, lock = server._get_or_create(ChannelType.PDF, settings)
+
+                req = CommunicationRequest(
+                    recipient="",  # Not used for PDF
+                    subject=subject,
+                    path=summary_json_path,
+                    metadata=None,
+                )
+
+                if server._serialize:
+                    with lock:
+                        result = comm.send(req)
+                else:
+                    result = comm.send(req)
+
+                logger.info(
+                    "tool_result export_summary_pdf",
                 )
 
                 return _jsonable(result)

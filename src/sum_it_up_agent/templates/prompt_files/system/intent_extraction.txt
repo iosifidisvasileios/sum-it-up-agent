@@ -11,7 +11,7 @@ Return a JSON object with this exact structure:
 {
     "wants_summary": True/False,
     "wants_transcription": True/False,
-    "communication_channels": ["email", "slack", "jira", etc.],
+    "communication_channels": ["email", "pdf", "slack", "jira", etc.],
     "recipients": ["email@example.com", "Bill_Slack"],
     "subject": "Email subject or null",
     "summary_types": ["action_items", "decisions", etc.],
