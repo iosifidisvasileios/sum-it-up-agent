@@ -271,6 +271,72 @@ All LLM prompts are stored as editable `.txt` files under `src/sum_it_up_agent/t
 
 You can edit any `.txt` file to change behavior without touching code. The system loads prompts at runtime via `importlib.resources`.
 
+## PromptParser Evaluation Harness
+
+The project includes a comprehensive evaluation harness for the `PromptParser` component to benchmark accuracy and latency across different LLM models and system prompts.
+
+### Features
+
+- **Dataset-Driven Testing**: Curated prompts with expected `UserIntent` fields (channels, summary types, recipients, custom instructions)
+- **Multiple Models**: Test against any Ollama model (e.g., Mistral, Llama, Gemma)
+- **System Prompt Variants**: Compare default vs strict JSON system prompts
+- **Fair Latency Mode**: Optional cold-start benchmarking with model unload and cooldown
+- **Aggregated Reporting**: Markdown tables with pass/fail rates and latency percentiles (avg/p50/p95)
+- **Enum Validation**: Ensures parsed channels and types match `CommunicationChannel` and `SummaryType` enums
+- **Recipient Sanity Checks**: Validates email format where expected
+
+### Quick Start
+
+Run the full evaluation matrix:
+
+```bash
+python -m unittest -v tests.test_prompt_parser_eval
+```
+
+#### Environment Controls
+
+```bash
+# Models to test (comma-separated)
+PROMPT_EVAL_MODELS="hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL,hf.co/unsloth/gemma-3-27b-it-GGUF:Q2_K_XL"
+
+# System prompt variants to test
+PROMPT_EVAL_SYSTEM_PROMPTS="default,strict_json"
+
+# Enable fair-latency (cold-start) mode
+PROMPT_EVAL_FAIR_LATENCY=1
+
+# Cooldown between cases (ms) to let Ollama release VRAM
+PROMPT_EVAL_COOLDOWN_MS=500
+
+# Write report to file
+PROMPT_EVAL_REPORT_PATH=prompt_parser_eval_report.md
+```
+
+### Example Script
+
+For quick manual testing:
+
+```bash
+python examples/prompt_parser_example.py
+```
+
+### Report Output
+
+The evaluation prints a Markdown report with four tables:
+- Summary by model and system prompt
+- Summary by model (aggregated across prompts)
+- Summary by system prompt (aggregated across models)
+- Summary by test case (hardest prompts)
+
+Example excerpt:
+
+```markdown
+| model | system_prompt | total | passed | failed | pass_rate | latency_avg_ms | latency_p50_ms | latency_p95_ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL | default | 12 | 12 | 0 | 100.0% | 621.3 | 598.1 | 789.4 |
+| hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL | strict_json | 12 | 11 | 1 | 91.7% | 587.2 | 562.0 | 712.5 |
+```
+
 ### Agent Components
 - **Main Agent**: `src/sum_it_up_agent/agent/orchestrator.py`
 - **Prompt Parser**: LLM-based intent detection and parsing
@@ -289,6 +355,8 @@ You can edit any `.txt` file to change behavior without touching code. The syste
 - **MCP Integration**: `examples/mcp_audio_testing.ipynb`
 - **Summarization**: `examples/summarizer_examples.py`
 - **Classification**: `examples/topic_classification_examples.py`
+- **PromptParser**: `examples/prompt_parser_example.py`
+- **PromptParser Evaluation**: `tests/test_prompt_parser_eval.py`
 
 ## Roadmap
 
