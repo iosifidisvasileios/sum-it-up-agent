@@ -59,6 +59,7 @@ Sum-It-Up App (Singleton)
 - **Confidence Scoring**: Reliable classification with uncertainty quantification
 
 ### Intelligent Summarization
+- **Document-as-Implementation Prompts**: All LLM prompts are editable `.txt` files—no code changes required
 - **Template-Based**: Structured summaries tailored to meeting types
 - **Multiple LLM Providers**: OpenAI GPT-4, Anthropic Claude, local Ollama models
 - **Custom Instructions**: User-aware summarization that adapts to your specific needs
@@ -242,10 +243,33 @@ src/
 │   ├── audio_processor/    # Audio processing with diarization
 │   ├── topic_classification/ # Zero-shot topic classification  
 │   ├── summarizer/         # LLM-powered summarization
-│   ├── templates/         # Structured prompt templates
+│   ├── templates/         # Structured prompt templates (file-backed)
+│   │   └── prompt_files/  # All LLM prompts as editable .txt files
 │   └── communicator/      # Multi-channel communication
 └── examples/              # Usage examples and tutorials
 ```
+
+### Prompt Customization (Document-as-Implementation)
+
+All LLM prompts are stored as editable `.txt` files under `src/sum_it_up_agent/templates/prompt_files/`:
+
+- **Meeting prompts**: `prompt_files/meeting/*.txt`
+  - `team_status_sync_standup.txt`
+  - `planning_coordination_meeting.txt`
+  - `decision_making_meeting.txt`
+  - `brainstorming_session.txt`
+  - `retrospective_postmortem.txt`
+  - `training_onboarding.txt`
+  - `interview.txt`
+  - `customer_call_sales_demo.txt`
+  - `support_incident_call.txt`
+  - `other.txt`
+
+- **System prompts**: `prompt_files/system/*.txt`
+  - `intent_extraction.txt` – Used by the agent to parse user requests
+  - `structured_json_assistant.txt` – Used by OpenAI/Azure summarizers
+
+You can edit any `.txt` file to change behavior without touching code. The system loads prompts at runtime via `importlib.resources`.
 
 ### Agent Components
 - **Main Agent**: `src/sum_it_up_agent/agent/orchestrator.py`
@@ -286,7 +310,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ### Areas for Contribution
 - **New MCP Servers**: Add new capabilities via MCP
 - **Language Support**: Add transcription for new languages
-- **Templates**: Create new meeting type templates
+- **Templates**: Create new meeting type templates by adding `.txt` files under `src/sum_it_up_agent/templates/prompt_files/meeting/`
 - **Testing**: Improve test coverage and add integration tests
 - **Documentation**: Improve docs and create tutorials
 
