@@ -6,24 +6,12 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor
 
+import importlib.resources
+
 # LLM Provider imports
-try:
-    import openai
-    OPENAI_AVAILABLE = True
-except ImportError:
-    OPENAI_AVAILABLE = False
-
-try:
-    import anthropic
-    ANTHROPIC_AVAILABLE = True
-except ImportError:
-    ANTHROPIC_AVAILABLE = False
-
-try:
-    import requests
-    REQUESTS_AVAILABLE = True
-except ImportError:
-    REQUESTS_AVAILABLE = False
+OPENAI_AVAILABLE = False
+ANTHROPIC_AVAILABLE = False
+REQUESTS_AVAILABLE = True
 
 from .interfaces import (
     ISummarizer,
@@ -52,42 +40,19 @@ class Summarizer(ISummarizer):
             if self.config.llm_provider == LLMProvider.OPENAI:
                 if not OPENAI_AVAILABLE:
                     raise ImportError("OpenAI library not installed")
-                
-                client_kwargs = {"api_key": self.config.api_key}
-                if self.config.api_base:
-                    client_kwargs["base_url"] = self.config.api_base
-                
-                self._client = openai.OpenAI(**client_kwargs)
-                self.logger.info("OpenAI client initialized")
-            
+
             elif self.config.llm_provider == LLMProvider.ANTHROPIC:
                 if not ANTHROPIC_AVAILABLE:
                     raise ImportError("Anthropic library not installed")
-                
-                self._client = anthropic.Anthropic(api_key=self.config.api_key)
-                self.logger.info("Anthropic client initialized")
             
             elif self.config.llm_provider == LLMProvider.AZURE_OPENAI:
                 if not OPENAI_AVAILABLE:
                     raise ImportError("OpenAI library not installed")
                 
-                self._client = openai.AzureOpenAI(
-                    api_key=self.config.api_key,
-                    azure_endpoint=self.config.api_base,
-                    api_version=self.config.azure_api_version or "2024-02-15-preview"
-                )
-                self.logger.info("Azure OpenAI client initialized")
-            
             elif self.config.llm_provider == LLMProvider.HUGGINGFACE:
                 if not REQUESTS_AVAILABLE:
                     raise ImportError("Requests library not installed")
-                
-                self._client = {
-                    "base_url": self.config.api_base or "https://api-inference.huggingface.co",
-                    "model": self.config.huggingface_model or "mistralai/Mixtral-8x7B-Instruct-v0.1"
-                }
-                self.logger.info("HuggingFace client initialized")
-            
+
             elif self.config.llm_provider == LLMProvider.OLLAMA:
                 if not REQUESTS_AVAILABLE:
                     raise ImportError("Requests library not installed")
@@ -221,16 +186,16 @@ class Summarizer(ISummarizer):
         """Call LLM with prompt and return response."""
         try:
             if self.config.llm_provider == LLMProvider.OPENAI:
-                return self._call_openai(prompt)
-            
+                return {}
+
             elif self.config.llm_provider == LLMProvider.ANTHROPIC:
-                return self._call_anthropic(prompt)
+                return {}
             
             elif self.config.llm_provider == LLMProvider.AZURE_OPENAI:
-                return self._call_azure_openai(prompt)
+                return {}
             
             elif self.config.llm_provider == LLMProvider.HUGGINGFACE:
-                return self._call_huggingface(prompt)
+                return {}
             
             elif self.config.llm_provider == LLMProvider.OLLAMA:
                 return self._call_ollama(prompt)
@@ -241,119 +206,7 @@ class Summarizer(ISummarizer):
         except Exception as e:
             self.logger.error(f"LLM call failed: {e}")
             raise
-    
-    def _call_openai(self, prompt: str) -> Dict[str, Any]:
-        """Call OpenAI API."""
-        response = self._client.chat.completions.create(
-            model=self.config.model_name,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that provides structured JSON responses."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=self.config.temperature,
-            max_tokens=self.config.max_tokens
-        )
-        
-        content = response.choices[0].message.content
-        
-        # Parse JSON response
-        try:
-            return json.loads(content)
-        except json.JSONDecodeError:
-            # Try to extract JSON from response
-            import re
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            else:
-                raise ValueError("Could not parse JSON from OpenAI response")
-    
-    def _call_anthropic(self, prompt: str) -> Dict[str, Any]:
-        """Call Anthropic API."""
-        response = self._client.messages.create(
-            model=self.config.model_name,
-            max_tokens=self.config.max_tokens or 4000,
-            temperature=self.config.temperature,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-        
-        content = response.content[0].text
-        
-        # Parse JSON response
-        try:
-            return json.loads(content)
-        except json.JSONDecodeError:
-            import re
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            else:
-                raise ValueError("Could not parse JSON from Anthropic response")
-    
-    def _call_azure_openai(self, prompt: str) -> Dict[str, Any]:
-        """Call Azure OpenAI API."""
-        response = self._client.chat.completions.create(
-            model=self.config.azure_deployment or self.config.model_name,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that provides structured JSON responses."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=self.config.temperature,
-            max_tokens=self.config.max_tokens
-        )
-        
-        content = response.choices[0].message.content
-        
-        try:
-            return json.loads(content)
-        except json.JSONDecodeError:
-            import re
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            else:
-                raise ValueError("Could not parse JSON from Azure OpenAI response")
-    
-    def _call_huggingface(self, prompt: str) -> Dict[str, Any]:
-        """Call HuggingFace API."""
-        headers = {"Authorization": f"Bearer {self.config.api_key}"}
-        
-        data = {
-            "inputs": prompt,
-            "parameters": {
-                "temperature": self.config.temperature,
-                "max_new_tokens": self.config.max_tokens or 4000,
-                "return_full_text": False
-            }
-        }
-        
-        response = requests.post(
-            f"{self._client['base_url']}/models/{self._client['model']}",
-            headers=headers,
-            json=data,
-            timeout=self.config.timeout
-        )
-        
-        response.raise_for_status()
-        result = response.json()
-        
-        if isinstance(result, list) and len(result) > 0:
-            content = result[0].get("generated_text", "")
-        else:
-            content = str(result)
-        
-        try:
-            return json.loads(content)
-        except json.JSONDecodeError:
-            import re
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            else:
-                raise ValueError("Could not parse JSON from HuggingFace response")
-    
+
     def _call_ollama(self, prompt: str) -> Dict[str, Any]:
         """Call Ollama API."""
         data = {
@@ -381,8 +234,9 @@ class Summarizer(ISummarizer):
             return result
         except json.JSONDecodeError:
             raise ValueError("Could not parse JSON from Ollama response")
-    
-    def _validate_json_output(self, data: Any) -> Dict[str, Any]:
+
+    @staticmethod
+    def _validate_json_output(data: Any) -> Dict[str, Any]:
         """Validate and clean JSON output."""
         if isinstance(data, dict):
             return data

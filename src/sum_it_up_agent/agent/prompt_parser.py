@@ -7,6 +7,8 @@ import os
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
 
+import importlib.resources
+
 from .models import UserIntent, CommunicationChannel, SummaryType
 from .logger import get_agent_logger
 
@@ -144,30 +146,11 @@ class PromptParser:
         Returns:
             Dictionary containing extracted intent
         """
-        system_prompt = """You are an expert at analyzing user requests for audio processing and summarization tasks. 
-Extract the user's intent and return a structured JSON response.
-
-Analyze the user's prompt for:
-1. Communication channels (email, slack, discord, telegram, jira)
-2. Summary types (action_items, decisions, key_points, detailed, bullet_points, executive, standard)
-3. Recipients (email addresses or names)
-4. Custom instructions (tone, voice/persona, audience, depth, don’ts)
-
-Return a JSON object with this exact structure:
-{
-    "wants_summary": True/False,
-    "wants_transcription": True/False,
-    "communication_channels": ["email", "slack", "jira", etc.],
-    "recipients": ["email@example.com", "Bill_Slack"],
-    "subject": "Email subject or null",
-    "summary_types": ["action_items", "decisions", etc.],
-    "custom_instructions": ["dont use emojis", "be direct", "keep it professional"]
-}
-
-Be precise and only include values that are clearly indicated in the prompt. 
-If something is not mentioned, use null or empty arrays. 
-Default wants_summary to true unless user explicitly says "transcription only" or "no summary".
-Default wants_transcription to False unless user explicitly says "transcription" or "transcribe" or "no summary"."""
+        system_prompt = (
+            importlib.resources.files("sum_it_up_agent.templates")
+            .joinpath("prompt_files/system/intent_extraction.txt")
+            .read_text(encoding="utf-8")
+        )
 
         return await self.provider.extract_intent(prompt, system_prompt)
 
