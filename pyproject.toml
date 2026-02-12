@@ -5,6 +5,9 @@ description = ""
 authors = ["vios <billiosifidis@gmail.com>"]
 readme = "README.md"
 packages = [{include = "sum_it_up_agent", from = "src"}]
+include = [
+    "src/sum_it_up_agent/templates/prompt_files/**/*.txt",
+]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.15"
