@@ -11,7 +11,12 @@ from typing import Any, Tuple, List
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-from sum_it_up_agent.observability.logger import configure_logging, get_logger
+from sum_it_up_agent.observability.logger import (
+    bind_request_id,
+    configure_logging,
+    get_logger,
+    new_request_id,
+)
 
 # Adjust imports to your project layout if needed
 from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
@@ -171,6 +176,7 @@ class CommunicatorMCP:
             subject: str,
             summary_json_path: str,
             settings: dict[str, Any] = None,
+            uuid: str = None,
             ctx: Context = None,
         ) -> dict[str, Any]:
             """
@@ -183,23 +189,35 @@ class CommunicatorMCP:
             """
             server: CommunicatorMCP = ctx.lifespan_context["server"]
 
-            comm, lock = server._get_or_create(ChannelType.EMAIL, settings)
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                logger.info(
+                    "tool_call send_summary_email recipient=%s subject=%s summary_json_path=%s",
+                    recipient,
+                    subject,
+                    summary_json_path,
+                )
 
-            req = CommunicationRequest(
-                recipient=recipient,
-                subject=subject,
-                path=summary_json_path,
-                metadata=None,
-            )
+                comm, lock = server._get_or_create(ChannelType.EMAIL, settings)
 
-            if server._serialize:
-                with lock:
+                req = CommunicationRequest(
+                    recipient=recipient,
+                    subject=subject,
+                    path=summary_json_path,
+                    metadata=None,
+                )
+
+                if server._serialize:
+                    with lock:
+                        result = comm.send(req)
+                else:
                     result = comm.send(req)
-            else:
-                result = comm.send(req)
 
-            # Never echo secrets back; only operational metadata
-            return _jsonable(result)
+                logger.info(
+                    "tool_result send_summary_email",
+                )
+
+                return _jsonable(result)
 
         @self.mcp.tool
         def cleanup(ctx: Context) -> str:

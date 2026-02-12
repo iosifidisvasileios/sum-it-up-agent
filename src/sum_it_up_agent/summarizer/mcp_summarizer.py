@@ -1,6 +1,7 @@
 # mcp_summarizer_server.py
 from __future__ import annotations
 import os
+
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
@@ -9,7 +10,12 @@ from typing import Any, List, Tuple
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-from sum_it_up_agent.observability.logger import configure_logging, get_logger
+from sum_it_up_agent.observability.logger import (
+    bind_request_id,
+    configure_logging,
+    get_logger,
+    new_request_id,
+)
 
 # Your existing library (do not modify it)
 from sum_it_up_agent.summarizer import (
@@ -20,6 +26,7 @@ from sum_it_up_agent.summarizer import (
 
 configure_logging()
 logger = get_logger("sum_it_up_agent.summarizer.mcp")
+
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -192,7 +199,8 @@ class SummarizerMCP:
             user_preferences: list = None,
             config_overrides: dict[str, Any] = None,
             api_key: str = None,
-            output_dir: str = None,   # if provided, saves *_summary.json via your UseCase
+            output_dir: str = None,  # if provided, saves *_summary.json via your UseCase
+            uuid: str = None,
             ctx: Context = None,
         ) -> dict[str, Any]:
             """
@@ -204,40 +212,55 @@ class SummarizerMCP:
             """
             server: SummarizerMCP = ctx.lifespan_context["server"]
 
-            fp = server._resolve_file(file_path)
-            out_dir = server._resolve_out_dir(output_dir)
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                logger.info(
+                    "tool_call summarize file_path=%s meeting_type=%s preset=%s output_dir=%s",
+                    file_path,
+                    meeting_type,
+                    preset,
+                    output_dir,
+                )
 
-            try:
-                preset_enum = SummarizerType(preset)
-            except Exception as e:
-                raise ValueError(f"Invalid preset='{preset}'. Use summarizer://presets.") from e
+                fp = server._resolve_file(file_path)
+                out_dir = server._resolve_out_dir(output_dir)
 
-            use_case, lock = server._get_or_create_use_case(preset_enum, config_overrides, api_key)
+                try:
+                    preset_enum = SummarizerType(preset)
+                except Exception as e:
+                    logger.exception("Invalid preset")
+                    raise ValueError(f"Invalid preset='{preset}'. Use summarizer://presets.") from e
 
-            if server._serialize:
-                with lock:
+                use_case, lock = server._get_or_create_use_case(preset_enum, config_overrides, api_key)
+
+                if server._serialize:
+                    with lock:
+                        result = use_case.summarize_transcription_file(
+                            file_path=fp,
+                            meeting_type=meeting_type,
+                            user_preferences=user_preferences,
+                            output_dir=out_dir,
+                        )
+                else:
                     result = use_case.summarize_transcription_file(
                         file_path=fp,
                         meeting_type=meeting_type,
                         user_preferences=user_preferences,
                         output_dir=out_dir,
                     )
-            else:
-                result = use_case.summarize_transcription_file(
-                    file_path=fp,
-                    meeting_type=meeting_type,
-                    user_preferences=user_preferences,
-                    output_dir=out_dir,
-                )
-            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
-            server._cleanup_all()
 
-            return {
-                "file_path": fp,
-                "preset": preset_enum.value,
-                "meeting_type": meeting_type,
-                "result": _jsonable(result),
-            }
+                server._cleanup_all()
+
+                resp = {
+                    "file_path": fp,
+                    "preset": preset_enum.value,
+                    "meeting_type": meeting_type,
+                    "result": _jsonable(result),
+                }
+                logger.info(
+                    "tool_result summarize",
+                )
+                return resp
 
         @self.mcp.tool
         def cleanup(ctx: Context) -> str:

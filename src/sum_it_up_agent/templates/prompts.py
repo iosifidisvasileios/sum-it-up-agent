@@ -19,8 +19,12 @@ def _read_prompt_text(relative_path: str) -> str:
         .joinpath(relative_path)
         .read_text(encoding="utf-8")
     )
-    _PROMPT_CACHE[relative_path] = text
-    return text
+
+    escaped = text.replace("{", "{{").replace("}", "}}")
+    escaped = escaped.replace("{{transcript}}", "{transcript}")
+
+    _PROMPT_CACHE[relative_path] = escaped
+    return escaped
 
 
 class PromptTemplate(ABC):

@@ -10,7 +10,7 @@ from typing import List, Optional, Dict, Any
 import importlib.resources
 
 from .models import UserIntent, CommunicationChannel, SummaryType
-from .logger import get_agent_logger
+from sum_it_up_agent.observability.logger import get_logger
 
 
 class LLMProvider(ABC):
@@ -29,7 +29,7 @@ class OllamaProvider(LLMProvider):
     def __init__(self, model: str = "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF", base_url: str = "http://localhost:11434"):
         self.model = model
         self.base_url = base_url
-        self.logger = get_agent_logger("ollama_provider")
+        self.logger = get_logger("sum_it_up_agent.agent.ollama_provider")
         # Ollama doesn't require API key for local use
     
     async def extract_intent(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
@@ -97,7 +97,7 @@ class PromptParser:
         """
         self.provider = self._create_provider(provider, model, base_url)
         self.prompt_limit = prompt_limit
-        self.logger = get_agent_logger("prompt_parser")
+        self.logger = get_logger("sum_it_up_agent.agent.prompt_parser")
 
     @staticmethod
     def _create_provider(

@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor
+import requests
 
 import importlib.resources
 
@@ -88,16 +89,20 @@ class Summarizer(ISummarizer):
                 raise ValueError(f"Unsupported meeting type: {request.meeting_type}")
 
             # Build transcript text
+            self.logger.info(f"Getting the template...")
             transcript_text = request.get_transcript_text()
             user_preferences_text = request.get_user_preferences()
 
             # Generate prompt
+            self.logger.info(f"Compiling the prompt...")
             prompt = template.render(transcript_text + user_preferences_text)
             
             # Call LLM
+            self.logger.info(f"Calling the LLM...")
             summary_data = self._call_llm(prompt)
             
             # Validate JSON output if required
+            self.logger.info(f"Validating json...")
             if self.config.validate_json_output:
                 summary_data = self._validate_json_output(summary_data)
             

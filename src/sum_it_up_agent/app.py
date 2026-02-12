@@ -116,6 +116,21 @@ class SumItUpApp:
         
         # Add server-specific environment variables
         env.update(env_vars)
+
+        # Observability logging (persist background MCP logs)
+        # These are safe to pass to all subprocesses.
+        observability_vars = [
+            "SUM_IT_UP_LOG_LEVEL",
+            "SUM_IT_UP_LOG_TO_FILE",
+            "SUM_IT_UP_LOG_DIR",
+            "SUM_IT_UP_LOG_APPEND",
+        ]
+        for var in observability_vars:
+            if var in os.environ:
+                env[var] = os.environ[var]
+
+        # Default per-process log filename if file logging is enabled.
+        env.setdefault("SUM_IT_UP_PROCESS_NAME", f"mcp_{name}")
         
         # Add only essential environment variables that servers actually need
         if name == "audio_processor":

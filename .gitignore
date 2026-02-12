@@ -5,4 +5,5 @@
 data/
 examples/output
 examples/ollama_summaries
+logs/
 /poetry.lock

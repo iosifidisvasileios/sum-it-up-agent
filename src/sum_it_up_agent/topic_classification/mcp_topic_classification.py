@@ -4,6 +4,7 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import os
+import contextlib
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
@@ -12,7 +13,12 @@ from typing import Any, List, Tuple
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-from sum_it_up_agent.observability.logger import configure_logging, get_logger
+from sum_it_up_agent.observability.logger import (
+    bind_request_id,
+    configure_logging,
+    get_logger,
+    new_request_id,
+)
 
 from sum_it_up_agent.topic_classification import (
     TopicClassificationUseCase,
@@ -202,6 +208,7 @@ class TopicClassifierMCP:
             export_format: str = "json",            # json|csv|txt
             export_dir: str = None,
             include_analysis: bool = True,
+            uuid: str = None,
             ctx: Context = None,
         ) -> dict[str, Any]:
             """
@@ -209,40 +216,57 @@ class TopicClassifierMCP:
             Optionally export results using your UseCase exporter.
             """
             server: TopicClassifierMCP = ctx.lifespan_context["server"]
-            fp = server._resolve_path(file_path)
 
-            try:
-                preset_enum = ClassifierType(preset)
-            except Exception as e:
-                raise ValueError(f"Invalid preset='{preset}'. Use topic://presets.") from e
-
-            use_case, lock = server._get_or_create_use_case(preset_enum, config_overrides)
-
-            if server._serialize:
-                with lock:
-                    result = use_case.classify_single_file(fp)
-            else:
-                result = use_case.classify_single_file(fp)
-
-            resp: dict[str, Any] = {
-                "file_path": fp,
-                "preset": preset_enum.value,
-                "result": _jsonable(result),
-                "predicted_topic": result.predicted_topic
-            }
-
-            if export:
-                out_path = _predict_export_path(fp, export_dir, export_format.lower())
-                use_case.export_results(
-                    [result],
-                    out_path,
-                    format_type=export_format,
-                    include_analysis=include_analysis,
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                logger.info(
+                    "tool_call classify_conversation_json file_path=%s preset=%s export=%s export_format=%s export_dir=%s include_analysis=%s",
+                    file_path,
+                    preset,
+                    export,
+                    export_format,
+                    export_dir,
+                    include_analysis,
                 )
-            # TODO: THIS IS FOR ALL ACTIVE SESSIONS!!! CHANGE IT TO SPECIFIED THREAD
-            server._cleanup_all()
 
-            return resp
+                fp = server._resolve_path(file_path)
+
+                try:
+                    preset_enum = ClassifierType(preset)
+                except Exception as e:
+                    logger.exception("Invalid preset")
+                    raise ValueError(f"Invalid preset='{preset}'. Use topic://presets.") from e
+
+                use_case, lock = server._get_or_create_use_case(preset_enum, config_overrides)
+
+                if server._serialize:
+                    with lock:
+                        result = use_case.classify_single_file(fp)
+                else:
+                    result = use_case.classify_single_file(fp)
+
+                resp: dict[str, Any] = {
+                    "file_path": fp,
+                    "preset": preset_enum.value,
+                    "result": _jsonable(result),
+                    "predicted_topic": result.predicted_topic,
+                }
+
+                if export:
+                    out_path = _predict_export_path(fp, export_dir, export_format.lower())
+                    use_case.export_results(
+                        [result],
+                        out_path,
+                        format_type=export_format,
+                        include_analysis=include_analysis,
+                    )
+
+                server._cleanup_all()
+                logger.info(
+                    "tool_result classify_conversation_json predicted_topic=%s",
+                    resp.get("predicted_topic"),
+                )
+                return resp
 
         @self.mcp.tool
         def cleanup(ctx: Context) -> str:

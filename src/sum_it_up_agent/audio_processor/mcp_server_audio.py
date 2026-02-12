@@ -12,13 +12,19 @@ from typing import Any, List, Optional, Tuple
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
 
-from sum_it_up_agent.observability.logger import configure_logging, get_logger
+from sum_it_up_agent.observability.logger import (
+    bind_request_id,
+    configure_logging,
+    get_logger,
+    new_request_id,
+)
 
 # Your library (as used in your example script)
 from sum_it_up_agent.audio_processor import AudioProcessingUseCase, ProcessorType, AudioProcessorFactory
 
 configure_logging()
-logger = get_logger("sum_it_up_agent.audio_processor.mcp")
+LOGGER = get_logger("sum_it_up_agent.audio_processor.mcp")
+
 
 def _jsonable(x: Any) -> Any:
     if is_dataclass(x):
@@ -146,7 +152,7 @@ class AudioProcessorMCP:
             processor_type=preset,
             huggingface_token=hf_token,
             config_overrides=ov or None,
-            logger=logger,
+            logger=LOGGER,
         )
         lock = Lock()
         self._cache[key] = (use_case, lock)
@@ -206,10 +212,11 @@ class AudioProcessorMCP:
         @self.mcp.tool
         def process_audio_file(
             audio_path: str,
-            preset: str = "standard",
+            preset: str = "high_quality",
             output_format: str = "json",
             save_to_file: bool = False,
             output_dir: str = None,
+            uuid: str = None,
             config_overrides: dict[str, Any] = None,
             ctx: Context = None,
         ) -> dict[str, Any]:
@@ -222,86 +229,67 @@ class AudioProcessorMCP:
             """
             server: AudioProcessorMCP = ctx.lifespan_context["server"]
 
-            ap = server._resolve_path(audio_path)
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                LOGGER.info(
+                    "tool_call process_audio_file audio_path=%s preset=%s output_format=%s save_to_file=%s",
+                    audio_path,
+                    preset,
+                    output_format,
+                    save_to_file,
+                )
 
-            try:
-                preset_enum = ProcessorType(preset)
-            except Exception as e:
-                raise ValueError(f"Invalid preset='{preset}'. Use audio://presets.") from e
+                ap = server._resolve_path(audio_path)
 
-            hf_token = os.getenv(server._hf_env)
-            if not hf_token:
-                raise ValueError(f"{server._hf_env} environment variable is required for diarization")
+                try:
+                    preset_enum = ProcessorType(preset)
+                except Exception as e:
+                    LOGGER.exception("Invalid preset")
+                    raise ValueError(f"Invalid preset='{preset}'. Use audio://presets.") from e
 
-            use_case, lock = server._get_or_create_use_case(preset_enum, hf_token, config_overrides)
+                hf_token = os.getenv(server._hf_env)
+                if not hf_token:
+                    LOGGER.error("Missing diarization token env=%s", server._hf_env)
+                    raise ValueError(f"{server._hf_env} environment variable is required for diarization")
 
-            # serialize per processor if requested
-            if server._serialize:
-                with lock:
+                use_case, lock = server._get_or_create_use_case(preset_enum, hf_token, config_overrides)
+
+                # serialize per processor if requested
+                if server._serialize:
+                    with lock:
+                        segments = use_case.process_audio_file(
+                            audio_path=ap,
+                            output_format=output_format,
+                            save_to_file=save_to_file,
+                            output_dir=output_dir,
+                        )
+                else:
                     segments = use_case.process_audio_file(
                         audio_path=ap,
                         output_format=output_format,
                         save_to_file=save_to_file,
                         output_dir=output_dir,
                     )
-            else:
-                segments = use_case.process_audio_file(
-                    audio_path=ap,
-                    output_format=output_format,
-                    save_to_file=save_to_file,
-                    output_dir=output_dir,
+
+                summary = use_case.get_transcription_summary(segments)
+                resp: dict[str, Any] = {
+                    "audio_path": ap,
+                    "preset": preset_enum.value,
+                    "segments": _jsonable(segments),
+                    "summary": _jsonable(summary),
+                }
+
+                if save_to_file:
+                    resp["saved_path"] = _predict_output_path(ap, output_format, output_dir)
+
+                server._cleanup_use_case_async(use_case)
+                LOGGER.info(
+                    "tool_result process_audio_file segments=%s saved_path=%s",
+                    len(resp.get("segments") or []),
+                    resp.get("saved_path"),
                 )
+                return resp
 
-            summary = use_case.get_transcription_summary(segments)
-            resp: dict[str, Any] = {
-                "audio_path": ap,
-                "preset": preset_enum.value,
-                "segments": _jsonable(segments),
-                "summary": _jsonable(summary),
-            }
-
-            if save_to_file:
-                resp["saved_path"] = _predict_output_path(ap, output_format, output_dir)
-
-            # Clean up only the current session asynchronously (non-blocking)
-            server._cleanup_use_case_async(use_case)
-            return resp
-
-        @self.mcp.tool
-        def convert_audio_format(
-            audio_path: str,
-            preset: str = "high_quality",
-            output_path: str = None,
-            config_overrides: dict[str, Any] = None,
-            ctx: Context = None,
-        ) -> dict[str, Any]:
-            """
-            Expose your processor.convert_audio_format (server-side).
-            Useful if your agent wants WAV first.
-            """
-            server: AudioProcessorMCP = ctx.lifespan_context["server"]
-
-            ap = server._resolve_path(audio_path)
-
-            try:
-                preset_enum = ProcessorType(preset)
-            except Exception as e:
-                raise ValueError(f"Invalid preset='{preset}'. Use audio://presets.") from e
-
-            hf_token = os.getenv(server._hf_env)
-            if not hf_token:
-                raise ValueError(f"{server._hf_env} environment variable is required for diarization")
-
-            use_case, lock = server._get_or_create_use_case(preset_enum, hf_token, config_overrides)
-
-            out = None if output_path is None else str(Path(output_path).expanduser().resolve())
-            if server._serialize:
-                with lock:
-                    wav_path = use_case.processor.convert_audio_format(ap, out)
-            else:
-                wav_path = use_case.processor.convert_audio_format(ap, out)
-
-            return {"input_path": ap, "wav_path": wav_path}
 
         @self.mcp.tool
         def cleanup(ctx: Context) -> str:
