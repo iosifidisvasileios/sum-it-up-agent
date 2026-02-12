@@ -10,43 +10,20 @@ GOALS
 - Do not invent details. If an owner or deadline is unclear, mark it as "Owner: Unknown" / "Due: Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "team status sync / standup",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-  "executive_summary": "<3-6 sentences, plain English>",
-  "updates_by_speaker": [
-    {
-      "speaker": "SPEAKER_00",
-      "updates": ["<what they did / progress>", "..."],
-      "blockers": ["<blocker>", "..."],
-      "asks": ["<ask/request>", "..."],
-      "next_steps": ["<next step>", "..."]
-    }
-  ],
-  "team_blockers": ["<cross-cutting blockers>", "..."],
-  "decisions": [
-    {
-      "decision": "<what was decided>",
-      "owner": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<clear task statement>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-  "risks": ["<risk statement>", "..."],
-  "open_questions": ["<question needing follow-up>", "..."],
-  "tags": ["standup", "status", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Executive Summary
+- ## Updates by Speaker
+- ## Team Blockers
+- ## Decisions
+- ## Action Items
+- ## Risks
+- ## Open Questions
+- ## Tags
 
 RULES
 - Be brief: prefer bullets in arrays; avoid long paragraphs.

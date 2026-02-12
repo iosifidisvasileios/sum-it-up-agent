@@ -11,65 +11,21 @@ GOALS
 - Do not invent details. If a decision or owner is unclear, mark it as "Unknown" and reflect uncertainty.
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "decision-making meeting",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "decision_summary": "<3-7 sentences summarizing what was decided and why>",
-
-  "decisions": [
-    {
-      "decision": "<final decision statement>",
-      "status": "<decided | tentative | deferred>",
-      "owner": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>,
-      "rationale": ["<reason>", "..."],
-      "criteria": ["<criterion used to choose>", "..."],
-      "tradeoffs": ["<trade-off acknowledged>", "..."],
-      "dissent_or_concerns": ["<concern or dissent>", "..."],
-      "follow_ups_required": <true/false>
-    }
-  ],
-
-  "options_considered": [
-    {
-      "topic": "<what the decision is about>",
-      "options": [
-        {
-          "name": "<option name/label>",
-          "pros": ["<pro>", "..."],
-          "cons": ["<con>", "..."],
-          "risks": ["<risk>", "..."],
-          "cost_or_effort": "<low|medium|high|Unknown>",
-          "impact": "<low|medium|high|Unknown>"
-        }
-      ],
-      "recommended_option": "<name or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "assumptions": ["<assumption>", "..."],
-  "risks": ["<risk>", "..."],
-  "open_questions": ["<open question>", "..."],
-
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<implementation or validation step>",
-      "due": "<ISO date if stated, else Unknown>",
-      "related_decision": "<short reference to decision>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "parking_lot": ["<topic explicitly parked for later>", "..."],
-  "tags": ["decision", "tradeoffs", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Decision Summary
+- ## Decisions
+- ## Options Considered
+- ## Assumptions
+- ## Risks
+- ## Open Questions
+- ## Action Items
+- ## Parking Lot
+- ## Tags
 
 RULES
 - Be explicit: decisions must be crisp, testable statements (“We will … by …”).

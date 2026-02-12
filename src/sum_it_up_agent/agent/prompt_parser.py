@@ -85,7 +85,9 @@ class PromptParser:
         provider: str = "ollama",
         model: Optional[str] = "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL",
         base_url: Optional[str] = "http://localhost:11434",
-        prompt_limit: int = 256
+        prompt_limit: int = 256,
+        system_prompt_text: Optional[str] = None,
+        system_prompt_path: Optional[str] = None,
     ):
         """
         Initialize the LLM-based prompt parser.
@@ -97,6 +99,8 @@ class PromptParser:
         """
         self.provider = self._create_provider(provider, model, base_url)
         self.prompt_limit = prompt_limit
+        self.system_prompt_text = system_prompt_text
+        self.system_prompt_path = system_prompt_path
         self.logger = get_logger("sum_it_up_agent.agent.prompt_parser")
 
     @staticmethod
@@ -146,11 +150,17 @@ class PromptParser:
         Returns:
             Dictionary containing extracted intent
         """
-        system_prompt = (
-            importlib.resources.files("sum_it_up_agent.templates")
-            .joinpath("prompt_files/system/intent_extraction.txt")
-            .read_text(encoding="utf-8")
-        )
+        if self.system_prompt_text is not None:
+            system_prompt = self.system_prompt_text
+        elif self.system_prompt_path is not None:
+            with open(self.system_prompt_path, "r", encoding="utf-8") as f:
+                system_prompt = f.read()
+        else:
+            system_prompt = (
+                importlib.resources.files("sum_it_up_agent.templates")
+                .joinpath("prompt_files/system/intent_extraction.txt")
+                .read_text(encoding="utf-8")
+            )
 
         return await self.provider.extract_intent(prompt, system_prompt)
 

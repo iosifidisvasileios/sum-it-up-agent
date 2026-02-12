@@ -11,89 +11,23 @@ GOALS
 - Do not invent details. If a detail is unclear, use "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "support / incident call",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "incident": {
-    "summary": "<what is broken/what is happening>",
-    "status": "<investigating|identified|mitigating|monitoring|resolved|Unknown>",
-    "severity": "<sev0|sev1|sev2|sev3|Unknown>",
-    "started_at": "<as stated, else Unknown>",
-    "detected_at": "<as stated, else Unknown>",
-    "affected_services": ["<service/system>", "..."],
-    "affected_users": ["<who is impacted>", "..."],
-    "symptoms": ["<symptom>", "..."],
-    "metrics_signals": ["<error rate/latency/etc if mentioned>", "..."]
-  },
-
-  "executive_summary": "<4-10 sentences summarizing what happened and what is being done>",
-
-  "timeline": [
-    {
-      "time": "<absolute or relative time as stated, else Unknown>",
-      "event": "<key event/update>",
-      "owner": "<speaker/team or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "observations_confirmed": ["<confirmed fact>", "..."],
-  "hypotheses": ["<unconfirmed suspected cause>", "..."],
-
-  "mitigations_and_changes": [
-    {
-      "action": "<mitigation/change applied or proposed>",
-      "type": "<rollback|restart|config_change|feature_flag|traffic_shift|hotfix|other>",
-      "status": "<planned|in_progress|done|Unknown>",
-      "owner": "<speaker/team or Unknown>",
-      "timestamp_sec": <float or null>,
-      "result": "<observed effect if mentioned, else Unknown>"
-    }
-  ],
-
-  "customer_communications": [
-    {
-      "audience": "<internal|external|customer|Unknown>",
-      "message": "<what was communicated>",
-      "owner": "<speaker/team or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "risks": ["<risk>", "..."],
-  "open_questions": ["<question>", "..."],
-
-  "action_items": [
-    {
-      "owner": "<speaker/team or Unknown>",
-      "task": "<clear next action>",
-      "urgency": "<immediate|today|this_week|Unknown>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "handoffs": [
-    {
-      "from": "<speaker/team or Unknown>",
-      "to": "<speaker/team or Unknown>",
-      "what": "<responsibility handed off>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "next_update": {
-    "when": "<as stated, else Unknown>",
-    "channel": "<slack/bridge/email/etc if stated, else Unknown>"
-  },
-
-  "tags": ["incident", "support", "oncall", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Incident Summary
+- ## Executive Summary
+- ## Timeline
+- ## Confirmed Observations
+- ## Hypotheses
+- ## Mitigations and Changes
+- ## Customer Communications
+- ## Action Items
+- ## Risks
+- ## Open Questions
+- ## Tags
 
 RULES
 - Mark facts vs hypotheses explicitly; do not treat guesses as confirmed.

@@ -12,78 +12,23 @@ GOALS
 - Do not invent details. If priority/owner is unclear, use "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "brainstorming session",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "problem_statement": "<1-2 sentences: what are we trying to solve?>",
-  "executive_summary": "<3-7 sentences summarizing the ideation outcomes>",
-
-  "themes": [
-    {
-      "theme": "<theme name>",
-      "summary": "<1-3 sentences summarizing the theme>",
-      "ideas": [
-        {
-          "idea": "<idea statement>",
-          "proposed_by": "<speaker or Unknown>",
-          "timestamp_sec": <float or null>,
-          "notes": ["<detail/variant>", "..."],
-          "assumptions": ["<assumption>", "..."],
-          "dependencies": ["<dependency>", "..."],
-          "risks": ["<risk>", "..."],
-          "effort": "<low|medium|high|Unknown>",
-          "impact": "<low|medium|high|Unknown>"
-        }
-      ]
-    }
-  ],
-
-  "wildcards": [
-    {
-      "idea": "<unusual/left-field idea worth noting>",
-      "proposed_by": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "evaluation_criteria": ["<criterion used to judge ideas>", "..."],
-  "constraints": ["<constraint: budget/time/tech/legal/etc>", "..."],
-
-  "top_candidates": [
-    {
-      "idea": "<idea name/short label>",
-      "why_promising": ["<reason>", "..."],
-      "open_questions": ["<question>", "..."],
-      "next_validation_steps": ["<step>", "..."],
-      "owner": "<speaker or Unknown>"
-    }
-  ],
-
-  "decisions": [
-    {
-      "decision": "<only if a decision was actually made>",
-      "owner": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<validation task / research / prototype>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "open_questions": ["<unresolved question>", "..."],
-  "tags": ["brainstorming", "ideas", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Problem Statement
+- ## Executive Summary
+- ## Themes
+- ## Wildcards
+- ## Evaluation Criteria
+- ## Constraints
+- ## Top Candidates
+- ## Decisions
+- ## Action Items
+- ## Open Questions
+- ## Tags
 
 RULES
 - Do not “decide” for the group. Only fill decisions if the transcript includes explicit agreement.

@@ -12,87 +12,25 @@ GOALS
 - Do not invent details. If something is unclear, mark as "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "training / onboarding",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "training_goal": "<1-2 sentences: what the session aimed to teach/cover>",
-  "audience_level": "<new hire|beginner|intermediate|advanced|Unknown>",
-  "executive_summary": "<4-10 sentences summarizing what was taught and outcomes>",
-
-  "learning_objectives": ["<objective>", "..."],
-
-  "key_concepts": [
-    {
-      "concept": "<concept name>",
-      "explanation": "<2-5 sentences>",
-      "why_it_matters": "<1-2 sentences or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "procedures": [
-    {
-      "name": "<procedure name>",
-      "steps": ["<step 1>", "<step 2>", "..."],
-      "inputs": ["<input>", "..."],
-      "outputs": ["<output>", "..."],
-      "tools_or_systems": ["<tool/system>", "..."],
-      "common_pitfalls": ["<pitfall>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "examples": [
-    {
-      "example": "<brief description of example/demo>",
-      "takeaways": ["<takeaway>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "qa": [
-    {
-      "question": "<question asked>",
-      "asked_by": "<speaker or Unknown>",
-      "answer": "<answer as stated (paraphrased)>",
-      "answered_by": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "resources": [
-    {
-      "name": "<doc/link/tool name>",
-      "description": "<what it is for>",
-      "owner": "<speaker or Unknown>"
-    }
-  ],
-
-  "access_or_setup_needed": [
-    {
-      "item": "<access/tool/setup>",
-      "owner": "<speaker or Unknown>",
-      "status": "<needed|requested|granted|Unknown>"
-    }
-  ],
-
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<practice task / onboarding to-do>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "open_questions": ["<unresolved question>", "..."],
-  "tags": ["training", "onboarding", "how-to", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Training Goal
+- ## Audience Level
+- ## Executive Summary
+- ## Learning Objectives
+- ## Key Concepts
+- ## Procedures
+- ## Examples
+- ## Q&A
+- ## Resources
+- ## Access / Setup Needed
+- ## Action Items
+- ## Open Questions
+- ## Tags
 
 RULES
 - Prioritize clarity and teachability.

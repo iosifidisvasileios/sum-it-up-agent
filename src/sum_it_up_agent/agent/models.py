@@ -72,16 +72,26 @@ class AgentConfig:
     preset_topic_classifier: str = "high_accuracy"
     preset_summarizer: str = "ollama_local"
     output_format: str = "json"
-    output_dir: str = "/home/vios/PycharmProjects/sum-it-up-agent/examples/ollama_summaries/"
+    output_dir: str = field(
+        default_factory=lambda: os.getenv(
+            "SUM_IT_UP_OUTPUT_DIR",
+            "/home/vios/PycharmProjects/sum-it-up-agent/examples/ollama_summaries/",
+        )
+    )
 
     # Communication settings
     default_email_subject: str = "team status sync / standup"
     max_recipients: int = 50
     
     # AI settings for prompt parsing
-    llm_provider: str = "ollama"  # openai, anthropic, ollama
-    llm_model: str = "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL"  # provider-specific model
-    llm_base_url: Optional[str] = "http://localhost:11434"
+    llm_provider: str = field(default_factory=lambda: os.getenv("SUM_IT_UP_LLM_PROVIDER", "ollama"))  # openai, anthropic, ollama
+    llm_model: str = field(
+        default_factory=lambda: os.getenv(
+            "SUM_IT_UP_LLM_MODEL",
+            "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL",
+        )
+    )  # provider-specific model
+    llm_base_url: Optional[str] = field(default_factory=lambda: os.getenv("SUM_IT_UP_LLM_BASE_URL", "http://localhost:11434"))
     confidence_threshold: float = 0.7
 
 

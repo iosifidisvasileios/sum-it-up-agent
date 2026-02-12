@@ -12,54 +12,20 @@ GOALS
 - Do not invent details. If an owner or date is unclear, use "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "other",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "executive_summary": "<4-10 sentences summarizing the conversation at a high level>",
-
-  "topics": [
-    {
-      "topic": "<topic name>",
-      "summary": "<2-6 sentences>",
-      "key_points": ["<point>", "..."],
-      "notable_quotes_short": ["<very short paraphrase of a notable line>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "decisions": [
-    {
-      "decision": "<what was decided>",
-      "owner": "<speaker or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<clear task statement>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "open_questions": ["<question needing follow-up>", "..."],
-  "risks": ["<risk or concern>", "..."],
-
-  "classification_guess": {
-    "likely_type": "<one of: team status sync / standup | planning / coordination meeting | decision-making meeting | brainstorming session | retrospective / postmortem | training / onboarding | interview | customer call / sales demo | support / incident call | other>",
-    "confidence": "<low|medium|high>",
-    "evidence": ["<short evidence snippet/paraphrase from transcript>", "..."]
-  },
-
-  "tags": ["general", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Executive Summary
+- ## Topics
+- ## Decisions
+- ## Action Items
+- ## Open Questions
+- ## Risks
+- ## Classification Guess
+- ## Tags
 
 RULES
 - Keep topics grouped; avoid duplicating the same point across multiple topics.

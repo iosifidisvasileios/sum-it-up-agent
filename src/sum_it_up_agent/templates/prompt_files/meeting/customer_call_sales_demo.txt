@@ -11,87 +11,24 @@ GOALS
 - Do not invent details. If a detail is unclear, use "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "customer call / sales demo",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "account_context": {
-    "customer_name": "<if stated, else Unknown>",
-    "industry": "<if stated, else Unknown>",
-    "customer_roles": ["<role/title if stated>", "..."],
-    "use_case": "<primary use case>",
-    "current_solution": "<current tools/process, if stated, else Unknown>"
-  },
-
-  "executive_summary": "<4-10 sentences summarizing needs, demo highlights, and outcomes>",
-
-  "customer_needs": {
-    "pain_points": ["<pain point>", "..."],
-    "requirements": ["<requirement>", "..."],
-    "constraints": ["<constraint: budget, security, timeline, legal>", "..."],
-    "success_criteria": ["<how they measure success>", "..."]
-  },
-
-  "demo_coverage": [
-    {
-      "feature_or_workflow": "<what was shown/discussed>",
-      "customer_reaction": "<positive|neutral|negative|Unknown>",
-      "notes": ["<detail>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "questions_and_objections": [
-    {
-      "topic": "<pricing|security|integration|performance|support|implementation|other>",
-      "question_or_objection": "<customer question/objection>",
-      "response": "<how the team responded>",
-      "owner": "<speaker/team or Unknown>",
-      "timestamp_sec": <float or null>,
-      "status": "<answered|needs_follow_up|Unknown>"
-    }
-  ],
-
-  "competitive_or_alternatives": [
-    {
-      "name": "<competitor/alternative mentioned>",
-      "context": "<why it came up>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "commercials": {
-    "pricing_discussed": <true/false>,
-    "budget_range": "<if stated, else Unknown>",
-    "procurement_process": "<if stated, else Unknown>",
-    "security_or_legal": ["<requirement>", "..."]
-  },
-
-  "decisions": [
-    {
-      "decision": "<decision made (e.g., proceed to trial)>",
-      "owner": "<speaker/team or Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "next_steps": [
-    {
-      "owner": "<speaker/team or Unknown>",
-      "task": "<clear next step>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "risks": ["<risk to deal/progress>", "..."],
-  "open_questions": ["<unanswered question>", "..."],
-  "tags": ["customer", "sales", "demo", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Account Context
+- ## Executive Summary
+- ## Customer Needs
+- ## Demo Coverage
+- ## Questions and Objections
+- ## Competitive / Alternatives
+- ## Commercials
+- ## Decisions
+- ## Next Steps
+- ## Risks
+- ## Open Questions
+- ## Tags
 
 RULES
 - Be customer-centric: prioritize needs/requirements over internal chatter.

@@ -11,75 +11,21 @@ GOALS
 - Do not invent details. If something is unclear, mark it as "Unknown".
 
 OUTPUT FORMAT (STRICT)
-Return valid JSON only (no markdown), using exactly this schema:
+Return Markdown only (no JSON). Use clear headings and bullet lists where appropriate.
 
-{
-  "meeting_type": "interview",
-  "title": "<short descriptive title>",
-  "time_range": {"start_sec": <float>, "end_sec": <float>},
-  "participants": ["SPEAKER_00", "SPEAKER_01", "..."],
-
-  "context": {
-    "role": "<role being interviewed for, if stated, else Unknown>",
-    "company_or_team": "<company/team, if stated, else Unknown>",
-    "stage": "<screen|technical|onsite|behavioral|hiring manager|other|Unknown>",
-    "format": "<phone|video|in-person|Unknown>"
-  },
-
-  "executive_summary": "<4-10 sentences summarizing the interview content and outcomes>",
-
-  "questions_and_answers": [
-    {
-      "question": "<question asked>",
-      "asked_by": "<speaker or Unknown>",
-      "candidate_answer": "<concise paraphrase of the answer>",
-      "answered_by": "<speaker (candidate) or Unknown>",
-      "follow_ups": ["<follow-up question>", "..."],
-      "evidence": ["<concrete evidence: metric/result/tech used>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "signals": {
-    "strengths": ["<strength supported by transcript>", "..."],
-    "concerns": ["<concern supported by transcript>", "..."],
-    "unknowns": ["<area not covered / unclear>", "..."]
-  },
-
-  "notable_projects_or_examples": [
-    {
-      "summary": "<project/example>",
-      "impact": ["<impact>", "..."],
-      "tools_or_tech": ["<tech>", "..."],
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "candidate_questions": [
-    {
-      "question": "<question asked by candidate>",
-      "answer": "<answer given>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "outcome": {
-    "status": "<advance|reject|pending|Unknown>",
-    "next_steps": ["<next step>", "..."],
-    "deadline": "<as stated, else Unknown>"
-  },
-
-  "action_items": [
-    {
-      "owner": "<speaker or Unknown>",
-      "task": "<follow-up task (send take-home, schedule round, share materials)>",
-      "due": "<ISO date if stated, else Unknown>",
-      "timestamp_sec": <float or null>
-    }
-  ],
-
-  "tags": ["interview", "<domain tag>", "..."]
-}
+Use the following Markdown section structure:
+- # Title
+- ## Time Range
+- ## Participants
+- ## Context
+- ## Executive Summary
+- ## Questions and Answers
+- ## Signals
+- ## Notable Projects / Examples
+- ## Candidate Questions
+- ## Outcome
+- ## Action Items
+- ## Tags
 
 RULES
 - Use neutral language; do not add subjective judgments not grounded in transcript.

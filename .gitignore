@@ -1,6 +1,10 @@
 # Environment variables
 .env
 
+# Python bytecode
+__pycache__/
+*.pyc
+
 # Data directory (ignore all contents)
 data/
 examples/output
