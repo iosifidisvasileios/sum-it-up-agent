@@ -7,7 +7,7 @@ __pycache__/
 
 # Data directory (ignore all contents)
 data/
-examples/output
-examples/ollama_summaries
+tests/examples/output
+tests/examples/ollama_summaries
 logs/
 /poetry.lock
