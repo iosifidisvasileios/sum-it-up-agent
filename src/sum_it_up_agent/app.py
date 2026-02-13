@@ -6,7 +6,6 @@ Singleton that boots MCP servers and provides interactive interface.
 
 import asyncio
 import os
-import signal
 import subprocess
 import sys
 import time
@@ -17,7 +16,6 @@ import dotenv
 dotenv.load_dotenv()
 
 from sum_it_up_agent.agent.orchestrator import AudioProcessingAgent
-from sum_it_up_agent.agent.models import AgentConfig
 from sum_it_up_agent.observability.logger import configure_logging
 
 
@@ -37,7 +35,7 @@ class SumItUpApp:
         if self._agent is None:
             configure_logging()
             self._agent = AudioProcessingAgent()
-    
+
     async def boot_mcp_servers(self, wait_for_ready: bool = True, timeout: int = 120):
         """Boot all MCP servers as subprocesses."""
         try:
