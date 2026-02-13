@@ -1,32 +1,24 @@
-# Contributing
+# Contributing to Sum-It-Up Agent
 
-Thanks for contributing.
+Thank you for your interest in contributing! We welcome all types of contributions including bug reports, bug fixes, documentation improvements, and feature requests.
 
-## Licensing model (important)
+## How to Contribute
 
-This project is dual-licensed:
-- Free for **Non-Commercial Use** under `LICENSE-NONCOMMERCIAL`
-- **Commercial Use requires a separate commercial license** under `LICENSE-COMMERCIAL`
+1. Fork the repository and create your feature branch (`git checkout -b feature/amazing-feature`)
+2. Make your changes
+3. Add tests if applicable
+4. Ensure tests pass
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
-To keep the commercial licensing option available while accepting external contributions, all
-contributions require acceptance of the Contributor License Agreement (CLA) in `CLA.md`.
+## Code Style
 
-## Contributor License Agreement (CLA)
+- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) for Python code
+- Use type hints for better code clarity
+- Include docstrings for all public functions and classes
+- Write tests for new features and bug fixes
 
-By submitting a pull request (or any Contribution), you agree to the CLA (`CLA.md`) and confirm you
-have the right to contribute the material.
+## License
 
-If your employer has rights to your work, you must ensure you have permission to contribute.
-
-## How to contribute
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes with tests (if applicable)
-4. Submit a pull request
-
-## Notes
-
-- Clearly describe what you changed and why.
-- If you add code copied from elsewhere, include the source and license details in the PR.
-- For commercial licensing inquiries: billiosifidis@gmail.com / v-iosifidis.com
+By contributing to Sum-It-Up Agent, you agree that your contributions will be licensed under its [MIT License](LICENSE).

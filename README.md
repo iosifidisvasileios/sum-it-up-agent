@@ -264,9 +264,7 @@ src/
 
 ## Contributing
 
-Contributions are welcome. See `CONTRIBUTING.md`.
-
-If you accept external contributions while maintaining dual licensing, require a CLA (see `CLA.md`).
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ---
 
