@@ -1,4 +1,3 @@
-# mcp_topic_classifier_server.py
 from __future__ import annotations
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -9,6 +8,7 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
 from typing import Any, List, Tuple
+import time
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
@@ -195,6 +195,27 @@ class TopicClassifierMCP:
     # MCP tools/resources
     # -----------------------------
     def _register(self) -> None:
+        @self.mcp.custom_route("/health", methods=["GET"])
+        async def health_check():
+            """Health check endpoint for monitoring."""
+            return {"status": "ok", "service": "topic_classifier", "timestamp": time.time()}
+
+        @self.mcp.custom_route("/metrics", methods=["GET"])
+        async def prometheus_metrics():
+            """Prometheus-compatible metrics endpoint."""
+            # Basic metrics for now
+            metrics = f"""# HELP topic_classifier_up Status of topic classifier service
+# TYPE topic_classifier_up gauge
+topic_classifier_up 1
+# HELP topic_classifier_cached_classifiers Number of cached classifiers
+# TYPE topic_classifier_cached_classifiers gauge
+topic_classifier_cached_classifiers {len(self._cache)}
+# HELP topic_classifier_start_time_seconds Start time of the service
+# TYPE topic_classifier_start_time_seconds gauge
+topic_classifier_start_time_seconds {time.time()}
+"""
+            return metrics
+
         @self.mcp.tool("topic://presets")
         def presets() -> List[str]:
             return list(TopicClassifierFactory.get_available_presets().keys())

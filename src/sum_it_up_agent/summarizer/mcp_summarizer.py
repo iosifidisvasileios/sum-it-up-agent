@@ -1,6 +1,6 @@
-# mcp_summarizer_server.py
 from __future__ import annotations
 import os
+import time
 
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -178,6 +178,27 @@ class SummarizerMCP:
     # MCP endpoints
     # -----------------------------
     def _register(self) -> None:
+        @self.mcp.custom_route("/health", methods=["GET"])
+        async def health_check():
+            """Health check endpoint for monitoring."""
+            return {"status": "ok", "service": "summarizer", "timestamp": time.time()}
+
+        @self.mcp.custom_route("/metrics", methods=["GET"])
+        async def prometheus_metrics():
+            """Prometheus-compatible metrics endpoint."""
+            # Basic metrics for now
+            metrics = f"""# HELP summarizer_up Status of summarizer service
+# TYPE summarizer_up gauge
+summarizer_up 1
+# HELP summarizer_cached_summarizers Number of cached summarizers
+# TYPE summarizer_cached_summarizers gauge
+summarizer_cached_summarizers {len(self._cache)}
+# HELP summarizer_start_time_seconds Start time of the service
+# TYPE summarizer_start_time_seconds gauge
+summarizer_start_time_seconds {time.time()}
+"""
+            return metrics
+
         @self.mcp.resource("summarizer://presets")
         def presets(_: Context) -> List[str]:
             return [e.value for e in SummarizerType]

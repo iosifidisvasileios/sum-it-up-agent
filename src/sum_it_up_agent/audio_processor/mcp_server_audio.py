@@ -1,4 +1,3 @@
-# mcp_audio_server.py
 from __future__ import annotations
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -8,6 +7,7 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock, Thread
 from typing import Any, List, Optional, Tuple
+import time
 
 from fastmcp import FastMCP, Context
 from fastmcp.server.lifespan import lifespan
@@ -204,6 +204,27 @@ class AudioProcessorMCP:
     # MCP registration
     # -----------------------------
     def _register(self) -> None:
+        @self.mcp.custom_route("/health", methods=["GET"])
+        async def health_check():
+            """Health check endpoint for monitoring."""
+            return {"status": "ok", "service": "audio_processor", "timestamp": time.time()}
+
+        @self.mcp.custom_route("/metrics", methods=["GET"])
+        async def prometheus_metrics():
+            """Prometheus-compatible metrics endpoint."""
+            # Basic metrics for now
+            metrics = f"""# HELP audio_processor_up Status of audio processor service
+# TYPE audio_processor_up gauge
+audio_processor_up 1
+# HELP audio_processor_cached_processors Number of cached processors
+# TYPE audio_processor_cached_processors gauge
+audio_processor_cached_processors {len(self._cache)}
+# HELP audio_processor_start_time_seconds Start time of the service
+# TYPE audio_processor_start_time_seconds gauge
+audio_processor_start_time_seconds {time.time()}
+"""
+            return metrics
+
         @self.mcp.resource("audio://presets")
         def presets(_: Context) -> List[str]:
             # Your factory already exposes this mapping

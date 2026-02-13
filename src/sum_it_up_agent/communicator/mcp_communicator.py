@@ -1,8 +1,8 @@
-# mcp_communicator_server.py
 from __future__ import annotations
 
 import json
 import os
+import time
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from threading import Lock
@@ -171,6 +171,27 @@ class CommunicatorMCP:
     # MCP API
     # -----------------------------
     def _register(self) -> None:
+        @self.mcp.custom_route("/health", methods=["GET"])
+        async def health_check():
+            """Health check endpoint for monitoring."""
+            return {"status": "ok", "service": "communicator", "timestamp": time.time()}
+
+        @self.mcp.custom_route("/metrics", methods=["GET"])
+        async def prometheus_metrics():
+            """Prometheus-compatible metrics endpoint."""
+            # Basic metrics for now
+            metrics = f"""# HELP communicator_up Status of communicator service
+# TYPE communicator_up gauge
+communicator_up 1
+# HELP communicator_cached_communicators Number of cached communicators
+# TYPE communicator_cached_communicators gauge
+communicator_cached_communicators {len(self._cache)}
+# HELP communicator_start_time_seconds Start time of the service
+# TYPE communicator_start_time_seconds gauge
+communicator_start_time_seconds {time.time()}
+"""
+            return metrics
+
         @self.mcp.resource("comm://channels")
         def channels(_: Context) -> List[str]:
             return [c.value for c in ChannelType]

@@ -75,7 +75,7 @@ class AgentConfig:
     output_dir: str = field(
         default_factory=lambda: os.getenv(
             "SUM_IT_UP_OUTPUT_DIR",
-            "/home/vios/PycharmProjects/sum-it-up-agent/examples/ollama_summaries/",
+            "/home/vios/PycharmProjects/sum-it-up-agent/output/",
         )
     )
 

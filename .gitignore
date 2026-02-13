@@ -7,6 +7,7 @@ __pycache__/
 
 # Data directory (ignore all contents)
 data/
+export_files/
 tests/examples/output
 tests/examples/ollama_summaries
 logs/
