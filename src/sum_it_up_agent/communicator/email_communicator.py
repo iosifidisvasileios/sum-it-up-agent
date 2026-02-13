@@ -121,7 +121,6 @@ class EmailCommunicator(ICommunicator):
             output_format="html5",
         )
 
-        header = (title or "Meeting Summary").strip()
 
         return f"""\
     <!doctype html>
@@ -131,8 +130,6 @@ class EmailCommunicator(ICommunicator):
       </head>
       <body style="font-family: Arial, sans-serif; line-height: 1.5; color: #111;">
         <div style="max-width: 760px; margin: 0 auto; padding: 16px;">
-          <h2 style="margin: 0 0 12px 0;">{header}</h2>
-
           <div style="font-size: 14px;">
             {body_html}
           </div>

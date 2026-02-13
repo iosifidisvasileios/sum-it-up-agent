@@ -36,12 +36,13 @@ class TestPromptParserEval(unittest.TestCase):
             # "hf.co/unsloth/gemma-3-27b-it-GGUF:Q2_K_XL",
             # "hf.co/mradermacher/falcon-40b-i1-GGUF:IQ2_S",
             # "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL",
-            # "hf.co/lmstudio-community/EXAONE-3.5-2.4B-Instruct-GGUF:Q8_0",
+            "hf.co/lmstudio-community/EXAONE-3.5-2.4B-Instruct-GGUF:Q8_0",
             # "hf.co/mradermacher/ZYH-LLM-Qwen2.5-14B-V3-GGUF:Q6_K",
-            "hf.co/mradermacher/ZYH-LLM-Qwen2.5-14B-V5-GGUF:Q6_K"
+            # "hf.co/mradermacher/ZYH-LLM-Qwen2.5-14B-V5-GGUF:Q6_K"
         ]
 
-        cls.system_prompt_keys = ['strict_json', 'default', 'conversational', 'step_by_step']
+        # cls.system_prompt_keys = ['strict_json', 'default', 'conversational', 'step_by_step', 'minimal_1', 'minimal_2', 'minimal_3']
+        cls.system_prompt_keys = ['strict_json', ]
 
     def test_data_validation(self) -> None:
         """Test that our test data is valid."""

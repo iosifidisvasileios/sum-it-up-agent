@@ -244,4 +244,8 @@ Default wants_transcription to False unless user explicitly says "transcription"
         "}\n\n"
         "Be thorough and accurate in your analysis."
     ),
+    "minimal_1": "Parse meeting request. Return JSON with: wants_summary (bool), wants_transcription (bool), communication_channels (email/pdf/slack/jira/discord/telegram), recipients (emails/usernames), summary_types (action_items/decisions/key_points/detailed/bullet_points/executive), custom_instructions (strings).",
+    "minimal_2": "Extract from meeting prompt: summary wanted?, transcription wanted?, output channels, recipients, summary types, special instructions. Return as JSON object.",
+    "minimal_3": "Meeting request parser. Output JSON: wants_summary (true/false), wants_transcription (true/false), communication_channels (array), recipients (array), summary_types (array), custom_instructions (array).",
 }
+
