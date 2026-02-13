@@ -248,10 +248,12 @@ class TestPromptParserEval(unittest.TestCase):
         cls.fair_latency = os.getenv("PROMPT_EVAL_FAIR_LATENCY", "1").strip().lower() not in {"0", "false", "no"}
         cls.cooldown_ms = int(os.getenv("PROMPT_EVAL_COOLDOWN_MS", "150").strip() or "0")
         cls.models = [
-            "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:BF16",
-            "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:latest",
-            "hf.co/unsloth/Phi-4-mini-reasoning-GGUF:BF16",
-            "hf.co/unsloth/Llama-3.2-3B-Instruct-GGUF:BF16",
+            # "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:BF16",
+            # "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:latest",
+            # "hf.co/unsloth/Phi-4-mini-reasoning-GGUF:BF16", # DONT USE REASONING MODELS FOR SIMPLE TASKS
+            # "hf.co/unsloth/Llama-3.2-3B-Instruct-GGUF:BF16",
+            # "hf.co/unsloth/gemma-3-27b-it-GGUF:Q2_K_XL",
+            # "hf.co/mradermacher/falcon-40b-i1-GGUF:IQ2_S",
             "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL",
         ]
 

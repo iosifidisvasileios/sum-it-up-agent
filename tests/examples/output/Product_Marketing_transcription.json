@@ -1,0 +1,830 @@
+{
+  "metadata": {
+    "export_time": "2026-02-08T16:54:33.651214",
+    "total_segments": 108,
+    "summary": {
+      "total_segments": 108,
+      "total_duration": 2569.55,
+      "speakers": [
+        "SPEAKER_07",
+        "SPEAKER_04",
+        "SPEAKER_06",
+        "SPEAKER_01",
+        "SPEAKER_00",
+        "SPEAKER_03",
+        "SPEAKER_02",
+        "SPEAKER_05"
+      ],
+      "word_count": 6800,
+      "speaker_stats": {
+        "SPEAKER_07": {
+          "segment_count": 17,
+          "duration": 212.11999999999927,
+          "word_count": 517,
+          "avg_segment_length": 12.477647058823486
+        },
+        "SPEAKER_04": {
+          "segment_count": 10,
+          "duration": 144.72000000000003,
+          "word_count": 489,
+          "avg_segment_length": 14.472000000000003
+        },
+        "SPEAKER_06": {
+          "segment_count": 16,
+          "duration": 132.00000000000074,
+          "word_count": 454,
+          "avg_segment_length": 8.250000000000046
+        },
+        "SPEAKER_01": {
+          "segment_count": 12,
+          "duration": 216.1799999999992,
+          "word_count": 527,
+          "avg_segment_length": 18.014999999999933
+        },
+        "SPEAKER_00": {
+          "segment_count": 38,
+          "duration": 1452.970000000001,
+          "word_count": 3784,
+          "avg_segment_length": 38.23605263157897
+        },
+        "SPEAKER_03": {
+          "segment_count": 2,
+          "duration": 15.4399999999996,
+          "word_count": 53,
+          "avg_segment_length": 7.7199999999998
+        },
+        "SPEAKER_02": {
+          "segment_count": 5,
+          "duration": 176.44999999999987,
+          "word_count": 512,
+          "avg_segment_length": 35.28999999999998
+        },
+        "SPEAKER_05": {
+          "segment_count": 8,
+          "duration": 163.7099999999998,
+          "word_count": 464,
+          "avg_segment_length": 20.463749999999976
+        }
+      },
+      "avg_words_per_segment": 62.96296296296296
+    }
+  },
+  "segments": [
+    {
+      "start_time": 0.0,
+      "end_time": 69.52,
+      "duration": 69.52,
+      "speaker": "SPEAKER_00",
+      "text": "can record. And we don't have a ton of items to get to. And I might be able to do one that might be fun if we have a little bit of time. So corporate events, they, I think I saw a little, I put this in Slack and I saw a little bit of kind of noise around it, which was good. Um, you know, the, the nutshell here is as we've kind of restructured and tried different things. The event support that we need isn't as nailed down as it needs to be. So the current tactic that we're going with is go to market team, signs up and kind of sponsors that event. So you support as a PMM, your campaign manager, does the campaigns for that event, etc, etc, etc. I don't see anyone in the, uh, maybe there are comments in the issue. I don't see the, the"
+    },
+    {
+      "start_time": 70.32,
+      "end_time": 75.76,
+      "duration": 5.440000000000012,
+      "speaker": "SPEAKER_07",
+      "text": "header updated yet. I thought we had in Slack sort of farmed each one of them out."
+    },
+    {
+      "start_time": 76.64,
+      "end_time": 113.28,
+      "duration": 36.64,
+      "speaker": "SPEAKER_00",
+      "text": "That's, so I guess the next, so it looks like tie put in some folks. It looks like this looks good. So that, let's see, needs support from GTM teams. So I guess the ask would be, um, to work with your GTM teams. So, so let me ask that, I saw some Slack, I think in our Slack, but did you all, uh, were you all able to connect with like your GTM"
+    },
+    {
+      "start_time": 113.28,
+      "end_time": 123.52,
+      "duration": 10.239999999999995,
+      "speaker": "SPEAKER_01",
+      "text": "teams? Uh, on Slack only and on the issue actually. Yeah, same. Not in real time, but, you know,"
+    },
+    {
+      "start_time": 123.52,
+      "end_time": 135.6,
+      "duration": 12.079999999999998,
+      "speaker": "SPEAKER_06",
+      "text": "source feedback. I got one person to respond so far. So it may end up Cindy being you and I just picking the one that we want to do. And then they can back us up. If we don't get any more"
+    },
+    {
+      "start_time": 135.6,
+      "end_time": 146.42,
+      "duration": 10.819999999999993,
+      "speaker": "SPEAKER_00",
+      "text": "feedback. Yeah, do you all, um, does anybody have like a regular sink still? Are those all been canceled? Or is there?"
+    },
+    {
+      "start_time": 151.3,
+      "end_time": 158.26,
+      "duration": 6.9599999999999795,
+      "speaker": "SPEAKER_01",
+      "text": "Yeah, we're on like the two week cadence. Okay. Yeah, gearbox has been canceled after the"
+    },
+    {
+      "start_time": 158.82,
+      "end_time": 180.22,
+      "duration": 21.400000000000006,
+      "speaker": "SPEAKER_00",
+      "text": "enablement. Cool. So I'm just trying to catch up with the thread. So it looks like maybe a platform on reinvent CICD on Google next and get ups on coup con. Does that sound right? Yeah."
+    },
+    {
+      "start_time": 180.86,
+      "end_time": 182.86,
+      "duration": 2.0,
+      "speaker": "SPEAKER_06",
+      "text": "Yep. That's where we were last I heard."
+    },
+    {
+      "start_time": 184.14,
+      "end_time": 240.3,
+      "duration": 56.160000000000025,
+      "speaker": "SPEAKER_00",
+      "text": "Cool. So then I think, um, I think we can, we can help the corporate events team. They do, they do a lot of like a cat hurting and, you know, keep on tracking people down. So I think if if this team can take the mission to like try to help track that down. So if you, you know, get the commitment specifically from your campaign managers, hey, like we're, we're signing up for a coup con, you know, can you comment on the issue that yes, I can commit to this, et cetera, et cetera, et cetera. You know, um, so that just so that they can get that, that event support, but that looks good. And I appreciate. Thanks for the link to Samia on the roles. Product announcements. So I appreciate bride for adding this. I probably should have added it. But"
+    },
+    {
+      "start_time": 242.3,
+      "end_time": 248.06,
+      "duration": 5.759999999999991,
+      "speaker": "SPEAKER_07",
+      "text": "I had two questions about that one. Mm-hmm. One is over what time frame are we looking at?"
+    },
+    {
+      "start_time": 248.62,
+      "end_time": 348.43,
+      "duration": 99.81,
+      "speaker": "SPEAKER_00",
+      "text": "So, uh, so in theory, this is, this could be the same as the Gillette 14 lunch where we're saying basically since 13.0, what has, you know, what kind of big improvements have we made? Um, candidly, this is always a little bit tough and I'm, and I'm, I am not totally sure of all of the kind of the interplay here, but I think, I think this is kind of the general gist of this assignment is, okay, we have commit coming up. We have some amount of, like, we have a stage of, you know, a metaphorical stage to say something to the world and we'll get some amount of press attention because we're having an event, right? What kind of announcements do we make? Um, at GitLab, it's really, really tough to make product announcements because our entire road map is completely public. Yada, yada, yada. So the thought here is to, but also because our entire road map is completely public and because we shift these tiny little MVCs, a new feature will come out, but it'll be not really usable, right? So it takes a while. So if you look back over the past year and say, okay, like, what started in the last year, but now is really like a full-fledged feature, what would, what would be coming out of beta, right? Like, if we were any other company, when we started a beta program in this last year, what would be, be announcing is GA at commit? That's kind of, that's kind of my thought on it. I see a couple ahead now. What do you think, Sydney?"
+    },
+    {
+      "start_time": 348.43,
+      "end_time": 377.87,
+      "duration": 29.439999999999998,
+      "speaker": "SPEAKER_07",
+      "text": "Yeah, I think I was inclined to group some things to say like vulnerability management because there were tiny little MVCs all the way along, but if you look at over the course of the year, we went from this to this, it makes more sense to me to highlight that than in any individual little thing. And then the other point was we just had 14.0, can we just, can we reuse some of"
+    },
+    {
+      "start_time": 377.87,
+      "end_time": 402.27,
+      "duration": 24.399999999999977,
+      "speaker": "SPEAKER_00",
+      "text": "those things and plug them in here? Absolutely, yeah. Yeah, and vulnerability management was one of the, you know, the features out of, we looked at 14.0. So I think, yeah, this is like, let's take the stuff from 14.0 and then maybe add a few more so that we can hit kind of different areas of press or give RPR team. This is kind of like input into RPR team to give them fodder to go out with."
+    },
+    {
+      "start_time": 402.83,
+      "end_time": 408.35,
+      "duration": 5.520000000000039,
+      "speaker": "SPEAKER_07",
+      "text": "And are we trying to hit three per stage? Yeah, ideally, there's just, you know, three,"
+    },
+    {
+      "start_time": 408.91,
+      "end_time": 428.19,
+      "duration": 19.279999999999973,
+      "speaker": "SPEAKER_00",
+      "text": "you know, three hours per stage. And then I think y'all made some good notes that, okay, we need to add manage. So I see manage in here that's excellent. And integrations, we don't, well, actually, we have some pretty exciting integrations. So we have, the Jira stuff is pretty"
+    },
+    {
+      "start_time": 428.67,
+      "end_time": 538.88,
+      "duration": 110.20999999999998,
+      "speaker": "SPEAKER_02",
+      "text": "good. There's a couple of things and integrations with VS code that could be notable, but I, can I show what I did for SCM just to get some general feedback on it? And if someone hasn't done it, maybe that'll also kick in. I was going, send this direction here, which was thinking, you know, a lot of, and then I called them key iterations, the sort of specific things. So I listed a few specific things like three or four per each as key iterations, but I called them something overall. So we would have like one thing to call them. There's several key iterations aligned with Giddyly Cluster, several that rolled up to a research-based user experience. And I was thinking like, I was shy on calling out UX as a bucket, except that, actually, that's, that's super typical, right? Like Windows 11 or anybody who's rolling stuff out, they almost always have UX as one of their three things. And then they mentioned a longer list of stuff that aligns to that. So I, you know, forgave myself for doing something at first. That was kind of like shy about calling out UX and bucketing some things there, but actually, when I looked around, that's pretty much how everybody does a big launch. And in terms of the excitement level, that also, like, I went in thinking, this is just a two. I guess part of it is like, I feel like we're almost fixing something that's broken. And that's not something you want to shout from the rooftops about. But actually, some of that stuff's really cool. So I gave it a three excitement level. I wasn't sure exactly where to place things. But I figured I wouldn't like the Cindy's comment, have something that's a one here anyway. But I, the only way I could make sense of like, the iterations was to bucket them as something. And so that's kind of how I came down on it."
+    },
+    {
+      "start_time": 538.88,
+      "end_time": 569.7,
+      "duration": 30.82000000000005,
+      "speaker": "SPEAKER_01",
+      "text": "And I don't think about that. I've done a similar, I've taken a similar approach for monitor with incident management. There were a bunch of things that we released. Although the core of incident management was part of 12.x, I think. So I did the same over there as well. Yeah. I think"
+    },
+    {
+      "start_time": 569.7,
+      "end_time": 614.5,
+      "duration": 44.799999999999955,
+      "speaker": "SPEAKER_05",
+      "text": "that makes sense. Yeah. And that would help me with the plan stuff as well. Because there are some things like epic boards that people have been asking for for years now. And they finally have. And that's great. But I think, you know, like the, the milestone burn up charts. That, that was a two. And that's, that's helpful. And I was looking through features and, you know, actual monthly, features that were released in a given month. I mean, that was one of the more important ones. But it's not very exciting, but we can bundle that with some other things and, and, and up level it. So that, that would be helpful there. And also Brian about the VS code thing. One other cool thing about that is both of those VS code integrations that hit the same month were community contributions,"
+    },
+    {
+      "start_time": 614.5,
+      "end_time": 621.89,
+      "duration": 7.389999999999986,
+      "speaker": "SPEAKER_00",
+      "text": "which is also kind of cool. Is, is that, is, do we have VS code listed on here?"
+    },
+    {
+      "start_time": 622.85,
+      "end_time": 633.73,
+      "duration": 10.879999999999995,
+      "speaker": "SPEAKER_02",
+      "text": "I didn't add it, but I can, I can add that in. I've got good notes on that. The extension that had been around for a while became official was kind of one of the things, but there's some other stuff"
+    },
+    {
+      "start_time": 633.73,
+      "end_time": 661.52,
+      "duration": 27.789999999999964,
+      "speaker": "SPEAKER_00",
+      "text": "that's a little juicier than that. And that, I think that's a, that's a pretty good note as well. We did that with like our, our Terraform module, right? There was like a community module, but now it's officially supported. So that's, that's the, you know, that can be the line, yes or no, whether you can use the thing for a lot of businesses. So I think that's a good one to you."
+    },
+    {
+      "start_time": 662.32,
+      "end_time": 696.16,
+      "duration": 33.83999999999992,
+      "speaker": "SPEAKER_01",
+      "text": "How are we measuring excitement levels? One, two, and three? Is that, I was, I was looking at maybe MAU as a metric to perhaps measure whether customers have started using that, are interested in using that or not. We probably may not have it for everything, but at least some of it wherever we have it is, it's probably something we can, we can use there. But we, of course, we need a benchmark level of what MAU we want to call one, two, three."
+    },
+    {
+      "start_time": 697.92,
+      "end_time": 756.74,
+      "duration": 58.82000000000005,
+      "speaker": "SPEAKER_00",
+      "text": "I think it's a little, it's a little bit of a judgment call like, you know, for example, Cormac was saying, like, Epic boards is something that was asked for for a long time. Now, depending on how it's asked for, maybe that means it's exciting or it's not, right? But usually when something gets a lot of upvotes or when there's a lot of demand for it, then I would, I would bump the excitement level on something like that. Certainly it's something shipped and a lot of people are using it, the MAU. That's another good measure. I don't know that any, one of those needs to kind of be exclusive. I think it's a bit of an individual judgment call and just like, what is your feeling based on, you know, could be anecdotal like you talk to customers and they're like, really hyper excited about this? Or, you know, maybe not, which is,"
+    },
+    {
+      "start_time": 756.74,
+      "end_time": 775.07,
+      "duration": 18.33000000000004,
+      "speaker": "SPEAKER_07",
+      "text": "okay, I think it's okay. Harsh responded to my comment about why we have the low excitement ones and just said something about having them sort of stack ranked. Yeah, I might, I might even"
+    },
+    {
+      "start_time": 775.07,
+      "end_time": 818.02,
+      "duration": 42.94999999999993,
+      "speaker": "SPEAKER_00",
+      "text": "constrain this is we're not going to highlight low assignments, but we want to see the full spectrum, especially in the case we have slim pickings. Alternatively, if there are double digit entries, then we can stack rank. So that's that's kind of also helpful there. So if we have three for all of these, that, I mean, it looks like we're going to get there and that's going to be quite a lot of features. So I might constrain it like this, maybe you can only give out one, one, two, or three and and treat as a stack rank rather than just like a raw excitement level that doesn't"
+    },
+    {
+      "start_time": 818.02,
+      "end_time": 825.46,
+      "duration": 7.440000000000055,
+      "speaker": "SPEAKER_07",
+      "text": "necessarily hard to somebody's one or somebody's three may be more important than somebody else's"
+    },
+    {
+      "start_time": 825.46,
+      "end_time": 846.02,
+      "duration": 20.559999999999945,
+      "speaker": "SPEAKER_02",
+      "text": "one agree on the and I had, I started by just looking at what was considered a key feature over the past year from from create and you know, there are at least a dozen things that I'm not mentioning that could be on the list like I could give you 10 things instead of three. Yeah, give it, give"
+    },
+    {
+      "start_time": 846.02,
+      "end_time": 876.58,
+      "duration": 30.56000000000006,
+      "speaker": "SPEAKER_00",
+      "text": "this just like the rough like pass and like a lot of things recently have been moving between docs and spreadsheet and the spreadsheet to docs. This you know, this might this might end up or some iteration of this might end up in a spreadsheet where we then try to stack rank and PR is like, okay, out of all of like the, you know, there's maybe 10 boxes here and three each out of the 30 items which are the top five. Actually, let's just let's actually just do that. Let's just"
+    },
+    {
+      "start_time": 876.58,
+      "end_time": 890.98,
+      "duration": 14.399999999999977,
+      "speaker": "SPEAKER_02",
+      "text": "do this like top top five overall. We did this one is a PR driven to some degree. What about like the new pen Christie's product keynote at commit or we don't tell him this with that? So this is"
+    },
+    {
+      "start_time": 890.98,
+      "end_time": 941.15,
+      "duration": 50.16999999999996,
+      "speaker": "SPEAKER_00",
+      "text": "exactly where this is headed to is the idea that during the product keynote and then ideally during kit sits keynote as well that there's some level of like an announcement that we make that then the press cares about that announcement. Again, really tough to do at get led because it's all been around for a while. So this is this is our attempt ahead to that area is to say like these are the announcements of the event. And yeah, maybe it's some things that have been around for a while, but like now they're at a level of maturity. Now, you know, there's there's a reason to be excited about this. So that's kind of where it's coming from. So I put a top five overall. Maybe we can just"
+    },
+    {
+      "start_time": 941.39,
+      "end_time": 958.83,
+      "duration": 17.440000000000055,
+      "speaker": "SPEAKER_05",
+      "text": "you know, we should reserve a spot for plan, but I'm going to have to go through and do some aggregating after this. Just go through the list of what shipped in the last 12 months and re-buck at that."
+    },
+    {
+      "start_time": 961.54,
+      "end_time": 983.89,
+      "duration": 22.350000000000023,
+      "speaker": "SPEAKER_00",
+      "text": "So maybe we can do like five minutes kind of like just just time box and kind of look at these here. What do you all think is a top would be a top five out of the list of, you know, 20 or 30?"
+    },
+    {
+      "start_time": 986.83,
+      "end_time": 1007.23,
+      "duration": 20.399999999999977,
+      "speaker": "SPEAKER_02",
+      "text": "I would say if UX does end up being a flag that we fly, that's an easy one because there's more than just maps to the create stage that would be considered UX improvement. Okay, what else?"
+    },
+    {
+      "start_time": 1008.27,
+      "end_time": 1032.11,
+      "duration": 23.839999999999918,
+      "speaker": "SPEAKER_07",
+      "text": "We need to have a security one in there. We could have either vulnerability management or I was when I've been struggling with a little bit as I'd like to kind of group the some of this proprietary scanning without making it sound like they're scanning improvements because that"
+    },
+    {
+      "start_time": 1032.11,
+      "end_time": 1055.31,
+      "duration": 23.200000000000045,
+      "speaker": "SPEAKER_00",
+      "text": "sounds like they weren't good before. Yeah, let's let's go with vulnerability management for now. I now would agree on that one and I would say that um some of these we did do some press around and the the fuzzing acquisitions was one thing so we might not go. That's kind of old. I was, I mean we did"
+    },
+    {
+      "start_time": 1055.31,
+      "end_time": 1065.31,
+      "duration": 10.0,
+      "speaker": "SPEAKER_07",
+      "text": "the fuzzing acquisitions a long time ago. Was it within the past year or longer? I thought it was"
+    },
+    {
+      "start_time": 1065.39,
+      "end_time": 1071.71,
+      "duration": 6.319999999999936,
+      "speaker": "SPEAKER_01",
+      "text": "within the past year. I think it was in the last little over six months or so. It was last summer,"
+    },
+    {
+      "start_time": 1071.71,
+      "end_time": 1091.31,
+      "duration": 19.59999999999991,
+      "speaker": "SPEAKER_07",
+      "text": "right? It was like last spring or summer and then we did another set of press around the integration of it because the PR team liked all the it's I mean we got a lot of attention on the acquisition so they had me do a follow-up um on the integration. I just feel like it's kind of"
+    },
+    {
+      "start_time": 1091.31,
+      "end_time": 1100.75,
+      "duration": 9.440000000000055,
+      "speaker": "SPEAKER_00",
+      "text": "worn out now but right that's what I was saying is that the fuzzing we already did press on through probably we'll not get another chump at that so I think let's go with vulnerability"
+    },
+    {
+      "start_time": 1100.75,
+      "end_time": 1139.58,
+      "duration": 38.82999999999993,
+      "speaker": "SPEAKER_07",
+      "text": "management. Unreviewed. But we also have in terms of proprietary stuff we've also got we replaced one of our scanners with SEMGRIP and we did um we have our own proprietary dust scanner now that's in it's in beta called brow zirker so it's our answer to scanning single-page applications which represent a unique challenge. I think I mean if I could have to it would be vulnerability management and brow zirker probably. Okay SEMGRIP that get picked up as"
+    },
+    {
+      "start_time": 1139.66,
+      "end_time": 1177.22,
+      "duration": 37.559999999999945,
+      "speaker": "SPEAKER_00",
+      "text": "online item in a couple of the pieces about get back 14. Which uh between between the the proprietary ships of the vulnerability management which would you pick as the number one out of those two? Probably vulnerability management. Okay I'm just kind of scamming the list I would probably say like Kubernetes agent is something that we've made a lot of investment in although um I think the"
+    },
+    {
+      "start_time": 1177.3,
+      "end_time": 1194.98,
+      "duration": 17.680000000000064,
+      "speaker": "SPEAKER_01",
+      "text": "Kubernetes agent and from an integration point of view perhaps the Terraform integration I think we have a lot of customers actually using that already so I'm going to I'm just going to call those"
+    },
+    {
+      "start_time": 1194.98,
+      "end_time": 1237.81,
+      "duration": 42.82999999999993,
+      "speaker": "SPEAKER_00",
+      "text": "get-ops and I'm going to put like k-s agent plus s-y corp integrations it's like a bucket of capabilities that is probably worth talking about well let's you know let's try to uh this is due Tuesday I think we want to try to get this done um so maybe just uh review this kind of like let's just kind of pick top five maybe something from plan"
+    },
+    {
+      "start_time": 1237.81,
+      "end_time": 1243.17,
+      "duration": 5.360000000000127,
+      "speaker": "SPEAKER_06",
+      "text": "and something from CICD uh yeah that plan editor's definitely an option for CICD"
+    },
+    {
+      "start_time": 1245.65,
+      "end_time": 1257.89,
+      "duration": 12.240000000000009,
+      "speaker": "SPEAKER_05",
+      "text": "yeah and there might be a sorry no sorry there might be a value-stream analytics story in there too if we aggregate it all it's it's a bummer that customizable value-stream analytics was 12.9"
+    },
+    {
+      "start_time": 1259.49,
+      "end_time": 1285.78,
+      "duration": 26.289999999999964,
+      "speaker": "SPEAKER_00",
+      "text": "but uh yeah that might be cool now I'm just going to I'm going to ping you on this carmac to add add a a top five plan uh I think that's a pretty heavy pretty heavy list just looking at it"
+    },
+    {
+      "start_time": 1285.78,
+      "end_time": 1292.1,
+      "duration": 6.319999999999936,
+      "speaker": "SPEAKER_06",
+      "text": "you know it's pretty cool yeah that's crazy yeah and this is something we don't do which I I"
+    },
+    {
+      "start_time": 1292.1,
+      "end_time": 1335.62,
+      "duration": 43.51999999999998,
+      "speaker": "SPEAKER_00",
+      "text": "agree like we don't we don't often stop as a company and just kind of look at our wins no uh I was really I don't did y'all did anybody miss uh what do we call it assembly the assembly um if you missed it I recommend it I laughed because like what assembly reminds me of it like when I was in like a young child in grade school yep you they'd have this big stack of like carpet they're like squares of carpet and you go like you go into the gym and you pull off this a square of carpet and all the children would sit on a square of carpet and that was like you'd have an assembly yeah so"
+    },
+    {
+      "start_time": 1336.26,
+      "end_time": 1351.46,
+      "duration": 15.200000000000045,
+      "speaker": "SPEAKER_06",
+      "text": "that's what I remember that to put everyone in the gym or like convert the half cafeteria gym you know take away the big barrier between it so that we can have more room and then take those carpets that have never been cleaned and just you know sit on them and it'll be great"
+    },
+    {
+      "start_time": 1352.02,
+      "end_time": 1385.66,
+      "duration": 33.6400000000001,
+      "speaker": "SPEAKER_00",
+      "text": "aside aside from the goofy name I thought that um and of course we can't talk about any of it on YouTube but man that was like a really awesome look back at like here's some wins and here's some exciting things that we've done um and so I think we just need to get better at this as a company I think this exercise and opportunity that um I think we do a little bit of that but this is doing it more so uh Sami you have some questions here for Alita yes so in the competitive sheet I"
+    },
+    {
+      "start_time": 1385.66,
+      "end_time": 1448.38,
+      "duration": 62.72000000000003,
+      "speaker": "SPEAKER_01",
+      "text": "was I mean I've already identified the features for CD configure as well as monitor getting it reviewed from PM my guess was or my understanding was that we wouldn't have the same set of competitors that we're going to compare to but the right competitors for that particular stage right so for example for uh for monitor we may not have like a GitHub or something like that we would have monitor based competitors or was that the understanding because we identified that entire list of competitors and partners for every single stage I thought we were going to be using those competitors to compare against so I just wanted your input on what because I saw some of you have compared with the five competitors already listed over there um they may not be relevant for example cloud beads may not be relevant for monitor stage at all um so that's what I wanted to check"
+    },
+    {
+      "start_time": 1448.38,
+      "end_time": 1464.06,
+      "duration": 15.679999999999836,
+      "speaker": "SPEAKER_04",
+      "text": "with you yeah that's the case I need to go back and look at this first she I mean if the competitor does not apply for that particular stage they shouldn't be on that tab and especially so are you saying that you see competitors on that tab for a stage where they don't apply"
+    },
+    {
+      "start_time": 1464.86,
+      "end_time": 1471.26,
+      "duration": 6.400000000000091,
+      "speaker": "SPEAKER_06",
+      "text": "yeah I think it was copy pasted each rule has the same yeah so each sheet has uh has uh"
+    },
+    {
+      "start_time": 1471.26,
+      "end_time": 1491.34,
+      "duration": 20.079999999999927,
+      "speaker": "SPEAKER_01",
+      "text": "adio at lasian github Jenkins jfrog and cloud beads right so that may not be relevant for monitor configure it would be a different set of competitors that we need to include which I think we already identified a while back I think we identified top three competitors for every stage yeah that's"
+    },
+    {
+      "start_time": 1491.34,
+      "end_time": 1504.78,
+      "duration": 13.440000000000055,
+      "speaker": "SPEAKER_04",
+      "text": "when we tiered it right tier one tier two two three so this this where we are right now is we're looking at just tier one competitors that's probably why I cut and paste them because those are all tier ones so we're just focusing on tier one right now so if they don't apply to that stage don't worry"
+    },
+    {
+      "start_time": 1505.1,
+      "end_time": 1512.46,
+      "duration": 7.360000000000127,
+      "speaker": "SPEAKER_06",
+      "text": "about it make sense so just pick the ones out of that list that apply to our stage right I just"
+    },
+    {
+      "start_time": 1512.46,
+      "end_time": 1518.86,
+      "duration": 6.399999999999864,
+      "speaker": "SPEAKER_01",
+      "text": "if we just use the tier one competitors and if they're not if they don't are not applicable then"
+    },
+    {
+      "start_time": 1518.86,
+      "end_time": 1524.22,
+      "duration": 5.360000000000127,
+      "speaker": "SPEAKER_04",
+      "text": "we don't have to fill out anything for that yet for now but then we'll move to tier two and tier three"
+    },
+    {
+      "start_time": 1524.22,
+      "end_time": 1530.46,
+      "duration": 6.240000000000009,
+      "speaker": "SPEAKER_01",
+      "text": "then we'll look at those okay and do we need to add a line item for github as well because I"
+    },
+    {
+      "start_time": 1530.54,
+      "end_time": 1537.74,
+      "duration": 7.2000000000000455,
+      "speaker": "SPEAKER_04",
+      "text": "think that's the single we're here yeah we should uh I think you asked me that before right"
+    },
+    {
+      "start_time": 1538.7,
+      "end_time": 1552.38,
+      "duration": 13.680000000000064,
+      "speaker": "SPEAKER_07",
+      "text": "or someone asked me I'm just looking at it cry and ask yeah we good yeah because the way without it you're basically putting all the things that we're better at yeah for sure for sure"
+    },
+    {
+      "start_time": 1553.1,
+      "end_time": 1564.06,
+      "duration": 10.960000000000036,
+      "speaker": "SPEAKER_00",
+      "text": "yeah right so ideally when we picked like the 10 to 15 features those some of those were like github only some of those were like github didn't have"
+    },
+    {
+      "start_time": 1565.82,
+      "end_time": 1569.42,
+      "duration": 3.6000000000001364,
+      "speaker": "SPEAKER_06",
+      "text": "well I thought it was supposed to be none of them should be github only right it should be all through"
+    },
+    {
+      "start_time": 1569.42,
+      "end_time": 1638.54,
+      "duration": 69.11999999999989,
+      "speaker": "SPEAKER_00",
+      "text": "the lens of yeah yeah exactly yeah it should be like market lens so an ideal world most of them are like this is what I'm shopping for the solution some like some of them might be github only some of them might be like competitor only so that it's a somebody would look at it and be like this looks honest and trustworthy in like a accurate assessment of the market fair yeah yeah and then yeah I think saw me for this just to kind of reiterate for this one we're only doing these five competitors so we'll do the other ones in a later stage and then uh for if if the vendor bills like bills themselves as a platform then we should specifically call out that they have zero so github bills itself as a platform it sells itself that way um same with azure dev ops same with jfrog well they all do for tier one except jinkins and clouties yeah yeah jinkins clouties does not yeah right but what is it you know azure dev ops github uh Atlassian and although Atlassians we still need to figure something"
+    },
+    {
+      "start_time": 1638.54,
+      "end_time": 1648.38,
+      "duration": 9.840000000000146,
+      "speaker": "SPEAKER_04",
+      "text": "out there that is a matter of fact that I go back and add a last thing because I based on conversation I think we have to do it I don't think we can leave them off so then I don't like to look at"
+    },
+    {
+      "start_time": 1648.38,
+      "end_time": 1653.82,
+      "duration": 5.439999999999827,
+      "speaker": "SPEAKER_01",
+      "text": "this question it is Atlassian is on that sheet okay yeah I went back and added them because based"
+    },
+    {
+      "start_time": 1653.82,
+      "end_time": 1660.54,
+      "duration": 6.720000000000027,
+      "speaker": "SPEAKER_04",
+      "text": "on discussion like my my I wanted to take them off completely and just leave them as a partner but"
+    },
+    {
+      "start_time": 1660.54,
+      "end_time": 1681.57,
+      "duration": 21.029999999999973,
+      "speaker": "SPEAKER_00",
+      "text": "we can't do that so so yeah so for for those platform you know we should call out the fact that they don't have any monitoring if they have like zero out of 15 we should call that out um same with configure stuff for this you know any those kind of capabilities and be and be I think if we"
+    },
+    {
+      "start_time": 1681.57,
+      "end_time": 1695.73,
+      "duration": 14.160000000000082,
+      "speaker": "SPEAKER_06",
+      "text": "took that step further it would be good to even describe it in the way that doesn't just say our product stage and use like a value based description of what monitor and configure mean because otherwise we're just no that's not going to do any good for us but you guys see the new infographic"
+    },
+    {
+      "start_time": 1695.73,
+      "end_time": 1704.13,
+      "duration": 8.400000000000091,
+      "speaker": "SPEAKER_04",
+      "text": "that the design team has come up with oh yeah oh you have it no we have a link to that quickly"
+    },
+    {
+      "start_time": 1704.13,
+      "end_time": 1708.93,
+      "duration": 4.7999999999999545,
+      "speaker": "SPEAKER_06",
+      "text": "William I don't know or you throw it in the uh you throw it in the um notes if you find it"
+    },
+    {
+      "start_time": 1710.93,
+      "end_time": 1713.01,
+      "duration": 2.0799999999999272,
+      "speaker": "SPEAKER_00",
+      "text": "I let's see who can find it faster"
+    },
+    {
+      "start_time": 1714.53,
+      "end_time": 1719.73,
+      "duration": 5.2000000000000455,
+      "speaker": "SPEAKER_06",
+      "text": "your team not with the amount of tabs I have opened oh my god that's what I'm like it probably"
+    },
+    {
+      "start_time": 1719.73,
+      "end_time": 1736.53,
+      "duration": 16.799999999999955,
+      "speaker": "SPEAKER_00",
+      "text": "won't be me so I this is why I send everything to a Google uh Gmail because the search is so fast I literally have a folder where all of my GitLab things go and I can just search for"
+    },
+    {
+      "start_time": 1736.53,
+      "end_time": 1766.37,
+      "duration": 29.839999999999918,
+      "speaker": "SPEAKER_04",
+      "text": "your infographic and I found it I found it I found it who could look at first I found it I found it oh so this is the one so this there's two this is the one for the single two comparison but then for the um but it's gonna look the same but then here's the one for um I just put it in chat for you guys okay and here's the one for the platform players so so we made it we made a"
+    },
+    {
+      "start_time": 1766.37,
+      "end_time": 1867.89,
+      "duration": 101.52000000000021,
+      "speaker": "SPEAKER_00",
+      "text": "couple decisions along the way so um one of the decisions was to just go with stages um it would have been like a whole nother layer of okay if we don't go with just the GitLab stages the 10 stages what what do we use um that has to be determined reconciled all this kind of stuff like the you know we kind of I don't know how long it's been since we updated those pages have like not been updated but we kind of are just trying to move towards some sort towards some progress so uh I concur that maybe configuring monitors not as descriptive as it could be but the place where it will so actually I'll share one thing it just seems like the right time to do this right manages is even less descriptive than that so so um the way this is the way this is getting built is off of a data model so um in theory these could change or be updated where the underlying data remains the same right because like we're separating let like presentation layer from data layer uh so that's it's not going to be as hard to update in the future as it currently is where it's a massive spaghetti code and it's like really really difficult to update and then the other component is then not in this iteration we need to get something live but in the next iteration you'll click on verify and it'll go down to the list of the 15 features and that's where you can describe what the heck of verify is or what the heck I managed okay so we will have an opportunity that because"
+    },
+    {
+      "start_time": 1867.89,
+      "end_time": 1877.65,
+      "duration": 9.759999999999991,
+      "speaker": "SPEAKER_06",
+      "text": "I was about to say you're gonna hate me for this but like we're we're being sick of cool about the same problem we had there's being the audience coming in and not knowing anything about these"
+    },
+    {
+      "start_time": 1877.65,
+      "end_time": 1902.85,
+      "duration": 25.199999999999818,
+      "speaker": "SPEAKER_04",
+      "text": "specific stages that problem that was one of the big things it's like okay 15 15 features what what is what are they why do I care you know yeah to say that means nothing to me looking at this this page um but quick question no we're on top of it actually if you read the thread I've brought that up but she said we can't do it like right now which I understand but small thing"
+    },
+    {
+      "start_time": 1902.93,
+      "end_time": 1909.57,
+      "duration": 6.639999999999873,
+      "speaker": "SPEAKER_06",
+      "text": "what do you guys think about the colors I don't know I usually let the designers handle that stuff"
+    },
+    {
+      "start_time": 1909.57,
+      "end_time": 1950.69,
+      "duration": 41.12000000000012,
+      "speaker": "SPEAKER_05",
+      "text": "they I like yeah I like the fact that there's no red on there oh you like that that's what I was going for you like it it's not it's not obviously negative uh so we're saying because it really does lend itself to being a comparison more than a competitive piece because of that because there's no you know these folks at 37% are in the red and they're terrible they just have less green or we would have less green so it's not it's not it's not being worse it's being less good I think that lends itself to working with you know all the co-opetition situations we were talking"
+    },
+    {
+      "start_time": 1950.69,
+      "end_time": 1969.17,
+      "duration": 18.480000000000018,
+      "speaker": "SPEAKER_00",
+      "text": "about yeah yeah that's that's the goal is we want we want to generate a helpful asset for the industry this is not just like marketing shill this should be like a helpful page so it's like yeah the goals have a comparison comparing DevOps tools not a you know this is all of our competitors"
+    },
+    {
+      "start_time": 1969.17,
+      "end_time": 1992.21,
+      "duration": 23.039999999999964,
+      "speaker": "SPEAKER_04",
+      "text": "and why we're better yeah um I think from a competitive mindset and for me I'm like let's go hard let's put some red on there let's just the way I think right so but I'm worried I'm not for now we're gonna stick with the green they recommend it we stick with the green and see how it goes but I don't know I was feeling the red and yellow too it is easy on the eyes um it's you know there's"
+    },
+    {
+      "start_time": 1992.21,
+      "end_time": 2099.41,
+      "duration": 107.19999999999982,
+      "speaker": "SPEAKER_00",
+      "text": "something to be said for that so yeah uh cool well we're almost up on time but I did want to share one thing that kind of came in like basically Friday it was like late Thursday for me so this this is another thing a lot a lot of these things that don't have like a ton of context on um I just know like we're just trying to up our game so like hey let's move fast and do the best we can do um so this is a little bit of a messaging framework and then the assignment that was given to me was to to fill in these boxes here so uh and then this was the fodder that I got so there was these ones that said like from roadmap to company vision we are transparent and a single source of truth countless possibilities honestly I think this ones are like really pithy and catchy I really like it um I really liked uh what's the other one that I like that not everyone does all in one for everyone so I just uh I don't know I like I just think so there's something catchy about that um but I know that kind of catchy is not everyone's cup of tea all that's to say is um the assignment here was that I took it was to write a pithy few words like punchy statement for each of these three things uh so I ended up with a single source of truth countless possibilities I like that a lot um this one I went with end-to-end control over your software factory not as pithy but or like not as catchy but um I think that what's the difference"
+    },
+    {
+      "start_time": 2099.41,
+      "end_time": 2104.45,
+      "duration": 5.039999999999964,
+      "speaker": "SPEAKER_07",
+      "text": "between that slide and the next one that doesn't have anything under security looks at this this"
+    },
+    {
+      "start_time": 2104.45,
+      "end_time": 2195.09,
+      "duration": 90.64000000000033,
+      "speaker": "SPEAKER_00",
+      "text": "was the um honestly so that so when I first got this it didn't have this and it didn't have anything under security so this this was like it was just your iteration of it yeah this is this is mine this is I just put here so that I would have like the original statements like on it you know automatically anything collaborate on everything I kind of like that but I you know this one I hate scale-up speed-up test-up I don't think anybody tests up I think that's really goofy so hate it uh this one I love that's for me it's I love it or hate it right um I love how I love that you're so anyway the what I love in just in five minutes now and then we can kind of end the call is kind of like um anything that you would change this out for anything you would change this out for and then actually let's start here this one I couldn't pick and I'll I'll tell you why it's because I like things to have parity in in their tone right so this is maybe like super nuanced elements of messaging but I hate it if it's like a single source of truth that's like in noun phrase and the end control that's like a noun item so you could say with GitLab you get a single source of truth with GitLab you get and the end control and you can't say with GitLab you get"
+    },
+    {
+      "start_time": 2195.73,
+      "end_time": 2200.93,
+      "duration": 5.199999999999818,
+      "speaker": "SPEAKER_07",
+      "text": "move fast with confidence no but you can say more speed less risk I like that one the best I don't"
+    },
+    {
+      "start_time": 2200.93,
+      "end_time": 2212.13,
+      "duration": 11.200000000000273,
+      "speaker": "SPEAKER_00",
+      "text": "like the last one I agree that's that's why I put this one at top was for that parity and then so it sounds like kind of y'all's thoughts or that's that's good as well"
+    },
+    {
+      "start_time": 2213.73,
+      "end_time": 2230.69,
+      "duration": 16.960000000000036,
+      "speaker": "SPEAKER_05",
+      "text": "yeah the only thing it might be missing but I don't know how we do it without over complicating it is well I guess less risk also implies higher quality I guess that kind of bundles the quality and the security together so I've talked myself out of not liking that so yeah good"
+    },
+    {
+      "start_time": 2232.05,
+      "end_time": 2242.85,
+      "duration": 10.799999999999727,
+      "speaker": "SPEAKER_03",
+      "text": "Cindy's last blog post had a really good turn of phrase that I stole for forgive that 14 when she was out it was like secure the software factory and all the stuff that you're making"
+    },
+    {
+      "start_time": 2243.49,
+      "end_time": 2249.65,
+      "duration": 6.160000000000309,
+      "speaker": "SPEAKER_07",
+      "text": "except she said it really elegant and it's deliverables secure the self factory and it's deliverables"
+    },
+    {
+      "start_time": 2249.65,
+      "end_time": 2254.29,
+      "duration": 4.639999999999873,
+      "speaker": "SPEAKER_03",
+      "text": "yeah I thought it was good to emphasize both because they mean different things with men's yeah"
+    },
+    {
+      "start_time": 2256.46,
+      "end_time": 2263.66,
+      "duration": 7.199999999999818,
+      "speaker": "SPEAKER_07",
+      "text": "yeah so you could say secure and control your software factory and it's deliverables maybe that would"
+    },
+    {
+      "start_time": 2263.66,
+      "end_time": 2276.34,
+      "duration": 12.680000000000291,
+      "speaker": "SPEAKER_00",
+      "text": "encompass both thoughts I'm not a big fan of the it's it's deliverables is there a can we say like"
+    },
+    {
+      "start_time": 2277.3,
+      "end_time": 2282.58,
+      "duration": 5.279999999999745,
+      "speaker": "SPEAKER_05",
+      "text": "your software factory and your software or your your software or your product"
+    },
+    {
+      "start_time": 2283.78,
+      "end_time": 2289.7,
+      "duration": 5.919999999999618,
+      "speaker": "SPEAKER_07",
+      "text": "product sounds like car manufacturer would you say IP here but it just doesn't sound right and"
+    },
+    {
+      "start_time": 2289.7,
+      "end_time": 2394.02,
+      "duration": 104.32000000000016,
+      "speaker": "SPEAKER_00",
+      "text": "that's always to always short hand yeah I like this one better yeah I think I do too but but I appreciate the thought Brian and then the last thing I'll say is so this is this was my attempt to channel my inner ash withers I think ash is like super good at just again just like the catchy or like the turn of phrase element to it and so like this kind of idea like single source of truth countless possibilities or all in one for everyone there's something catchy about this so so here I was trying to like envision what is it that we actually give you with this velocity it's like it's velocity with confidence is what is what you get I like your move fast with confidence better than increase speed and stay on track yeah so I was trying to I was thinking of like you know if you're like if you're in a race car and like you go like super super fast like let's say you're in the bike race right and you're going so fast and somebody holds out the sign and then like half of the bike race collapses that's almost kind of like you can you can keep going like faster and faster faster and if somebody like jumps out with a sign in the middle of the racetrack you're not going to get tripped up by it because get labs you know it's testing is going to catch that it's security is going to catch that all of those elements that allow you to move faster but to do so with confidence because otherwise you're like the faster you go then it gets more dangerous so trying to encapsulate that in this like that was kind of where I was like stay on track but I"
+    },
+    {
+      "start_time": 2394.02,
+      "end_time": 2403.38,
+      "duration": 9.360000000000127,
+      "speaker": "SPEAKER_06",
+      "text": "didn't like it either did you just open the door for a NASCAR partnership hey NASCARM goes fast in terms left because of get lab"
+    },
+    {
+      "start_time": 2406.9,
+      "end_time": 2424.26,
+      "duration": 17.360000000000127,
+      "speaker": "SPEAKER_00",
+      "text": "so you're a new ricky body and demographic so yeah so I don't think I like that one and then I think between these two I like to move fast with confidence but I don't like the the verbiage of it because it doesn't have parity so that's where I think do you want to add maybe we can add"
+    },
+    {
+      "start_time": 2424.26,
+      "end_time": 2433.7,
+      "duration": 9.4399999999996,
+      "speaker": "SPEAKER_01",
+      "text": "high confidence or more confidence at the end of your first statement so it kind of combines all of it so more speed less risk high confidence"
+    },
+    {
+      "start_time": 2433.7,
+      "end_time": 2450.5,
+      "duration": 16.800000000000182,
+      "speaker": "SPEAKER_06",
+      "text": "I was just saying confidence is kind of overused anyway like I see a lot of competitors of vendors using it I really like the first one just more speed less risk bam no trade-offs you know just this how it is oh no trade-offs I don't know yeah that's one of my go-toes I love that one"
+    },
+    {
+      "start_time": 2451.38,
+      "end_time": 2472.26,
+      "duration": 20.88000000000011,
+      "speaker": "SPEAKER_00",
+      "text": "this this gets into the no trade-offs the engineer engineer me says there's never no trade-offs that's like saying like 100% secure conflict this is why we always say mitigate right we always feel at risk or less risk you never say no you never say a word of messaging right I mean not"
+    },
+    {
+      "start_time": 2472.26,
+      "end_time": 2476.98,
+      "duration": 4.7199999999998,
+      "speaker": "SPEAKER_07",
+      "text": "everything you know I'm just more speed less risk with confidence"
+    },
+    {
+      "start_time": 2481.84,
+      "end_time": 2501.39,
+      "duration": 19.549999999999727,
+      "speaker": "SPEAKER_05",
+      "text": "with yeah more speed the ricky bobby and me really did like the no trade-offs without Parker yeah oh was that was that from no but it could have been it's something ricky bobby would have said if anyone hasn't seen telodega nights they should as the homework for this weekend"
+    },
+    {
+      "start_time": 2501.47,
+      "end_time": 2508.43,
+      "duration": 6.960000000000036,
+      "speaker": "SPEAKER_06",
+      "text": "and we talked about it on Monday in our little social report I often say thank you"
+    },
+    {
+      "start_time": 2509.07,
+      "end_time": 2518.75,
+      "duration": 9.679999999999836,
+      "speaker": "SPEAKER_00",
+      "text": "little eight pound five ounce baby Jesus with the golden diapers I say that so often that I just think everybody has seen telodega nights but then I realized that people that haven't are like"
+    },
+    {
+      "start_time": 2518.75,
+      "end_time": 2525.07,
+      "duration": 6.320000000000164,
+      "speaker": "SPEAKER_05",
+      "text": "playing is really weird and then next week we'll watch stepbrothers that's another great one"
+    },
+    {
+      "start_time": 2525.07,
+      "end_time": 2569.55,
+      "duration": 44.48000000000002,
+      "speaker": "SPEAKER_00",
+      "text": "so much room for activities okay I'm gonna go with more speed less risk and I think this is due at the end of the day so any additional thoughts I'm actually gonna untag make it strong all those are you know cool those are good awesome well this was kind of fun to do a little bit of like working together session and keep it a little razzle basil keep it rocking good to see everybody see you soon"
+    }
+  ]
+}

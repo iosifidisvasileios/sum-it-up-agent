@@ -219,18 +219,28 @@ PROMPT_EVAL_REPORT_PATH=prompt_parser_eval_report.md
 
 ## Development
 
-### Repo layout
+### Repo Layout
 
 ```
-src/
-├── sum_it_up_agent/
-│   ├── agent/
-│   ├── audio_processor/
-│   ├── topic_classification/
-│   ├── summarizer/
-│   ├── templates/
-│   └── communicator/
-└── examples/
+sum-it-up-agent/
+├── src/
+│   └── sum_it_up_agent/
+│       ├── agent/
+│       ├── audio_processor/
+│       ├── topic_classification/
+│       ├── summarizer/
+│       ├── templates/
+│       └── communicator/
+└── tests/                      # Test suite and examples
+    ├── examples/               # Usage examples and sample outputs
+    └── test_prompt_parser_eval.py
+```
+
+### Testing
+
+Run the test suite with:
+```bash
+python -m unittest discover -s tests
 ```
 
 ### MCP servers
@@ -240,11 +250,11 @@ src/
 - `src/communicator/mcp_communicator.py`
 
 ### Examples
-- `examples/agent_example.py`
-- `examples/audio_processing_examples.py`
-- `examples/summarizer_examples.py`
-- `examples/topic_classification_examples.py`
-- `examples/prompt_parser_example.py`
+- `tests/examples/agent_example.py`
+- `tests/examples/audio_processing_examples.py`
+- `tests/examples/summarizer_examples.py`
+- `tests/examples/topic_classification_examples.py`
+- `tests/examples/prompt_parser_example.py`
 
 ---
 
