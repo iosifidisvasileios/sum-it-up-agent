@@ -48,7 +48,7 @@ The project is designed around **independent services** with clear boundaries, s
 ### 1) Install
 
 ```bash
-git clone https://github.com/yourusername/sum-it-up-agent.git
+git clone https://github.com/iosifidisvasileios/sum-it-up-agent.git
 cd sum-it-up-agent
 poetry install
 ```
@@ -86,7 +86,7 @@ python -m src.sum_it_up_agent.app /path/to/audio.mp4 "summarize this meeting and
 At runtime, the agent performs a pipeline like:
 
 1. **Ingest & normalize** audio/video
-2. **(Optional) diarization** for speaker separation
+2. **Speaker diarization** for speaker separation
 3. **Transcription** (Whisper-family models)
 4. **Meeting-type classification** (zero-shot / ensembles)
 5. **Instruction-aware summarization** using meeting templates + user instructions
@@ -96,7 +96,9 @@ Outputs can be saved as structured artifacts (e.g., JSON) for downstream workflo
 
 ---
 
-## MCP Architecture
+## System Architecture
+
+![System Architecture](graph.png)
 
 ```
 Sum-It-Up App (Singleton)
@@ -122,11 +124,10 @@ Sum-It-Up App (Singleton)
 ### Audio processing
 - Multi-format input (MP3, MP4, WAV, M4A, FLAC, …)
 - Optional speaker diarization
-- High-quality transcription with GPU acceleration where available
-- Batch-friendly workflows (parallelizable stages)
+- High-quality transcription with Whisper models
 
 ### Topic classification
-- Zero-shot meeting type detection (no training data required)
+- Meeting type detection using ensemble methods
 - Confidence scoring / uncertainty-aware output
 - Support for common meeting classes (planning, retro, interview, support call, etc.)
 
@@ -134,7 +135,7 @@ Sum-It-Up App (Singleton)
 - File-backed prompt templates for meeting-specific structure
 - Multiple summary types (standard, action items, decisions, key points, executive, …)
 - Multi-provider backends (hosted and local)
-- Output formats: JSON, TXT, CSV (and extensible)
+- Output formats: JSON (and extensible)
 
 ### Communication
 - **Email delivery** with HTML-formatted summaries
@@ -269,13 +270,14 @@ python -m unittest discover -s tests
 - `tests/examples/summarizer_examples.py`
 - `tests/examples/topic_classification_examples.py`
 - `tests/examples/prompt_parser_example.py`
+- `tests/examples/communicator_email_tester.py`
 
 ---
 
 ## Roadmap
 
 ### Near-term
-- More robust multilingual workflows (transcription + summarization)
+- Enhanced audio processing workflows (transcription + summarization)
 - Additional communicator backends (Discord, Teams, Telegram)
 - Stronger observability (structured logs, tracing, evaluation dashboards)
 
