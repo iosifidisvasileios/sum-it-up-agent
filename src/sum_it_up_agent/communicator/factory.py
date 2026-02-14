@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional
 from .models import ChannelType
 from .interfaces import ICommunicator
 from .email_communicator import EmailCommunicator
+from .slack_communicator import SlackCommunicator
 from .pdf_exporter import PDFExporter
 
 
@@ -28,6 +29,12 @@ class CommunicatorFactory:
                 smtp_port=settings.get("smtp_port"),
                 sender_email=settings.get("sender_email"),
                 sender_password=settings.get("sender_password"),
+                logger=logger,
+            )
+
+        if config.channel == ChannelType.SLACK:
+            return SlackCommunicator(
+                webhook_url=settings.get("webhook_url"),
                 logger=logger,
             )
 

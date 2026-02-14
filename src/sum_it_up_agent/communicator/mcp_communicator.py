@@ -21,7 +21,6 @@ from sum_it_up_agent.observability.logger import (
 # Adjust imports to your project layout if needed
 from sum_it_up_agent.communicator.factory import CommunicatorFactory, CommunicatorConfig
 from sum_it_up_agent.communicator.models import ChannelType, CommunicationRequest
-from sum_it_up_agent.communicator.pdf_exporter import PDFExporter
 
 configure_logging()
 logger = get_logger("sum_it_up_agent.communicator.mcp")
@@ -59,6 +58,7 @@ class CommunicatorMCP:
 
     Tools:
       - send_summary_email: send summary JSON (markdown) to recipient as HTML email.
+      - send_summary_slack: send summary JSON (markdown) to Slack channel.
       - export_summary_pdf: export summary JSON (markdown) as a PDF file.
       - render_email_html: render summary markdown to HTML (no sending).
       - cleanup: cleanup cached communicators.
@@ -69,8 +69,14 @@ class CommunicatorMCP:
       - SMTP_SERVER (optional; defaults to smtp.gmail.com)
       - SMTP_PORT (optional; defaults to 465)
 
+    Env (slack):
+      - SLACK_WEBHOOK_URL (required): Slack incoming webhook URL
+
     PDF export:
       - Requires WeasyPrint. Install with: pip install weasyprint
+    
+    Slack communication:
+      - Uses webhook URLs (no additional dependencies required)
     """
 
     def __init__(
@@ -122,7 +128,7 @@ class CommunicatorMCP:
         """
         items: List[Tuple[str, Any]] = []
         for k, v in sorted(settings.items(), key=lambda kv: kv[0]):
-            if k in ("sender_password", "SENDER_EMAIL_PASSWORD"):
+            if k in ("sender_password", "SENDER_EMAIL_PASSWORD", "webhook_url", "SLACK_WEBHOOK_URL"):
                 items.append((k, f"len:{len(v) if v else 0}"))
             else:
                 items.append((k, v))
@@ -138,6 +144,10 @@ class CommunicatorMCP:
             # Prefer env vars if not explicitly provided
             st.setdefault("sender_email", os.getenv("SENDER_EMAIL_ACCOUNT"))
             st.setdefault("sender_password", os.getenv("SENDER_EMAIL_PASSWORD"))
+
+        # Ensure SlackCommunicator can initialize even if env vars are missing defaults
+        if channel == ChannelType.SLACK:
+            st.setdefault("webhook_url", os.getenv("SLACK_WEBHOOK_URL"))
 
         key = self._cache_key(channel, st)
         if key in self._cache:
@@ -287,6 +297,59 @@ communicator_start_time_seconds {time.time()}
 
                 logger.info(
                     "tool_result export_summary_pdf",
+                )
+
+                return _jsonable(result)
+
+        @self.mcp.tool
+        def send_summary_slack(
+            subject: str,
+            summary_json_path: str,
+            settings: dict[str, Any] = None,
+            uuid: str = None,
+            ctx: Context = None,
+        ) -> dict[str, Any]:
+            """
+            Send the summary JSON (summary_data.response markdown) to Slack via webhook.
+
+            Args:
+              subject: Message subject/title
+              summary_json_path: Path to summary JSON file
+              settings (optional, slack):
+                - webhook_url: Slack webhook URL (overrides SLACK_WEBHOOK_URL env var)
+
+            Environment variables:
+              - SLACK_WEBHOOK_URL (required): Slack incoming webhook URL
+
+            Note: Webhook URLs are tied to specific channels during setup in Slack.
+            """
+            server: CommunicatorMCP = ctx.lifespan_context["server"]
+
+            correlation_id = uuid or new_request_id()
+            with bind_request_id(correlation_id):
+                logger.info(
+                    "tool_call send_summary_slack subject=%s summary_json_path=%s",
+                    subject,
+                    summary_json_path,
+                )
+
+                comm, lock = server._get_or_create(ChannelType.SLACK, settings)
+
+                req = CommunicationRequest(
+                    recipient="",  # Not used for webhooks
+                    subject=subject,
+                    path=summary_json_path,
+                    metadata=None,
+                )
+
+                if server._serialize:
+                    with lock:
+                        result = comm.send(req)
+                else:
+                    result = comm.send(req)
+
+                logger.info(
+                    "tool_result send_summary_slack",
                 )
 
                 return _jsonable(result)

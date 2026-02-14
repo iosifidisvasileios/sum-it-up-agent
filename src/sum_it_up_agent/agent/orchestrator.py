@@ -370,6 +370,9 @@ class AudioProcessingAgent:
                     if channel == CommunicationChannel.EMAIL:
                         email_result = await self._send_email(result, correlation_id=correlation_id)
                         communication_results.append(email_result)
+                    elif channel == CommunicationChannel.SLACK:
+                        slack_result = await self._send_slack(result, correlation_id=correlation_id)
+                        communication_results.append(slack_result)
                     elif channel == CommunicationChannel.PDF:
                         pdf_result = await self._export_pdf(result, correlation_id=correlation_id)
                         communication_results.append(pdf_result)
@@ -446,6 +449,29 @@ class AudioProcessingAgent:
                 "channel": "pdf",
                 "output_path": response.structured_content.get("output_path"),
                 "success": True,
+            }
+    
+    async def _send_slack(self, result: PipelineResult, *, correlation_id: str) -> Dict[str, Any]:
+        """Send summary via Slack webhook."""
+        if not result.summary_file:
+            raise ValueError("No summary file available for Slack sending")
+
+        subject = result.user_intent.meeting_type or self.config.default_email_subject
+
+        async with self.communicator_client as client:
+            response = await client.call_tool(
+                "send_summary_slack",
+                {
+                    "subject": subject,
+                    "summary_json_path": result.summary_file,
+                    "uuid": correlation_id,
+                }
+            )
+            
+            return {
+                "channel": "slack",
+                "success": response.structured_content.get("success", False),
+                "response": response.structured_content
             }
     
     async def cleanup(self):
