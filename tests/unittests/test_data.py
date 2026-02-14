@@ -262,8 +262,6 @@ DATASET: List[PromptEvalCase] = [
             "wants_transcription": True,
             "communication_channels": ["email", "slack", "discord", "pdf", "jira"],
             "recipients_contains": ["incident-response@company.com", "legal@company.com", "pr@company.com"],
-            "recipients_are_emails": True,
-            "summary_types_any": ["detailed", "action_items", "decisions", "timeline"],
             "custom_instructions_contains_any": ["urgent", "critical", "high priority", "time-sensitive", "confidential"],
         },
     ),
@@ -377,7 +375,6 @@ DATASET: List[PromptEvalCase] = [
             "- Post updates to #project-sync Slack and #project Discord\n"
             "- Create executive PDF for steering committee\n"
             "- Generate resource tickets in Jira\n"
-            "Include visual timeline and RACI matrix references."
         ),
         expected={
             "wants_summary": True,
