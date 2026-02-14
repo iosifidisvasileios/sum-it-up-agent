@@ -152,7 +152,7 @@ Sum-It-Up App (Singleton)
 
 ## Prompt Customization
 
-All prompts are versioned plain text files following our [ADR: Store prompts as versioned text files](ADR/store-prompts-as-versioned-text-files.md). This approach enables prompt iteration without code changes and supports evaluation workflows.
+All prompts are versioned text files following our [ADR: Store prompts as versioned text files](ADR/store-prompts-as-versioned-text-files.md).
 
 ```
 src/sum_it_up_agent/templates/prompt_files/
@@ -172,47 +172,19 @@ src/sum_it_up_agent/templates/prompt_files/
     └── structured_json_assistant.txt
 ```
 
-### Versioning Strategy
+### Versioning
+- File naming: `v1.txt`, `v2.txt`, `baseline.txt`, `candidate.txt`
+- Runtime loading enables hot-swapping and A/B testing
+- Evaluation harness can pin specific versions for reproducible results
 
-Prompts are versioned using file naming conventions:
-- **Baseline versions**: `v1.txt`, `v2.txt`, etc.
-- **Evaluation variants**: `baseline.txt`, `candidate.txt`
-- **Experimental versions**: `experimental_*.txt`
-
-### Prompt Categories
-
-**Meeting templates** - Context-specific prompts for different meeting types:
-- `team_status_sync_standup.txt` - Daily standups and status updates
-- `planning_coordination_meeting.txt` - Sprint planning and coordination
-- `decision_making_meeting.txt` - Decision-focused meetings
-- `brainstorming_session.txt` - Creative and ideation sessions
-- `retrospective_postmortem.txt` - Retrospectives and post-mortems
-- `training_onboarding.txt` - Training and onboarding sessions
-- `interview.txt` - Interview recordings
-- `customer_call_sales_demo.txt` - Customer calls and sales demos
-- `support_incident_call.txt` - Support and incident calls
-- `other.txt` - Generic meeting fallback
-
-**System prompts** - Core orchestration prompts:
-- `intent_extraction.txt` - LLM-based user intent parsing
-- `structured_json_assistant.txt` - Structured output formatting guidance
-
-### Runtime Loading
-
-Prompts are loaded at runtime via packaged resources, enabling:
-- **Hot-swapping** prompt versions without code deployment
-- **A/B testing** different prompt variants
-- **Evaluation harness** can specify exact prompt versions for reproducible results
-- **Rollback** to previous prompt versions via git
+### Categories
+- **Meeting templates**: Context-specific prompts for different meeting types
+- **System prompts**: Core orchestration (intent parsing, JSON formatting)
 
 ### Evaluation Support
-
-The evaluation framework can pin specific prompt versions for reproducible benchmarking:
 ```bash
-# Run evaluation with baseline prompts
+# Run with specific prompt versions
 PROMPT_VERSION=baseline python -m unittest test_prompt_parser_eval.py
-
-# Run evaluation with candidate prompts  
 PROMPT_VERSION=candidate python -m unittest test_prompt_parser_eval.py
 ```
 
@@ -244,9 +216,9 @@ asyncio.run(process_meeting())
 
 ---
 
-## PromptParser Evaluation Harness
+## Testing & Evaluation
 
-The repository includes a benchmarking harness to evaluate `PromptParser` quality and latency across models and prompt variants.
+The project provides comprehensive testing capabilities for development and prompt optimization.
 
 ### What it measures
 - Dataset-driven correctness for parsed intent fields (channels, summary types, recipients, custom instructions)
@@ -352,7 +324,59 @@ For detailed documentation, see `tests/evaluation_framework/README-mlflow-eval.m
 
 ---
 
-## Development
+## Testing & Evaluation
+
+The project provides comprehensive testing capabilities for development and prompt optimization.
+
+### Unit Testing
+```bash
+# Run all tests
+python -m unittest discover -s tests
+
+# Run specific evaluation
+python -m unittest -v tests.test_prompt_parser_eval
+```
+
+### PromptParser Evaluation
+
+#### Basic Evaluation
+Lightweight evaluation harness measuring:
+- Intent parsing accuracy and validation
+- Latency metrics (avg/p50/p95)
+- Fair latency benchmarking mode
+
+Environment controls:
+```bash
+PROMPT_EVAL_MODELS="modelA,modelB"
+PROMPT_EVAL_SYSTEM_PROMPTS="default,strict_json"
+PROMPT_EVAL_FAIR_LATENCY=1
+```
+
+#### MLflow Advanced Framework
+Comprehensive experiment tracking for prompt optimization:
+- Multi-model comparison and prompt variant testing
+- MLflow integration with metrics/artifacts
+- Visual analytics via MLflow UI
+- Reproducible research with version tracking
+
+**Setup:**
+```bash
+pip install mlflow pandas
+mlflow server --host 0.0.0.0 --port 5000  # Optional UI
+```
+
+**Usage:**
+```bash
+cd tests/evaluation_framework
+python mlflow_prompt_eval.py --models "model1,model2" --system-prompts "default,strict_json"
+```
+
+**Available Prompts:** `default`, `strict_json`, `conversational`, `step_by_step`, `minimal_*`
+
+For detailed documentation, see `tests/evaluation_framework/README-mlflow-eval.md`.
+
+### Examples
+The `tests/examples/` directory contains usage examples for all components.
 
 ### Repo Layout
 
@@ -368,29 +392,17 @@ sum-it-up-agent/
 │       └── communicator/
 └── tests/                      # Test suite and examples
     ├── examples/               # Usage examples and sample outputs
-    └── test_prompt_parser_eval.py
+    ├── evaluation_framework/    # MLflow evaluation tools
+    └── unittests/             # Unit test modules
 ```
 
-### Testing
+### MCP Server Files
 
-Run the test suite with:
-```bash
-python -m unittest discover -s tests
-```
-
-### MCP servers
-- `src/audio_processor/mcp_server_audio.py`
-- `src/topic_classification/mcp_topic_classification.py`
-- `src/summarizer/mcp_summarizer.py`
-- `src/communicator/mcp_communicator.py`
-
-### Examples
-- `tests/examples/agent_example.py`
-- `tests/examples/audio_processing_examples.py`
-- `tests/examples/summarizer_examples.py`
-- `tests/examples/topic_classification_examples.py`
-- `tests/examples/prompt_parser_example.py`
-- `tests/examples/communicator_email_tester.py`
+Core MCP server implementations:
+- `src/sum_it_up_agent/audio_processor/mcp_server_audio.py`
+- `src/sum_it_up_agent/topic_classification/mcp_topic_classification.py`
+- `src/sum_it_up_agent/summarizer/mcp_summarizer.py`
+- `src/sum_it_up_agent/communicator/mcp_communicator.py`
 
 ---
 
