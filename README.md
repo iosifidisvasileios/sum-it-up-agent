@@ -152,31 +152,69 @@ Sum-It-Up App (Singleton)
 
 ## Prompt Customization
 
-All prompts are plain `.txt` files under:
+All prompts are versioned plain text files following our [ADR: Store prompts as versioned text files](ADR/store-prompts-as-versioned-text-files.md). This approach enables prompt iteration without code changes and supports evaluation workflows.
 
 ```
 src/sum_it_up_agent/templates/prompt_files/
 ├── meeting/
+│   ├── team_status_sync_standup.txt
+│   ├── planning_coordination_meeting.txt
+│   ├── decision_making_meeting.txt
+│   ├── brainstorming_session.txt
+│   ├── retrospective_postmortem.txt
+│   ├── training_onboarding.txt
+│   ├── interview.txt
+│   ├── customer_call_sales_demo.txt
+│   ├── support_incident_call.txt
+│   └── other.txt
 └── system/
+    ├── intent_extraction.txt
+    └── structured_json_assistant.txt
 ```
 
-### Meeting templates (examples)
-- `team_status_sync_standup.txt`
-- `planning_coordination_meeting.txt`
-- `decision_making_meeting.txt`
-- `brainstorming_session.txt`
-- `retrospective_postmortem.txt`
-- `training_onboarding.txt`
-- `interview.txt`
-- `customer_call_sales_demo.txt`
-- `support_incident_call.txt`
-- `other.txt`
+### Versioning Strategy
 
-### System prompts
-- `intent_extraction.txt` (intent parsing)
-- `structured_json_assistant.txt` (structured output guidance)
+Prompts are versioned using file naming conventions:
+- **Baseline versions**: `v1.txt`, `v2.txt`, etc.
+- **Evaluation variants**: `baseline.txt`, `candidate.txt`
+- **Experimental versions**: `experimental_*.txt`
 
-Prompts are loaded at runtime (via packaged resources), so behavior can be changed without modifying Python code.
+### Prompt Categories
+
+**Meeting templates** - Context-specific prompts for different meeting types:
+- `team_status_sync_standup.txt` - Daily standups and status updates
+- `planning_coordination_meeting.txt` - Sprint planning and coordination
+- `decision_making_meeting.txt` - Decision-focused meetings
+- `brainstorming_session.txt` - Creative and ideation sessions
+- `retrospective_postmortem.txt` - Retrospectives and post-mortems
+- `training_onboarding.txt` - Training and onboarding sessions
+- `interview.txt` - Interview recordings
+- `customer_call_sales_demo.txt` - Customer calls and sales demos
+- `support_incident_call.txt` - Support and incident calls
+- `other.txt` - Generic meeting fallback
+
+**System prompts** - Core orchestration prompts:
+- `intent_extraction.txt` - LLM-based user intent parsing
+- `structured_json_assistant.txt` - Structured output formatting guidance
+
+### Runtime Loading
+
+Prompts are loaded at runtime via packaged resources, enabling:
+- **Hot-swapping** prompt versions without code deployment
+- **A/B testing** different prompt variants
+- **Evaluation harness** can specify exact prompt versions for reproducible results
+- **Rollback** to previous prompt versions via git
+
+### Evaluation Support
+
+The evaluation framework can pin specific prompt versions for reproducible benchmarking:
+```bash
+# Run evaluation with baseline prompts
+PROMPT_VERSION=baseline python -m unittest test_prompt_parser_eval.py
+
+# Run evaluation with candidate prompts  
+PROMPT_VERSION=candidate python -m unittest test_prompt_parser_eval.py
+```
 
 ---
 
@@ -229,6 +267,88 @@ PROMPT_EVAL_FAIR_LATENCY=1
 PROMPT_EVAL_COOLDOWN_MS=500
 PROMPT_EVAL_REPORT_PATH=prompt_parser_eval_report.md
 ```
+
+### MLflow Advanced Evaluation Framework
+
+For comprehensive experimentation and tracking, use the MLflow-based evaluation system in `tests/evaluation_framework/`.
+
+#### Features
+- **Multi-model comparison**: Test multiple LLM models against the same dataset
+- **Prompt variant testing**: Compare different system prompts side-by-side
+- **Experiment tracking**: Full MLflow integration with metrics, parameters, and artifacts
+- **Performance analysis**: Detailed latency metrics (avg, p50, p95) and pass rates
+- **Visual analytics**: MLflow UI for interactive result exploration
+- **Reproducible runs**: Exact model and prompt version tracking
+
+#### Setup
+```bash
+# Install MLflow dependencies
+pip install mlflow pandas
+
+# Start MLflow server (optional, for UI)
+mlflow server --host 0.0.0.0 --port 5000
+```
+
+#### Usage Examples
+
+**Basic evaluation:**
+```bash
+cd tests/evaluation_framework
+python mlflow_prompt_eval.py
+```
+
+**Advanced comparison:**
+```bash
+python mlflow_prompt_eval.py \
+  --models "hf.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q3_K_XL" \
+           "hf.co/unsloth/Phi-4-mini-reasoning-GGUF:BF16" \
+  --system-prompts "default" "strict_json" "conversational" \
+  --experiment-name "prompt_optimization_study"
+```
+
+**Compare existing runs:**
+```bash
+python mlflow_prompt_eval.py --compare-only
+```
+
+#### Available System Prompts
+- `default` - Comprehensive expert prompt with detailed instructions
+- `strict_json` - Minimal prompt focused on exact JSON output
+- `conversational` - Friendly, natural language prompt
+- `step_by_step` - Analytical, step-by-step approach
+- `minimal_1`, `minimal_2`, `minimal_3` - Various minimal prompt variations
+
+#### Metrics Tracked
+- **Performance**: Pass rate, total cases, passed/failed counts
+- **Latency**: Average, p50, p95 response times
+- **Detailed results**: Per-case status, failure reasons, actual vs expected outputs
+- **Artifacts**: System prompts, CSV results, failure analysis, summary reports
+
+#### Programmatic Usage
+```python
+from tests.evaluation_framework.mlflow_prompt_eval import MlflowPromptEvaluator, ExperimentConfig
+
+config = ExperimentConfig(
+    experiment_name="custom_study",
+    models=["your-model-name"],
+    system_prompt_keys=["default", "strict_json"],
+    fair_latency=True,
+    cooldown_ms=100
+)
+
+evaluator = MlflowPromptEvaluator(config)
+results = evaluator.run_experiment()
+```
+
+#### Integration with Versioned Prompts
+
+The MLflow evaluator works seamlessly with the versioned prompt system:
+- Automatically logs prompt versions used in each run
+- Supports A/B testing of different prompt variants
+- Enables reproducible research with exact prompt tracking
+- Integrates with the ADR-based prompt management approach
+
+For detailed documentation, see `tests/evaluation_framework/README-mlflow-eval.md`.
 
 ---
 
