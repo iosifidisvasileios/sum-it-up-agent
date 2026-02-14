@@ -60,6 +60,13 @@ cp .env.example .env
 # edit .env with API keys and MCP server settings
 ```
 
+**Key environment variables:**
+- `SLACK_WEBHOOK_URL`: Slack incoming webhook URL for message delivery
+- `SENDER_EMAIL_ACCOUNT`: Email account for sending summaries
+- `SENDER_EMAIL_PASSWORD`: Email password or app password
+- `SUM_IT_UP_LLM_MODEL`: LLM model for intent parsing
+- MCP server URLs and ports (pre-configured)
+
 ### 3) Run (interactive mode)
 
 ```bash
@@ -69,7 +76,7 @@ python -m src.sum_it_up_agent
 Or run a single command:
 
 ```bash
-python -m src.sum_it_up_agent.app /path/to/audio.mp4 "summarize this meeting and email it to user@example.com"
+python -m src.sum_it_up_agent.app /path/to/audio.mp4 "summarize this meeting and email it to user@example.com and send to slack"
 ```
 
 ---
@@ -83,7 +90,7 @@ At runtime, the agent performs a pipeline like:
 3. **Transcription** (Whisper-family models)
 4. **Meeting-type classification** (zero-shot / ensembles)
 5. **Instruction-aware summarization** using meeting templates + user instructions
-6. **Delivery** via a communicator (email implemented; other channels can be added)
+5. **Delivery** via communicator (email, Slack, PDF export; other channels can be added)
 
 Outputs can be saved as structured artifacts (e.g., JSON) for downstream workflows.
 
@@ -128,6 +135,12 @@ Sum-It-Up App (Singleton)
 - Multiple summary types (standard, action items, decisions, key points, executive, …)
 - Multi-provider backends (hosted and local)
 - Output formats: JSON, TXT, CSV (and extensible)
+
+### Communication
+- **Email delivery** with HTML-formatted summaries
+- **Slack integration** via webhook URLs with professional formatting
+- **PDF export** for archival and sharing
+- **Extensible design** for adding new channels (Discord, Teams, etc.)
 
 ### Agent features
 - LLM-based prompt parsing (turn “what I want” into a structured intent)
@@ -178,11 +191,12 @@ async def process_meeting():
     async with AudioProcessingAgent(config) as agent:
         result = await agent.process_request(
             "meeting.mp3",
-            "Please summarize and send action points to john@example.com"
+            "Please summarize and send action points to john@example.com and also post to Slack"
         )
 
         if result.success:
             print(f"Summary saved to: {result.summary_file}")
+            print(f"Communication results: {result.communication_results}")
         else:
             print(f"Failed: {result.error_message}")
 
@@ -262,7 +276,7 @@ python -m unittest discover -s tests
 
 ### Near-term
 - More robust multilingual workflows (transcription + summarization)
-- Additional communicator backends (e.g., Slack/Jira/Discord/Telegram)
+- Additional communicator backends (Discord, Teams, Telegram)
 - Stronger observability (structured logs, tracing, evaluation dashboards)
 
 ### Longer-term
