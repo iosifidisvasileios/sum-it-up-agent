@@ -155,21 +155,27 @@ Sum-It-Up App (Singleton)
 All prompts are versioned text files following our [ADR: Store prompts as versioned text files](ADR/store-prompts-as-versioned-text-files.md).
 
 ```
-src/sum_it_up_agent/templates/prompt_files/
-├── meeting/
-│   ├── team_status_sync_standup.txt
-│   ├── planning_coordination_meeting.txt
-│   ├── decision_making_meeting.txt
-│   ├── brainstorming_session.txt
-│   ├── retrospective_postmortem.txt
-│   ├── training_onboarding.txt
-│   ├── interview.txt
-│   ├── customer_call_sales_demo.txt
-│   ├── support_incident_call.txt
-│   └── other.txt
-└── system/
-    ├── intent_extraction.txt
-    └── structured_json_assistant.txt
+src/sum_it_up_agent/templates/prompts/
+├── summarization/
+│   ├── baseline_team_status_sync_standup.txt
+│   ├── baseline_planning_coordination_meeting.txt
+│   ├── baseline_decision_making_meeting.txt
+│   ├── baseline_brainstorming_session.txt
+│   ├── baseline_retrospective_postmortem.txt
+│   ├── baseline_training_onboarding.txt
+│   ├── baseline_interview.txt
+│   ├── baseline_customer_call_sales_demo.txt
+│   ├── baseline_support_incident_call.txt
+│   ├── baseline_other.txt
+│   └── [current versions without prefix]
+├── intent/
+│   ├── baseline_intent_extraction.txt
+│   └── intent_extraction.txt
+├── system/
+│   ├── baseline_structured_json_assistant.txt
+│   └── structured_json_assistant.txt
+└── formatting/
+    └── [future formatting prompts]
 ```
 
 ### Versioning
@@ -178,8 +184,10 @@ src/sum_it_up_agent/templates/prompt_files/
 - Evaluation harness can pin specific versions for reproducible results
 
 ### Categories
-- **Meeting templates**: Context-specific prompts for different meeting types
-- **System prompts**: Core orchestration (intent parsing, JSON formatting)
+- **Summarization prompts**: Context-specific prompts for different meeting types
+- **Intent prompts**: User intent extraction and parsing
+- **System prompts**: Core orchestration (JSON formatting, etc.)
+- **Formatting prompts**: Output formatting templates (future)
 
 ### Evaluation Support
 ```bash

@@ -158,7 +158,7 @@ class PromptParser:
         else:
             system_prompt = (
                 importlib.resources.files("sum_it_up_agent.templates")
-                .joinpath("prompt_files/system/intent_extraction.txt")
+                .joinpath("prompts/intent/intent_extraction.txt")
                 .read_text(encoding="utf-8")
             )
 

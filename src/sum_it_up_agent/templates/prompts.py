@@ -60,7 +60,7 @@ class PlanningCoordinationMeetingTemplate(PromptTemplate):
     meeting_type: str = "planning / coordination meeting"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/planning_coordination_meeting.txt")
+        template = _read_prompt_text("prompts/summarization/planning_coordination_meeting.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -68,7 +68,7 @@ class DecisionMakingMeetingTemplate(PromptTemplate):
     meeting_type: str = "decision-making meeting"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/decision_making_meeting.txt")
+        template = _read_prompt_text("prompts/summarization/decision_making_meeting.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -76,7 +76,7 @@ class BrainstormingSessionTemplate(PromptTemplate):
     meeting_type: str = "brainstorming session"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/brainstorming_session.txt")
+        template = _read_prompt_text("prompts/summarization/brainstorming_session.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -84,7 +84,7 @@ class RetrospectivePostmortemTemplate(PromptTemplate):
     meeting_type: str = "retrospective / postmortem"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/retrospective_postmortem.txt")
+        template = _read_prompt_text("prompts/summarization/retrospective_postmortem.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -92,7 +92,7 @@ class TrainingOnboardingTemplate(PromptTemplate):
     meeting_type: str = "training / onboarding"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/training_onboarding.txt")
+        template = _read_prompt_text("prompts/summarization/training_onboarding.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -100,7 +100,7 @@ class InterviewTemplate(PromptTemplate):
     meeting_type: str = "interview"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/interview.txt")
+        template = _read_prompt_text("prompts/summarization/interview.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -108,7 +108,7 @@ class CustomerCallSalesDemoTemplate(PromptTemplate):
     meeting_type: str = "customer call / sales demo"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/customer_call_sales_demo.txt")
+        template = _read_prompt_text("prompts/summarization/customer_call_sales_demo.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -116,7 +116,7 @@ class SupportIncidentCallTemplate(PromptTemplate):
     meeting_type: str = "support / incident call"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/support_incident_call.txt")
+        template = _read_prompt_text("prompts/summarization/support_incident_call.txt")
         return template.format(transcript=transcript)
 
 @dataclass(frozen=True)
@@ -124,7 +124,7 @@ class OtherTemplate(PromptTemplate):
     meeting_type: str = "other"
 
     def render(self, transcript: str) -> str:
-        template = _read_prompt_text("prompt_files/meeting/other.txt")
+        template = _read_prompt_text("prompts/summarization/other.txt")
         return template.format(transcript=transcript)
 
 # -------------------------
@@ -162,7 +162,7 @@ PromptTemplateFactory.register(
         (FileBackedPromptTemplate,),
         {
             "meeting_type": "team status sync / standup",
-            "prompt_file": "prompt_files/meeting/team_status_sync_standup.txt",
+            "prompt_file": "prompts/summarization/team_status_sync_standup.txt",
         },
     )
 )
